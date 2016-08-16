@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 addEvent("onClientStartPfandautomat", true)
 addEvent("onClientStopPfandautomat", true)
 addEvent("onClientPlayerHitsoundPlay", true);
@@ -73,19 +64,8 @@ addEventHandler("onClientGhostmodeElement", getLocalPlayer(), function(uElement,
 		if(isTimer(uElement.m_uGhostTimer)) then
 			killTimer(uElement.m_uGhostTimer)
 		end
-		local alpha	= uElement:getAlpha()
-		if iTime <= 1 then -- immer
-			if iTime == 1 then -- anschalten
-				setElementCollidableWith(uElement, getRootElement(), false)
-				uElement:setAlpha(alpha >= 100 and alpha-100 or 0)
-			elseif iTime == 0 then -- ausschalten
-				setElementCollidableWith(uElement, getRootElement(), true)
-				uElement:setAlpha(alpha <= 155 and alpha+100 or 255)
-			end
-			return true
-		end
-
 		setElementCollidableWith(uElement, getRootElement(), false)
+		local alpha	= uElement:getAlpha()
 		uElement:setAlpha((alpha > 0 and alpha-100) or 255)
 
 		local function doTimerAgain()
@@ -93,13 +73,13 @@ addEventHandler("onClientGhostmodeElement", getLocalPlayer(), function(uElement,
 				if(isTimer(uElement.m_uGhostTimer)) then
 					killTimer(uElement.m_uGhostTimer)
 				end
-					uElement.m_uGhostTimer = setTimer(function()
-						if(isElement(uElement)) then
-							setElementCollidableWith(uElement, getRootElement(), true)
+				uElement.m_uGhostTimer = setTimer(function()
+					if(isElement(uElement)) then
+						setElementCollidableWith(uElement, getRootElement(), true)
 
-							uElement:setAlpha(alpha)
-						end
-					end, iTime or 5000, 1)
+						uElement:setAlpha(alpha)
+					end
+				end, iTime or 5000, 1)
 			end
 		end
 

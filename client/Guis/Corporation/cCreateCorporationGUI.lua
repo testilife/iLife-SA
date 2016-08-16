@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 --
 -- Created by IntelliJ IDEA.
 -- User: Noneatme
@@ -27,7 +18,7 @@ cCreateCorporationGUI = inherit(cSingleton);
 -- ///////////////////////////////
 
 function cCreateCorporationGUI:show()
-    if not(self.enabled) and not(clientBusy) and (localPlayer:getData("loggedIn")) then
+    if not(self.enabled) and not(clientBusy) then
         self:createElements()
         self.enabled    = true
         clientBusy      = self.enabled
@@ -117,21 +108,21 @@ end
 function cCreateCorporationGUI:createElements()
     if not(self.guiEle["window"]) then
 
-        self.guiEle["window"] 	        = new(CDxWindow, getLocalizationString("GUI_corporation_createcorp_window_title"), 350, 410, true, true, "Center|Middle", 0, 0, {tocolor(125, 125, 155, 255), false, getLocalizationString("GUI_corporation_createcorp_header")}, getLocalizationString("GUI_corporation_createcorp_infotext"))
+        self.guiEle["window"] 	        = new(CDxWindow, "Corporationmanagementsystem", 350, 410, true, true, "Center|Middle", 0, 0, {tocolor(125, 125, 155, 255), false, "Corporation erstellen"}, "Hier kannst du eine Corporation erstellen.")
         self.guiEle["window"].xtraHide  = function() self:hide() end
 
         self.guiEle["window"]:addRenderFunction(self.m_funcRender)
 
-        self.guiEle["label1"]           = new(CDxLabel, getLocalizationString("GUI_corporation_createcorp_label_name"), 5, 10, 150, 20, tocolor(255, 255, 255, 255), 1, "default-bold", "left", "top", self.guiEle["window"])
-        self.guiEle["label2"]           = new(CDxLabel, getLocalizationString("GUI_corporation_createcorp_label_shortcut"), 5, 40, 150, 20, tocolor(255, 255, 255, 255), 1, "default-bold", "left", "top", self.guiEle["window"])
-        self.guiEle["label3"]           = new(CDxLabel, getLocalizationString("GUI_corporation_createcorp_label_basecolor"), 5, 70, 150, 20, tocolor(255, 255, 255, 255), 1, "default-bold", "left", "top", self.guiEle["window"])
+        self.guiEle["label1"]           = new(CDxLabel, "Name der Corporation: ", 5, 10, 150, 20, tocolor(255, 255, 255, 255), 1, "default-bold", "left", "top", self.guiEle["window"])
+        self.guiEle["label2"]           = new(CDxLabel, "Abkuerzung der Corp.: ", 5, 40, 150, 20, tocolor(255, 255, 255, 255), 1, "default-bold", "left", "top", self.guiEle["window"])
+        self.guiEle["label3"]           = new(CDxLabel, "Basisfarbe: ", 5, 70, 150, 20, tocolor(255, 255, 255, 255), 1, "default-bold", "left", "top", self.guiEle["window"])
    --     self.guiEle["label4"]   = new(CDxLabel, "Icon: ", 5, 50, 340, 20, tocolor(255, 255, 255, 255), 1, "default-bold", "center", "top", self.guiEle["window"])
 
         self.guiEle["image1"]           = new(CDxImage, 140-32, 130-32, 128, 128, self.m_uCurTexture, tocolor(255, 255, 255, 255), self.guiEle["window"])
 
         self.guiEle["edit1"]            = new(CDxEdit, "", 155, 5, 170, 25, "text", tocolor(255, 255, 255, 255), self.guiEle["window"])
         self.guiEle["edit2"]            = new(CDxEdit, "", 155, 35, 170, 25, "text", tocolor(255, 255, 255, 255), self.guiEle["window"])
-        self.guiEle["btnfarbe"]         = new(CDxButton, getLocalizationString("GUI_corporation_createcorp_button_select"), 155, 65, 170, 25, tocolor(255, 255, 255, 255), self.guiEle["window"])
+        self.guiEle["btnfarbe"]         = new(CDxButton, "Auswaehlen", 155, 65, 170, 25, tocolor(255, 255, 255, 255), self.guiEle["window"])
 
         self.guiEle["edit_1_btn1"]      = new(CDxButton, "<< ", 5, 115, 90, 25, tocolor(255, 255, 255, 255), self.guiEle["window"])
         self.guiEle["edit_1_btn2"]      = new(CDxButton, ">> ", 245, 115, 60, 25, tocolor(255, 255, 255, 255), self.guiEle["window"])
@@ -147,9 +138,8 @@ function cCreateCorporationGUI:createElements()
         self.guiEle["btn_c2"]           = new(CDxButton, "C", 310, 145, 30, 25, tocolor(255, 255, 255, 255), self.guiEle["window"])
         self.guiEle["btn_c3"]           = new(CDxButton, "C", 310, 175, 30, 25, tocolor(255, 255, 255, 255), self.guiEle["window"])
 
-        -- "Eine Corporation kostet $"..self.m_iCurrentPrice..". Bitte stelle sicher, dass du das Geld auf deinem Bankkonto hast. Bedenke: Diese Einstellungen koennen nicht mehr geaendert werden!\n\nEine Corporation kann eine Gang, Verein, Organisation oder ein Unternehmen sein."
-        self.guiEle["label_info"]       = new(CDxLabel, getLocalizationString("GUI_corporation_createcorp_label_info", self.m_iCurrentPrice), 5, 240, 350, 120, tocolor(255, 255, 255, 255), 1, "default-bold", "left", "top", self.guiEle["window"], true)
-        self.guiEle["btn_submit"]       = new(CDxButton, getLocalizationString("GUI_corporation_createcorp_btn_submit"), 85, 355, 170, 25, tocolor(255, 255, 255, 255), self.guiEle["window"])
+        self.guiEle["label_info"]       = new(CDxLabel, "Eine Corporation kostet $"..self.m_iCurrentPrice..". Bitte stelle sicher, dass du das Geld auf deinem Bankkonto hast. Bedenke: Diese Einstellungen koennen nicht mehr geaendert werden!\n\nEine Corporation kann eine Gang, Verein, Organisation oder ein Unternehmen sein.", 5, 240, 350, 120, tocolor(255, 255, 255, 255), 1, "default-bold", "left", "top", self.guiEle["window"], true)
+        self.guiEle["btn_submit"]       = new(CDxButton, "Erstellen!", 85, 355, 170, 25, tocolor(255, 255, 255, 255), self.guiEle["window"])
 
         self.guiEle["btn_submit"]:addClickFunction(function()
             self.m_sCurCorpNameFull     = self.guiEle["edit1"]:getText()
@@ -165,9 +155,9 @@ function cCreateCorporationGUI:createElements()
 
                 end
 
-                confirmDialog:showConfirmDialog(getLocalizationString("GUI_corporation_createcorp_confirm_areyousure"), ja, nein, false, false, true);
+                confirmDialog:showConfirmDialog("Bist du dir sicher? Name, Icon, ... Korrekt?", ja, nein, false, false, true);
             else
-                showInfoBox("error", getLocalizationString("GUI_corporation_createcorp_confirm_error_tooshortname"));
+                showInfoBox("error", "Zu kurzer Name (Min. 3 Zeichen) / Zu lange Abkuerzung! (Max. 5 Zeichen)");
             end
         end)
 

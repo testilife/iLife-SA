@@ -1,36 +1,8 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
--- #######################################
--- ## Project: 		 iLife				        ##
--- ## For MTA: San Andreas				      ##
--- ## Name: cHouseManager.lua						##
--- ## Author: various       		        ##
--- ## Version: 1.0						          ##
--- ## License: See top Folder			      ##
--- ## Date: unknown		                  ##
--- #######################################
-
-
 CHouseManager 		= inherit(cSingleton)
 FactionHouses 		= {}
 CorporationHouses 	= {}
 
 HousePickups		= {}
-
-local tbl_HousesByOwner = {}
-
-
--- ///////////////////////////////
--- ///// constructor			  //////
--- ///// Returns: void		  //////
--- ///////////////////////////////
 
 function CHouseManager:constructor()
 	self.loadHousesFunc	= function() self:loadHouses() end
@@ -41,15 +13,9 @@ function CHouseManager:constructor()
 end
 
 
--- ///////////////////////////////
--- ///// createHouse			  //////
--- ///// Returns: void		  //////
--- ///////////////////////////////
-
 function CHouseManager:createHouse(id, price, cost, owner, koords, locked, tblIntPos, distanz, fraktion, hausKey, corp, ...)
 
 	self.m_iLastHouseID = id;
-	self.m_tblHousesByOwner = {} -- fuer Payday usw.
 
 	local X = gettok(koords, 3, "|")
 	local Y = gettok(koords, 4, "|")
@@ -63,11 +29,6 @@ function CHouseManager:createHouse(id, price, cost, owner, koords, locked, tblIn
 		if not(cBasicFunctions:isOwnerInTheLastMonthsActive(tonumber(owner))) then
 			owner = 0;
 			self.m_iFreeHouses = self.m_iFreeHouses+1;
-		else
-			if not tbl_HousesByOwner[tonumber(owner)] then
-				tbl_HousesByOwner[tonumber(owner)] = {}
-			end
-			tbl_HousesByOwner[tonumber(owner)][tonumber(id)] = price+cost
 		end
 	end
 	if (owner == 0) and (fraktion == 0) and (corp == 0) then
@@ -88,11 +49,6 @@ function CHouseManager:createHouse(id, price, cost, owner, koords, locked, tblIn
 	cInformationWindowManager:getInstance():addInfoWindow({X, Y, Z+0.9}, "Haus", 30)
 end
 
-
--- ///////////////////////////////
--- ///// loadHouses				  //////
--- ///// Returns: void		  //////
--- ///////////////////////////////
 
 function CHouseManager:loadHouses()
 	local start = getTickCount()
@@ -137,20 +93,4 @@ function CHouseManager:loadHouses()
 		end
 	end
 	outputDebugString("Es wurden "..tostring(#result).." Haueser gefunden! Entmachtet: "..self.m_iFreeHouses.." (Ende: " .. getTickCount() - start .. "ms)")
-end
-
-
--- ///////////////////////////////
--- ///// getHousesByOwnerID //////
--- ///// Returns: tblHouse  //////
--- ///////////////////////////////
-
-function CHouseManager:getHousesByOwnerID(iOwnerID)
-	iOwnerID = tonumber(iOwnerID)
-	if tbl_HousesByOwner[iOwnerID] then
-		return tbl_HousesByOwner[iOwnerID]
-	else
-		outputChatBox("_debug {}")
-		return {}
-	end
 end

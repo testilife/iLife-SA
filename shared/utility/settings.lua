@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 --
 -- Created by IntelliJ IDEA.
 -- User: Noneatme
@@ -26,13 +17,11 @@
 _Gsettings          = {}
 
 _Gsettings.serverName       = "iLife";                      -- Globaler Name (Wird im Script verwendet)
-_Gsettings.scriptVersion    = "1.2.9";                   -- Script Version, unten Links
+_Gsettings.scriptVersion    = "1.2.8_03";                   -- Script Version, unten Links
 _Gsettings.mapName          = "iLife 2015";                 -- Map Name, in MTA Serverliste
 _Gsettings.gameName         = "German Roleplay";            -- Gamemode Name, in MTA Liste
-_Gsettings.iCurRevision     = 166                            -- Zurzeitige Revision
-_Gsettings.iFPS             = 60;                           -- FPS
+_Gsettings.iCurRevision     = 66                            -- Zurzeitige Revision
 
-setFPSLimit(_Gsettings.iFPS);
 
 _Gsettings.boardURL         = "www.ilife-sa.de"             -- Board URL
 

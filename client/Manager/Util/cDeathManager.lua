@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 --
 -- Created by IntelliJ IDEA.
 -- User: Noneatme
@@ -175,7 +166,7 @@ end
 
 function cDeathManager:constructor(...)
     -- Klassenvariablen --
-    self.m_sSoundURL        = "http://noneat.me/sound/iLife/music_death_long.ogg";
+    self.m_sSoundURL        = "http://noneatme.de/sound/iLife/music_death_long.ogg";
 
     -- Funktionen --
     self.m_funcOnPlayerWasted       = function(...) self:playerWasted(...) end
@@ -208,3 +199,6 @@ function cDeathManager:constructor(...)
 end
 
 -- EVENT HANDLER --
+
+
+

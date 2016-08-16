@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 -- #######################################
 -- ## Project: MTA iLife				##
 -- ## Name: cCore.lua					##
@@ -171,27 +162,84 @@ cCore.tServerTypes = {}
 -- // Live Server \\ --
 local iID = #cCore.tServerTypes + 1
 cCore.tServerTypes[iID] = {}
-cCore.tServerTypes[iID]["fCheck"] = function (strIP) return false end
+cCore.tServerTypes[iID]["fCheck"] = function (strIP) return strIP ~= nil and strIP == "84.200.80.245" or false end
 cCore.tServerTypes[iID]["iDBID"] = 1
-cCore.tServerTypes[iID]["strName"] = "M_iLife"
+cCore.tServerTypes[iID]["strName"] = "Live Server"
 cCore.tServerTypes[iID]["strType"] = "mysql"
-cCore.tServerTypes[iID]["strHost"] = "127.0.0.1"
+cCore.tServerTypes[iID]["strHost"] = "localhost"
 cCore.tServerTypes[iID]["strUser"] = "root"
-cCore.tServerTypes[iID]["strPass"] = ""
-cCore.tServerTypes[iID]["strDB"] = "rl"
+cCore.tServerTypes[iID]["strPass"] = "tobi11"
+cCore.tServerTypes[iID]["strDB"] = "iliferewrite"
+cCore.tServerTypes[iID]["iPort"] = 3306
+cCore.tServerTypes[iID]["bDebug"] = false
+
+-- // Noneatme's Server \\ --
+local iID = #cCore.tServerTypes + 1
+cCore.tServerTypes[iID] = {}
+cCore.tServerTypes[iID]["fCheck"] = function () return false end
+cCore.tServerTypes[iID]["iDBID"] = 1
+cCore.tServerTypes[iID]["strName"] = "Noneatme's Server"
+cCore.tServerTypes[iID]["strType"] = "mysql"
+cCore.tServerTypes[iID]["strHost"] = "localhost"
+cCore.tServerTypes[iID]["strUser"] = "root"
+cCore.tServerTypes[iID]["strPass"] = "tobi11"
+cCore.tServerTypes[iID]["strDB"] = "iliferewrite"
 cCore.tServerTypes[iID]["iPort"] = 3306
 cCore.tServerTypes[iID]["bDebug"] = true
 
-iID = #cCore.tServerTypes + 1
+-- // Noneatmes NITRADO SERVER \\ --
+local iID = #cCore.tServerTypes + 1
 cCore.tServerTypes[iID] = {}
-cCore.tServerTypes[iID]["fCheck"] = function (strIP) return true end
+cCore.tServerTypes[iID]["fCheck"] = function (strIP) return strIP ~= nil and strIP == "217.198.143.106" or false end
 cCore.tServerTypes[iID]["iDBID"] = 1
-cCore.tServerTypes[iID]["strName"] = "Noneatme"
+cCore.tServerTypes[iID]["strName"] = "Noneatme's Server"
 cCore.tServerTypes[iID]["strType"] = "mysql"
-cCore.tServerTypes[iID]["strHost"] = "127.0.0.1"
+cCore.tServerTypes[iID]["strHost"] = "localhost"
 cCore.tServerTypes[iID]["strUser"] = "root"
-cCore.tServerTypes[iID]["strPass"] = ""
-cCore.tServerTypes[iID]["strDB"] = "rl"
+cCore.tServerTypes[iID]["strPass"] = "tobi11"
+cCore.tServerTypes[iID]["strDB"] = "iliferewrite"
 cCore.tServerTypes[iID]["iPort"] = 3306
 cCore.tServerTypes[iID]["bDebug"] = true
+
+-- // ReWrite's Server \\ --
+local iID = #cCore.tServerTypes + 1
+cCore.tServerTypes[iID] = {}
+cCore.tServerTypes[iID]["fCheck"] = function (strIP) return strIP ~= nil and gettok(strIP, 1, ".") == "13" and gettok(strIP, 2, ".") == "37" end
+cCore.tServerTypes[iID]["iDBID"] = 1
+cCore.tServerTypes[iID]["strName"] = "ReWrite's Server"
+cCore.tServerTypes[iID]["strType"] = "mysql"
+cCore.tServerTypes[iID]["strHost"] = "localhost"
+cCore.tServerTypes[iID]["strUser"] = "root"
+cCore.tServerTypes[iID]["strPass"] = "tobi11"
+cCore.tServerTypes[iID]["strDB"] = "iliferewrite"
+cCore.tServerTypes[iID]["iPort"] = 3306
+cCore.tServerTypes[iID]["bDebug"] = true
+
+-- // Audifire's Server \\ --
+local iID = #cCore.tServerTypes + 1
+cCore.tServerTypes[iID] = {}
+cCore.tServerTypes[iID]["fCheck"] = function (strIP) return strIP ~= nil and strIP == "" end
+cCore.tServerTypes[iID]["iDBID"] = 2
+cCore.tServerTypes[iID]["strName"] = "Audifire's Server"
+cCore.tServerTypes[iID]["strType"] = "mysql"
+cCore.tServerTypes[iID]["strHost"] = "localhost"
+cCore.tServerTypes[iID]["strUser"] = "root"
+cCore.tServerTypes[iID]["strPass"] = "tobi11"
+cCore.tServerTypes[iID]["strDB"] = "iliferewrite"
+cCore.tServerTypes[iID]["iPort"] = 3306
+cCore.tServerTypes[iID]["bDebug"] = true
+
+-- // Fedor's Server \\ --
+local iID = #cCore.tServerTypes + 1
+cCore.tServerTypes[iID] = {}
+cCore.tServerTypes[iID]["fCheck"] = function () return true end
+cCore.tServerTypes[iID]["iDBID"] = 1
+cCore.tServerTypes[iID]["strName"] = "Fedor's Live Server"
+cCore.tServerTypes[iID]["strType"] = "mysql"
+cCore.tServerTypes[iID]["strHost"] = "localhost"
+cCore.tServerTypes[iID]["strUser"] = "root"
+cCore.tServerTypes[iID]["strPass"] = "tobi11"
+cCore.tServerTypes[iID]["strDB"] = "iliferewrite"
+cCore.tServerTypes[iID]["iPort"] = 3306
+cCore.tServerTypes[iID]["bDebug"] = false
 -- \\_Server Information Table_// --

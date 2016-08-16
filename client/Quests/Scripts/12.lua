@@ -1,4 +1,4 @@
-vlocal QuestID = 12
+local QuestID = 12
 local Quest = Quests[QuestID]
 
 local QuestFunctions = {}

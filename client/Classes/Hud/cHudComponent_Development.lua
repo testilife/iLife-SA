@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 -- #######################################
 -- ## Project: 	HUD iLife				##
 -- ## For MTA: San Andreas				##
@@ -135,15 +126,6 @@ end
 
 function HudComponent_Development:RefreshDatas()
 	local component_name = "development"
-
-	self.m_iObjects		= 0
-	self.m_iPeds		= 0
-	self.m_iVehicles	= 0
-	self.m_iPlayers		= 0
-	self.m_iSounds		= 0
-	self.m_iColshapes	= 0
-	self.m_iMarkers		= 0
-
 	if(hud.adminComponents[component_name]) then
 		if(getElementData(localPlayer, "Adminlevel")) and (tonumber(getElementData(localPlayer, "Adminlevel")) > 2) then
 			self.m_iObjects		= #getElementsByType("object", getRootElement(), true);
@@ -164,6 +146,13 @@ function HudComponent_Development:RefreshDatas()
 		end
 	end
 
+	self.m_iObjects		= 0
+	self.m_iPeds		= 0
+	self.m_iVehicles	= 0
+	self.m_iPlayers		= 0
+	self.m_iSounds		= 0
+	self.m_iColshapes	= 0
+	self.m_iMarkers		= 0
 
 	local xl, yl, zl 	= getElementPosition(localPlayer);
 	local int			= getElementInterior(localPlayer);

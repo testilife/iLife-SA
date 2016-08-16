@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 Items = {}
 
 CItem = {}
@@ -677,19 +668,14 @@ function useItem(ItemID, thePlayer)
 			thePlayer:showInfoBox("error", "Es sind keine oder zu viele Fahrzeuge in diener Nähe!")
 			return false
 		end
-		if vehicleCategoryManager:isNoFuelVehicleCategory(cars[1]) then
-			thePlayer:getInventory():addItem(Items[ItemID], 1);
-			thePlayer:showInfoBox("error", "Dieses Fahrzeug hat keinen Tank!")
-			return false
+
+		if (thePlayer.Fraktion:getID() == 7 or (cBasicFunctions:calculateProbability(75))) then
+			cars[1]:setFuel(cars[1]:getFuel()+20)
+			thePlayer:showInfoBox("warning", "Du hast ein Fahrzeug aufgefüllt!")
 		else
-			if (thePlayer.Fraktion:getID() == 7 or (cBasicFunctions:calculateProbability(75))) then
-				cars[1]:setFuel(cars[1]:getFuel()+20)
-				thePlayer:showInfoBox("warning", "Du hast ein Fahrzeug aufgefüllt!")
-			else
-				thePlayer:showInfoBox("warning", "Du hast das Benzin verschüttet!")
-			end
-			return true
+			thePlayer:showInfoBox("warning", "Du hast das Benzin verschüttet!")
 		end
+		return true
 	end
 	if(ItemID == 261) then -- Reperaturkit
 		local x,y,z = getElementPosition(thePlayer)

@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
  -- #######################################
 -- ## Project: 		 iLife				##
 -- ## For MTA: San Andreas				##
@@ -196,7 +187,7 @@ end
 -- ///// RefreshWeather		//////
 -- ///// Returns: void		//////
 -- ///////////////////////////////
-
+				
 function WeatherManager:RefreshWeather(i)
 	local sTag, hour	= self:GetDate(i);
 	if(self.weatherData) and (self.weatherData[sTag]) and (self.weatherData[sTag][hour]) then
@@ -204,14 +195,14 @@ function WeatherManager:RefreshWeather(i)
 
 			    local rainy     = self.WeatherIDs.rainyIDS[weatherID]
 			    local lvl       = math.random(1, 50)/100;
-	    local wind      = math.random(0, 50)/100;
+	    local wind      = math.random(10, 50)/100;
 	    local wind2     = wind
 
-	    local waterLevel    = math.random(0, 100)/100;
+	    local waterLevel    = math.random(-300, 50)/100;
 	    if(rainy) then
 	        setRainLevel(lvl);
-	        wind        = math.random(50, 100)/100;
-	        waterLevel    = math.random(100, 400)/100;
+	        wind        = math.random(50, 100)/50;
+	        waterLevel    = math.random(100, 150)/100;
 	    else
 	        setRainLevel(0)
 	    end
@@ -221,11 +212,10 @@ function WeatherManager:RefreshWeather(i)
 	    elseif(math.random(0, 1) == 0) then
 	        wind2 = wind2*-1;
 	    end
-      for i,v in pairs(self.tblChannelWater) do
-	      setWaterLevel(v, waterLevel, true, true)
-      end
+
+	    setWaterLevel(waterLevel, false, false)
 	    setWindVelocity(wind, wind2, 0);
-		  setWeather(weatherID);
+		setWeather(weatherID);
 	    outputDebugString("Weather Change: "..weatherID..", Rainy: "..tostring(rainy)..", Windy: "..wind);
 
 	    if(weatherID == 8) then
@@ -339,13 +329,6 @@ function WeatherManager:constructor(...)
     self.m_iMaxWaterLevel               = 12.7;
     self.m_bUeberschwommen              = false;
 
-    self.tblChannelWater = {
-      createWater(2538, -2117, 4, 2624, -2117, 4, 2538, -1455, 4, 2624, -1455, 4), --Hauptkanal
-      createWater(1967, -1872, 4, 2538, -1872, 4, 1967, -1830, 4, 2538, -1830, 4), --Seitenkanal gerade
-      createWater(1610, -1872, 4, 1967, -1872, 4, 1610, -1700, 4, 1967, -1700, 4), --Seitenkanal schräg bis PD
-      createWater(1550, -1872, 4, 1610, -1872, 4, 1550, -1740, 4, 1610, -1740, 4), --Seitenkanal schräg ab PD
-    }
-
 --[[
     self.m_iWaterX1, self.m_iWaterY1    = 67.442245483398, -3271.51171875
     self.m_iWaterX2, self.m_iWaterY2    = 2811.7761230469, -3271.51171875
@@ -372,9 +355,8 @@ function WeatherManager:constructor(...)
     self.m_funcIncreaseWaterLevel       = function(...) self:onWaterLevelIncrease(...) end
     self.m_funcDecreaseWaterLevel       = function(...) self:onWaterLevelDecrease(...) end
     self.m_funcStopSturmflut            = function(...) self:stopSturmflut(...)end
-	-- Events
+	-- Eveents
 	self:LoadWeekWeather();
-  resetWaterLevel()
 
 	self.refreshTimer					= setTimer(self.refreshWeatherFunc, 60*60*1000, -1);
 

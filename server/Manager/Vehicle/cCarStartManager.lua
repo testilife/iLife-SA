@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 -- #######################################
 -- ## Project: 	HUD iLife				##
 -- ## For MTA: San Andreas				##
@@ -58,22 +49,16 @@ function CarStart:Toggle(player, key, state)
 
 				local ammount = 800;
 
-				if(math.random(0, 20) == 1) then
+				if(math.random(0, 10) == 1) then
 					ammount = math.random(1500, 4000);
 				end
-				if vehicleCategoryManager:isNoFuelVehicleCategory(vehicle) then
-					self.startVehicle(player, vehicle)
-					return true
-				else
-					self.vehicleStartTimer[vehicle] = setTimer(self.startVehicle, ammount, 1, player, vehicle)
-					triggerClientEvent(getRootElement(), "onVehicleStartSound", getRootElement(), vehicle, "engine_start");
-				end
+				self.vehicleStartTimer[vehicle] = setTimer(self.startVehicle, ammount, 1, player, vehicle, class)
+				triggerClientEvent(getRootElement(), "onVehicleStartSound", getRootElement(), vehicle, "engine_start");
 			else
 
 				vehicle:switchEngine(player)
-				if not vehicleCategoryManager:isNoFuelVehicleCategory(vehicle) then
-					triggerClientEvent(getRootElement(), "onVehicleStartSound", getRootElement(), vehicle, "engine_absauf");
-				end
+
+				triggerClientEvent(getRootElement(), "onVehicleStartSound", getRootElement(), vehicle, "engine_absauf");
 			end
 		else
 			if(self.vehicleStarting[vehicle] == true) then
@@ -87,20 +72,16 @@ function CarStart:Toggle(player, key, state)
 	end
 end
 
-
 -- ///////////////////////////////
 -- ///// StartVehicle 		//////
 -- ///// Returns: void		//////
 -- ///////////////////////////////
 
 function CarStart:StartVehicle(player, vehicle)
-	if(math.random(0, 5) ~= 1 or vehicleCategoryManager:isNoFuelVehicleCategory(vehicle)) then
+	if(math.random(0, 5) ~= 1) then
 		local sucess = vehicle:switchEngine(player)
 		if(sucess ~= "nope") then
-			if not vehicleCategoryManager:isNoFuelVehicleCategory(vehicle) then
-				triggerClientEvent(getRootElement(), "onVehicleStartSound", getRootElement(), vehicle, "engine_start_go");
-			end
-
+			triggerClientEvent(getRootElement(), "onVehicleStartSound", getRootElement(), vehicle, "engine_start_go");
 			self.vehicleStarting[vehicle] = false;
 			self.vehicleEngine[vehicle] = true;
 		end

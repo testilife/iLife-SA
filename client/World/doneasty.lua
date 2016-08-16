@@ -1,13 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
---[[
 DoneastyShader = {
 	[1] = dxCreateShader("res/shader/texture.fx"),
 	[2] = dxCreateShader("res/shader/texture.fx"),
@@ -33,10 +23,10 @@ DoneastyTextures = {
 addEventHandler("onClientResourceStart", getRootElement(), function() triggerServerEvent("onClientRequestDoneastyObects", localPlayer) end)
 
 addEvent("onServerSendDoneastyObjects", true)
-addEventHandler("onServerSendDoneastyObjects", getRootElement(),
-	function(obj)
+addEventHandler("onServerSendDoneastyObjects", getRootElement(), 
+	function(obj) 
 		for k,v in ipairs(DoneastyShader) do
-			if (DoneastyTextures[k]) then
+			if (DoneastyTextures[k]) then 
 				dxSetShaderValue(v,"Tex",dxCreateTexture("res/images/doneasty/"..k..".png"))
 				for kk,vv in ipairs(obj) do
 					engineRemoveShaderFromWorldTexture(billboardLarge, DoneastyTextures[k], vv)
@@ -47,7 +37,7 @@ addEventHandler("onServerSendDoneastyObjects", getRootElement(),
 	end
 )
 
-addEventHandler("onClientResourceStart", getRootElement(),
+addEventHandler("onClientResourceStart", getRootElement(), 
 	function()
 		DoneastyLaden = dxCreateShader("res/shader/texture.fx")
 		dxSetShaderValue(DoneastyLaden,"Tex",dxCreateTexture("res/images/doneasty/banner.png"))
@@ -72,4 +62,4 @@ addEventHandler("DoneastyBook", getRootElement(),
 			setTimer(function() removeEventHandler("onClientRender", getRootElement(),renderDoneasty) Doneasty = nil end, 6000, 1)
 		end
 	end
-)]]
+)

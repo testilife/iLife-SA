@@ -1,13 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
-
 local screenX, screenY = guiGetScreenSize()
 local mouseClickSound = "res/sounds/DynamicMenu/mouseClick.mp3"
 local mouseEnterSound = "res/sounds/DynamicMenu/mouseEnter.mp3"

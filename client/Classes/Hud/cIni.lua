@@ -1,13 +1,4 @@
 --[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
---[[
 
 #############################
 ##   (c) Soner		       ##
@@ -29,7 +20,7 @@ function EasyIni:LoadFile(filename, ignoreExists)
 			fileClose(file)
 		end
 	end
-	local file = fileOpen(filename)
+	local file = fileOpen(filename)	
 	if not(file) then
 		return false;
 	end
@@ -102,23 +93,12 @@ function EasyIni:Save()
 	local string = ""
 	for selection,selectiontable in pairs(self.data) do
 		string = string.."["..selection.."]\n"
-		local iTable	= {}
-		local iIndex	= 1;
 		for k,v in pairs(selectiontable) do
 			if(k and v) then
-				iTable[iIndex] = {k, v};
-				iIndex = iIndex+1
+				string = string..k.."="..tostring(v).."\n"
+
 			end
 		end
-
-		table.sort(iTable, function(a, b) return tostring(b[1]) < tostring(a[1]) end)
-
-		for index, val in ipairs(iTable) do
-			string = string..val[1].."="..tostring(val[2]).."\n"
-		end
-	end
-	if(fileExists(self.filename)) then
-		fileDelete(self.filename)
 	end
 	local file = fileCreate(self.filename)
 	fileWrite(file,string)

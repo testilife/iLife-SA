@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 --
 -- Created by IntelliJ IDEA.
 -- User: Noneatme
@@ -14,12 +5,25 @@
 -- Time: 20:24
 -- Project: MTA iLife
 --
---
-cLoadingSprite = inherit(cSingleton);
+-- 
+cLoadingSprite = {};
 
 --[[
 
 ]]
+
+-- ///////////////////////////////
+-- ///// New 				//////
+-- ///// Returns: Object	//////
+-- ///////////////////////////////
+
+function cLoadingSprite:new(...)
+	local obj = setmetatable({}, {__index = self});
+	if obj.constructor then
+		obj:constructor(...);
+	end
+	return obj;
+end
 
 -- ///////////////////////////////
 -- ///// disableFinal 		//////

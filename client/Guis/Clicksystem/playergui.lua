@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 addEventHandler("onClientClick", getRootElement(),
 	function(button, state, absoluteX, absoluteY, worldX, worldY, worldZ, clickedWorld)
 		if (button == "right" and state == "down") then
@@ -39,32 +30,32 @@ function showPlayerClickGui(thePlayer)
 	if (not clientBusy) then
 		hidePlayerClickGui()
 
-		PlayerClick["Window"] = new(CDxWindow, getLocalizationString("GUI_clicksystem_player_window_title"), 500, 320, true, true, "Center|Middle")
+		PlayerClick["Window"] = new(CDxWindow, "Spieler", 500, 320, true, true, "Center|Middle")
 
 		PlayerClick["List"][1] = new(CDxList, 5, 10, 335, 280, tocolor(125,125,125,200), PlayerClick["Window"])
-		PlayerClick["List"][1]:addColumn(getLocalizationString("GUI_clicksystem_player_list1_val1"))
-		PlayerClick["List"][1]:addColumn(getLocalizationString("GUI_clicksystem_player_list1_val2"))
+		PlayerClick["List"][1]:addColumn("Attribut")
+		PlayerClick["List"][1]:addColumn("Wert")
 
 		local faction = getElementData(thePlayer, "Fraktionsname");
 		if(thePlayer:getData("CorporationNameFull")) then
 			faction = thePlayer:getData("CorporationNameFull")
 		end
 
-		PlayerClick["List"][1]:addRow(getLocalizationString("GUI_clicksystem_player_list1_playername").."|"..thePlayer:getName())
-		PlayerClick["List"][1]:addRow(getLocalizationString("GUI_clicksystem_player_list1_faction").."|"..faction)
-		PlayerClick["List"][1]:addRow(getLocalizationString("GUI_clicksystem_player_list1_state").."|"..getElementData(thePlayer, "Status"))
-		PlayerClick["List"][1]:addRow(getLocalizationString("GUI_clicksystem_player_list1_wanteds").."|"..getElementData(thePlayer, "Wanteds"))
-		PlayerClick["List"][1]:addRow(getLocalizationString("GUI_clicksystem_player_list1_stvo_points").."|"..getElementData(thePlayer, "STVO"))
-		PlayerClick["List"][1]:addRow(getLocalizationString("GUI_clicksystem_player_list1_jailtime").."|"..getElementData(thePlayer, "Jailtime").." m")
-		PlayerClick["List"][1]:addRow(getLocalizationString("GUI_clicksystem_player_list1_registerdate").."|"..(getElementData(thePlayer, "RegisterDate")))
-		PlayerClick["List"][1]:addRow(getLocalizationString("GUI_clicksystem_player_list1_birthday").."Geburtsdatum|"..(getElementData(thePlayer, "Birthday")))
-		PlayerClick["List"][1]:addRow(getLocalizationString("GUI_clicksystem_player_list1_playtime").."|"..getLocalizationString("GUI_clicksystem_player_list1_playtime_str", math.floor(getElementData(thePlayer, "Playtime")/60), (getElementData(thePlayer, "Playtime") % 60)))
+		PlayerClick["List"][1]:addRow("Name|"..thePlayer:getName())
+		PlayerClick["List"][1]:addRow("Fraktion|"..faction)
+		PlayerClick["List"][1]:addRow("Status|"..getElementData(thePlayer, "Status"))
+		PlayerClick["List"][1]:addRow("Wanteds|"..getElementData(thePlayer, "Wanteds"))
+		PlayerClick["List"][1]:addRow("STVO Punkte|"..getElementData(thePlayer, "STVO"))
+		PlayerClick["List"][1]:addRow("Jailtime|"..getElementData(thePlayer, "Jailtime").." m")
+		PlayerClick["List"][1]:addRow("Registrierdatum|"..(getElementData(thePlayer, "RegisterDate")))
+		PlayerClick["List"][1]:addRow("Geburtsdatum|"..(getElementData(thePlayer, "Birthday")))
+		PlayerClick["List"][1]:addRow("Spielzeit|"..(math.floor(getElementData(thePlayer, "Playtime")/60)).." Stunden "..(getElementData(thePlayer, "Playtime") % 60).." Minuten")
 
 		if (thePlayer ~= getLocalPlayer()) then
-			PlayerClick["Button"][1] = new(CDxButton, getLocalizationString("GUI_clicksystem_player_button_trade"), 350, 10, 140, 35, tocolor(255,255,255,255), PlayerClick["Window"])
-			PlayerClick["Button"][2] = new(CDxButton, getLocalizationString("GUI_clicksystem_player_button_number"), 350, 50, 140, 35, tocolor(255,255,255,255), PlayerClick["Window"])
-			PlayerClick["Button"][3] = new(CDxButton, getLocalizationString("GUI_clicksystem_player_button_friend"), 350, 90, 140, 35, tocolor(255,255,255,255), PlayerClick["Window"])
-			PlayerClick["Button"][4] = new(CDxButton, getLocalizationString("GUI_clicksystem_player_button_sellcar"), 350, 130, 140, 35, tocolor(255,255,255,255), PlayerClick["Window"])
+			PlayerClick["Button"][1] = new(CDxButton, "Handeln", 350, 10, 140, 35, tocolor(255,255,255,255), PlayerClick["Window"])
+			PlayerClick["Button"][2] = new(CDxButton, "Nummer anzeigen", 350, 50, 140, 35, tocolor(255,255,255,255), PlayerClick["Window"])
+			PlayerClick["Button"][3] = new(CDxButton, "Freund hinzufügen", 350, 90, 140, 35, tocolor(255,255,255,255), PlayerClick["Window"])
+			PlayerClick["Button"][4] = new(CDxButton, "Auto Verkaufen", 350, 130, 140, 35, tocolor(255,255,255,255), PlayerClick["Window"])
 
 			PlayerClick["Button"][1]:addClickFunction(
 				function()
@@ -103,7 +94,7 @@ function showPlayerClickGui(thePlayer)
 			PlayerClick["Window"]:add(PlayerClick["Button"][4])
 
 			if (getElementData(localPlayer, "Fraktion") == 1) or (getElementData(localPlayer, "Fraktion") == 2) then
-				PlayerClick["Button"][5] = new(CDxButton, getLocalizationString("GUI_clicksystem_player_button_frisk"), 350, 210, 140, 35, tocolor(255,255,255,255), PlayerClick["Window"])
+				PlayerClick["Button"][5] = new(CDxButton, "Durchsuchen", 350, 210, 140, 35, tocolor(255,255,255,255), PlayerClick["Window"])
 
 				PlayerClick["Button"][5]:addClickFunction(
 					function()
@@ -114,7 +105,7 @@ function showPlayerClickGui(thePlayer)
 
 				PlayerClick["Window"]:add(PlayerClick["Button"][5])
 
-				PlayerClick["Button"][6] = new(CDxButton, getLocalizationString("GUI_clicksystem_player_button_rem_illegal"), 350, 250, 140, 35, tocolor(255,255,255,255), PlayerClick["Window"])
+				PlayerClick["Button"][6] = new(CDxButton, "Illegales Entfernen", 350, 250, 140, 35, tocolor(255,255,255,255), PlayerClick["Window"])
 
 				PlayerClick["Button"][6]:addClickFunction(
 					function()
@@ -127,7 +118,7 @@ function showPlayerClickGui(thePlayer)
 			end
 
 		else
-			PlayerClick["Button"][1] = new(CDxButton, getLocalizationString("GUI_clicksystem_player_button_changestate"), 350, 10, 140, 35, tocolor(255,255,255,255), PlayerClick["Window"])
+			PlayerClick["Button"][1] = new(CDxButton, "Status ändern", 350, 10, 140, 35, tocolor(255,255,255,255), PlayerClick["Window"])
 
 			PlayerClick["Button"][1]:addClickFunction(
 				function()
@@ -136,7 +127,7 @@ function showPlayerClickGui(thePlayer)
 				end
 			)
 
-			PlayerClick["Button"][2] = new(CDxButton, getLocalizationString("GUI_clicksystem_player_button_changespawn"), 350, 55, 140, 35, tocolor(255,255,255,255), PlayerClick["Window"])
+			PlayerClick["Button"][2] = new(CDxButton, "Spawn ändern", 350, 55, 140, 35, tocolor(255,255,255,255), PlayerClick["Window"])
 
 			PlayerClick["Button"][2]:addClickFunction(
 				function()
@@ -144,7 +135,7 @@ function showPlayerClickGui(thePlayer)
 					showChangeSpawnGui()
 				end
 			)
-			PlayerClick["Button"][3] = new(CDxButton, getLocalizationString("GUI_clicksystem_player_button_settings"), 350, 55+45, 140, 35, tocolor(255,255,255,255), PlayerClick["Window"])
+			PlayerClick["Button"][3] = new(CDxButton, "Einstellungen", 350, 55+45, 140, 35, tocolor(255,255,255,255), PlayerClick["Window"])
 
 			-- Don't mind me, just a fucked up function coming through --
 			PlayerClick["Button"][3]:addClickFunction(
@@ -156,7 +147,7 @@ function showPlayerClickGui(thePlayer)
 			PlayerClick["Window"]:add(PlayerClick["Button"][1])
 			PlayerClick["Window"]:add(PlayerClick["Button"][2])
 			PlayerClick["Window"]:add(PlayerClick["Button"][3])
-			PlayerClick["List"][1]:addRow(getLocalizationString("GUI_clicksystem_player_list1_money").."|$"..getElementData(thePlayer, "Geld"))
+			PlayerClick["List"][1]:addRow("Handgeld|$"..getElementData(thePlayer, "Geld"))
 
 
 		end

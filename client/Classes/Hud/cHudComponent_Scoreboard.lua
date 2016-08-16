@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 	-- #######################################
 -- ## Project: 	HUD iLife				##
 -- ## For MTA: San Andreas				##
@@ -325,52 +316,7 @@ function HudComponent_Scoreboard:Render()
 
 	dxSetRenderTarget(nil);
 
-	--[[
-
-	if(bBool == 1) then
-		self.m_iStartOpenTick	= getTickCount();
-		self.m_bOpenAnimation	= true;
-		self.m_bDoAnimation		= true;
-	else
-		self.m_iStartOpenTick	= getTickCount();
-		self.m_bOpenAnimation	= false;
-		self.m_bDoAnimation		= true;
-	end
-
-	]]
-
-	local alphavalue = 0;
-
-	if(self.m_bDoAnimation) then
-		if(self.m_bOpenAnimation) then	-- Oeffnen
-
-			local time = (getTickCount()-self.m_iStartOpenTick)/125;
-
-			alphavalue = getEasingValue(time, "OutQuad");
-
-			if(time > 1) then
-				alphavalue = 1
-				hud.components[self.sName].enabled = 1;
-			end
-			if(time < 0) then alphavalue = 0 end
-
-		else										-- Schliessen
-
-			local time = 1-(getTickCount()-self.m_iStartOpenTick)/125;
-
-			alphavalue = getEasingValue(time, "InQuad");
-
-			if(time > 1) then alphavalue = 1 end
-			if(time < 0) then
-				alphavalue = 0
-				hud.components[self.sName].enabled = 0;
-			end
-
-		end
-	end
-
-
-	dxDrawImage(xo, yo, wo, ho, self.renderTarget, 0, 0, 0, tocolor(255, 255, 255, alphavalue*alpha))
+	dxDrawImage(xo, yo, wo, ho, self.renderTarget, 0, 0, 0, tocolor(255, 255, 255, alpha))
 
 end
 
@@ -516,7 +462,6 @@ end
 
 function HudComponent_Scoreboard:Toggle(key, state)
 	local component_name = "scoreboard"
-
 	local bBool;
 	if(state == "down") then
 		bBool = 1
@@ -525,25 +470,11 @@ function HudComponent_Scoreboard:Toggle(key, state)
 		bBool = 0
 		clientBusy = false;
 	end
-
-
 	if (bBool == nil) then
-	--	hud.components[component_name].enabled = not (hud.components[component_name].enabled);
+		hud.components[component_name].enabled = not (hud.components[component_name].enabled);
 	else
-
-	--	hud.components[component_name].enabled = bBool;
-		if(bBool == 1) then
-			self.m_iStartOpenTick	= getTickCount();
-			self.m_bOpenAnimation	= true;
-			self.m_bDoAnimation		= true;
-		else
-			self.m_iStartOpenTick	= getTickCount();
-			self.m_bOpenAnimation	= false;
-			self.m_bDoAnimation		= true;
-		end
-		hud.components[component_name].enabled = 1
+		hud.components[component_name].enabled = bBool;
 	end
-
 --	outputChatBox(tostring(hud.components[component_name].enabled))
     if(getTickCount()-self.m_iStartTick > 60000) then
         self:RefreshPlayers();

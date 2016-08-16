@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 --
 -- Created by IntelliJ IDEA.
 -- User: Noneatme
@@ -86,7 +77,7 @@ function cCorporationHRManagementGUI:createElements(uCorp)
     end
     if not(self.guiEle["window"]) then
 
-        self.guiEle["window"] 	= new(CDxWindow, getLocalizationString("GUI_corporation_hrmanagement_window_title"), 550, 450, true, true, "Center|Middle", 0, 0, {tocolor(125, 125, 255, 255), false, getLocalizationString("GUI_corporation_hrmanagement_window_header")}, getLocalizationString("GUI_corporation_hrmanagement_window_helptext"))
+        self.guiEle["window"] 	= new(CDxWindow, "HR Management", 550, 450, true, true, "Center|Middle", 0, 0, {tocolor(125, 125, 255, 255), false, "HR Management"}, "Hier kannst du die HR (Human Resources) verwalten.")
         self.guiEle["window"].xtraHide = function() self:hide() end
         self.guiEle["window"]:setCloseClass(cCorporationManagementGUI)
 
@@ -103,12 +94,12 @@ function cCorporationHRManagementGUI:createElements(uCorp)
             self.guiEle["list2"]:addRow(_Gsettings.corporation.roles[i].."|res/images/corporation/miniicons/"..i..".png", 1);
         end
 
-        self.guiEle["button_1"] = new(CDxButton, getLocalizationString("GUI_corporation_hrmanagement_button_giverole"), 260, 230, 135, 25, tocolor(255, 255, 255, 255), self.guiEle["window"])
-        self.guiEle["button_2"] = new(CDxButton, getLocalizationString("GUI_corporation_hrmanagement_button_removerole"), 405, 230, 135, 25, tocolor(255, 255, 255, 255), self.guiEle["window"])
-        self.guiEle["button_3"] = new(CDxButton, getLocalizationString("GUI_corporation_hrmanagement_button_uninvite"), 260, 260, 135, 25, tocolor(255, 255, 255, 255), self.guiEle["window"])
-        self.guiEle["button_4"] = new(CDxButton, getLocalizationString("GUI_corporation_hrmanagement_button_invite"), 405, 260, 135, 25, tocolor(255, 255, 255, 255), self.guiEle["window"])
+        self.guiEle["button_1"] = new(CDxButton, "Rolle geben", 260, 230, 135, 25, tocolor(255, 255, 255, 255), self.guiEle["window"])
+        self.guiEle["button_2"] = new(CDxButton, "Rolle entfernen", 405, 230, 135, 25, tocolor(255, 255, 255, 255), self.guiEle["window"])
+        self.guiEle["button_3"] = new(CDxButton, "Rauswerfen", 260, 260, 135, 25, tocolor(255, 255, 255, 255), self.guiEle["window"])
+        self.guiEle["button_4"] = new(CDxButton, "Hinzufuegen", 405, 260, 135, 25, tocolor(255, 255, 255, 255), self.guiEle["window"])
 
-        self.guiEle["button_5"] = new(CDxButton, getLocalizationString("GUI_corporation_hrmanagement_button_upgrade_max_slots"), 260, 300, 280, 25, tocolor(255, 255, 255, 255), self.guiEle["window"])
+        self.guiEle["button_5"] = new(CDxButton, "Max. Slots erhoehen", 260, 300, 280, 25, tocolor(255, 255, 255, 255), self.guiEle["window"])
 
         self:refreshUsers(uCorp)
 
@@ -120,10 +111,10 @@ function cCorporationHRManagementGUI:createElements(uCorp)
                 if(rolle ~= "nil") then
                     triggerServerEvent("onPlayerCoroprationsManagementHRUserGiveRole", localPlayer, user, rolle)
                 else
-                    showInfoBox("error", getLocalizationString("GUI_corporation_hrmanagement_confirm_please_select_a_role"))
+                    showInfoBox("error", "Du musst eine Rolle auswaehlen!")
                 end
             else
-                showInfoBox("error", getLocalizationString("GUI_corporation_hrmanagement_confirm_please_select_a_user"))
+                showInfoBox("error", "Du musst ein Spieler auswaehlen!")
             end
         end)
 
@@ -134,10 +125,10 @@ function cCorporationHRManagementGUI:createElements(uCorp)
                 if(rolle ~= "nil") then
                     triggerServerEvent("onPlayerCoroprationsManagementHRUserRemoveRole", localPlayer, user, rolle)
                 else
-                    showInfoBox("error", getLocalizationString("GUI_corporation_hrmanagement_confirm_please_select_a_role"))
+                    showInfoBox("error", "Du musst eine Rolle auswaehlen!")
                 end
             else
-                showInfoBox("error", getLocalizationString("GUI_corporation_hrmanagement_confirm_please_select_a_user"))
+                showInfoBox("error", "Du musst ein Spieler auswaehlen!")
             end
         end)
         self.guiEle["button_3"]:addClickFunction(function()
@@ -150,9 +141,9 @@ function cCorporationHRManagementGUI:createElements(uCorp)
                 local function nein()
 
                 end
-                confirmDialog:showConfirmDialog(getLocalizationString("GUI_corporation_hrmanagement_confirm_uninvite_user_text"), ja, nein, true, false, false)
+                confirmDialog:showConfirmDialog("Bist du dir sicher, dass du diesen User rauswerfen moechtest?", ja, nein, true, false, false)
             else
-                showInfoBox("error", getLocalizationString("GUI_corporation_hrmanagement_confirm_please_select_a_user"))
+                showInfoBox("error", "Du musst ein Spieler auswaehlen!")
             end
         end)
         self.guiEle["button_4"]:addClickFunction(function()
@@ -163,7 +154,7 @@ function cCorporationHRManagementGUI:createElements(uCorp)
             local function nein()
 
             end
-            confirmDialog:showConfirmDialog(getLocalizationString("GUI_corporation_hrmanagement_confirm_please_provide_username"), ja, nein, true, true, false)
+            confirmDialog:showConfirmDialog("Bitte gebe den Spieler an, den du zu dieser Corp hinzufuegen mochtest:", ja, nein, true, true, false)
         end)
         self.guiEle["button_5"]:addClickFunction(function()
             local function ja()
@@ -174,7 +165,7 @@ function cCorporationHRManagementGUI:createElements(uCorp)
 
             end
             local slots  = self.m_uCurCorp.m_iMaxMembers+1;
-            confirmDialog:showConfirmDialog(getLocalizationString("GUI_corporation_hrmanagement_confirm_update_slots", _Gsettings.corporation.playerSlotCost[slots]), ja, nein, true, false, false)
+            confirmDialog:showConfirmDialog("Das Upgrade wird $".._Gsettings.corporation.playerSlotCost[slots].." kosten.\nBist du dir sicher?", ja, nein, true, false, false)
         end)
         for index, ele in pairs(self.guiEle) do
             if(index ~= "window") then

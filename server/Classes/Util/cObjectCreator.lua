@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 -- #######################################
 -- ## Project: 							##
 -- ## Name: Script.lua					##
@@ -38,7 +29,6 @@ cFunc["create_objects"] = function()
 	radialMenuManager 		= RadialMenuManager:New();
 	churchBellManager 		= ChurchBellManager:New();
 	carStart 				= CarStart:New();
-	vehicleCategoryManager = cVehicleCategoryManager:new()
 
 	aussichtsPunkt 			= AussichtsPunkt:new();
 
@@ -75,7 +65,6 @@ cFunc["create_objects"] = function()
 	marketManager			= cMarketManager:new();
 
 
-
 	cWortFilter:new();
 	cTruckerJob:new()
 	cBusinessManager:new();
@@ -97,14 +86,10 @@ cFunc["create_objects"] = function()
         downloadManager:AddFile("res/images/hud/skins/"..i..".jpg");
     end
 
-
-
 	-- FACTIONS --
 	cSpecialForce:new();
 
 	cArtifactManager:new();
-	cAsservatenkammer:new();
-	cServerInfoRenderer:new();
 end
 
 CObjectCreator = {}

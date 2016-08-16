@@ -1,21 +1,12 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 Lobbys = {}
 OfficialLobbys = {}
 
 CLobby = {}
 
 function CLobby:constructor(Map ,Size, Name, MinPlayers, Custom)
-	
+
 	self.Custom = Custom
-	
+
 	--Game Type
 	-- 1: Standard
 	self.Type = 1
@@ -27,22 +18,22 @@ function CLobby:constructor(Map ,Size, Name, MinPlayers, Custom)
 		Size = self.Map:getMaxSize()
 	end
 	self.Size = Size
-	
+
 	self.Name = Name
-	
+
 	self.Dim = getEmptyDimension()
-	
+
 	self.Dimped = createPed(0,0,0,0)
 	setElementDimension(self.Dimped, self.Dim)
-	
+
 	if (not(self.Custom)) then
 		self.ID = "O"..self.Dim
 	else
 		self.ID = self.Dim
 	end
-	
+
 	self.MinPlayers = MinPlayers
-	
+
 	--If desired Gamesize is bigger then Mapsize!
 	if (self.Size > self.Map:getMaxSize()) then
 		self.Size = self.Map:getMaxSize()
@@ -52,13 +43,13 @@ function CLobby:constructor(Map ,Size, Name, MinPlayers, Custom)
 	self.PlayerSpawns = self.Map:getPlayerSpawns()
 	self.FreeSpawns = self.PlayerSpawns
 	self.BusySpawns = {}
-	
+
 	--Status
 	-- 0: Preparing
 	-- 1: Start
 	-- 2: End
 	self.Status = 0
-	
+
 	--Players at Beginnging of the Round
 	self.Players = {}
 	--Spectators
@@ -67,9 +58,9 @@ function CLobby:constructor(Map ,Size, Name, MinPlayers, Custom)
 	self.Survivors = {}
 
 	self.Chests = {}
-	
+
 	self.Objects = {}
-	
+
 	for k,v in ipairs(self.Map:getObjects()) do
 		local obj = createObject(v["ID"], v["X"], v["Y"], v["Z"], v["RotX"], v["RotY"], v["RotZ"], false)
 		setObjectScale(obj, v["Scale"])
@@ -78,15 +69,15 @@ function CLobby:constructor(Map ,Size, Name, MinPlayers, Custom)
 		setElementDimension(obj, self.Dim)
 		table.insert(self.Objects, obj)
 	end
-	
+
 	--Save the current timestamp to calculate runtime
 	self.CreationTimestamp = 0
-	
+
 	self.Winner = nil
-	
+
 	--Add instance to Table
 	Lobbys[tostring(self.ID)] = self
-	
+
 	if (not (self.Custom)) then
 		OfficialLobbys[tostring(self.ID)] = self
 	end
@@ -97,16 +88,16 @@ function CLobby:destructor()
 	for k,v in pairs(self.Survivors) do
 		delete(v)
 	end
-	
+
 	for k,v in ipairs(self.Chests) do
 		delete(v)
 	end
 	for k,v in ipairs(self.Objects) do
 		destroyElement(v)
 	end
-	
+
 	destroyElement(self.Dimped)
-	
+
 	Lobbys[tostring(self.ID)] = nil
 	if (self.Winner) then
 		outputDebugString("The Lobby with ID "..self.ID.." finished! Winner: "..self.Winner)
@@ -204,7 +195,7 @@ function CLobby:PlayerDied(thePlayer)
 		end
 		self.Survivors[thePlayer:getName()] = nil
 		self:sendMessageToAllPlayers(thePlayer:getName().." ist gestorben! Es gibt noch "..table.size(self.Survivors).." Überlebende!", 0,255,0)
-		if (table.size(self.Survivors) == 1) then 
+		if (table.size(self.Survivors) == 1) then
 			for k,v in pairs(self.Survivors) do
 				self.Winner = v:getPlayer():getName()
 			end
@@ -225,7 +216,7 @@ function CLobby:SurvivorLeft(theSurvivor)
 		local sname = theSurvivor:getPlayersName()
 		delete(self.Survivors[theSurvivor:getPlayersName()], false, true)
 		self.Survivors[sname] = nil
-		if (table.size(self.Survivors) == 0) then 
+		if (table.size(self.Survivors) == 0) then
 			if (self.Custom) then
 				delete(self)
 			end
@@ -248,7 +239,7 @@ function CLobby:SurvivorDisconnected(theSurvivor)
 		local sname = theSurvivor:getPlayersName()
 		delete(self.Survivors[theSurvivor:getPlayersName()], true, false)
 		self.Survivors[sname] = nil
-		if (table.size(self.Survivors) == 0) then 
+		if (table.size(self.Survivors) == 0) then
 			if (self.Custom) then
 				delete(self)
 			end
@@ -260,8 +251,8 @@ function CLobby:SurvivorDisconnected(theSurvivor)
 		end
 		self.Survivors[theSurvivor:getPlayersName()] = nil
 		self:sendMessageToAllPlayers(theSurvivor:getPlayersName().." hat das Spiel verlassen! Es gibt noch "..table.size(self.Survivors).." Überlebende!", 0,255,0)
-		
-		if (table.size(self.Survivors) == 1) then 
+
+		if (table.size(self.Survivors) == 1) then
 			for k,v in pairs(self.Survivors) do
 				self.Winner = v:getPlayer():getName()
 			end
@@ -283,11 +274,11 @@ function CLobby:finish()
 			v:getPlayer():getInventory():addItem(Items[41], 1)
 			v:getPlayer():showInfoBox("info", "Du hast eine Gewinnmünze erhalten!")
 			Achievements[67]:playerAchieved(v:getPlayer())
-		end	
-	
-		delete(self) 	
+		end
+
+		delete(self)
 	end, 5000, 1)
-end																						
+end
 
 function CLobby:sendMessageToAllPlayers(msg, r,g,b)
 	for k,v in pairs(self.Survivors) do
@@ -318,8 +309,8 @@ end
 )
 
 addEvent("onClientRequestLobbies", true)
-addEventHandler("onClientRequestLobbies", getRootElement(), 
-	function() 
+addEventHandler("onClientRequestLobbies", getRootElement(),
+	function()
 		local States = {
 			[0] = "In Preperation",
 			[1] = "Running"
@@ -354,7 +345,7 @@ function()
 			new(CLobby, mapstr, 1024, "Ranked Lobby", 3, false)
 		end
 	end
-end,30000,-1)
+end,30000,0)
 
 setTimer(
 function()

@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 --
 -- Created by IntelliJ IDEA.
 -- User: Noneatme
@@ -16,7 +7,6 @@
 --
 
 cPaydayGUI = inherit(cSingleton);
-local sx,sy = guiGetScreenSize()
 
 --[[
 
@@ -40,9 +30,9 @@ end
 -- ///// Returns: void		//////
 -- ///////////////////////////////
 
-function cPaydayGUI:show(...)
+function cPaydayGUI:show()
     if not(self.enabled) and not(clientBusy) then
-        self:createElements(...)
+        self:createElements()
         self.enabled = true
     end
 end
@@ -71,42 +61,17 @@ function cPaydayGUI:doPayday(tblValues)
         self.guiEle["list"]:clearRows()
         self.guiEle["list"]:addRow("Einkommen| ")
         self.guiEle["list"]:addRow("    Grundeinkommen|+$"..tblValues["BasicIncome"])
-
-        if(tblValues["FactionIncome"]) then
-          self.guiEle["list"]:addRow("    Fraktionseinkommen|+$"..tblValues["FactionIncome"])
-        end
-
+        self.guiEle["list"]:addRow("    Fraktionseinkommen|+$"..tblValues["FactionIncome"])
         if(tblValues["CorporationIncome"]) then
             self.guiEle["list"]:addRow("    Corporationslohn|+$"..tblValues["CorporationIncome"])
         end
-        if(tblValues["Interest"]) then
-          self.guiEle["list"]:addRow("    Zinsen|+$"..tblValues["Interest"])
-        end
-
+        self.guiEle["list"]:addRow("    Zinsen|+$"..tblValues["Interest"])
         self.guiEle["list"]:addRow("Steuern| ")
-
-        if(tblValues["HouseTaxes"]) then
-          self.guiEle["list"]:addRow("    Grundstueckssteuer|-$"..math.abs(tblValues["HouseTaxes"]["total"]))
-          for house, tax in pairs(tblValues["HouseTaxes"]) do
-            if house ~= "total" then
-              self.guiEle["list"]:addRow("        Hausnr. "..tostring(house).."|    -$"..math.abs(tax))
-            end
-          end
-        end
-
-        if(tblValues["VehicleTaxes"]) then
-          self.guiEle["list"]:addRow("    Fahrzeugsteuer|-$"..math.abs(tblValues["VehicleTaxes"]["total"]))
-          for vehname, tax in pairs(tblValues["VehicleTaxes"]) do
-            if vehname ~= "total" then
-              self.guiEle["list"]:addRow("        "..tostring(vehname).."|    -$"..math.abs(tax))
-            end
-          end
-        end
-
+        self.guiEle["list"]:addRow("    Grundstueckssteuer|-$"..math.abs(tblValues["HouseTaxes"]))
+        self.guiEle["list"]:addRow("    Fahrzeugsteuer|-$"..math.abs(tblValues["VehicleTaxes"]))
         if(tblValues["CorporationTaxes"]) then
             self.guiEle["list"]:addRow("    Corporationssteuer|-$"..math.abs(tblValues["CorporationTaxes"]))
         end
-
         self.guiEle["list"]:addRow(" | ")
         self.guiEle["list"]:addRow("Gesamt|$"..tblValues["Sum"])
 
@@ -130,20 +95,8 @@ end
 function cPaydayGUI:createElements(tblValues)
     if not(self.guiEle["window"]) then
 
-        local Y = 112
+        local Y = 300
         local X = 300
-        for i,v in pairs(tblValues) do
-          if type(v) == "table" then
-            for ti, tv in pairs(v) do
-                Y = Y + 20
-                if Y > sy then Y = sy break end
-            end
-          else
-            Y = Y + 20
-            if Y > sy then Y = sy break end
-          end
-        end
-
         self.guiEle["window"] 	= new(CDxWindow, "Payday", X, Y, false, false, "Left|Middle", 0, 0, {tocolor(125, 125, 155, 255), false, "Zahltag"})
         self.guiEle["list"]     = new(CDxList, 2, 2, X-7, Y-22, tocolor(255, 255, 255, 255), self.guiEle["window"])
         self.guiEle["list"]:addColumn("Attribut")

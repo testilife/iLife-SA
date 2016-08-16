@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 --
 -- Created by IntelliJ IDEA.
 -- User: Noneatme
@@ -27,7 +18,7 @@ cCorporationManagementGUI = inherit(cSingleton);
 -- ///////////////////////////////
 
 function cCorporationManagementGUI:show()
-    if not(self.enabled) and not(clientBusy) and (localPlayer:getData("loggedIn")) then
+    if not(self.enabled) and not(clientBusy) then
         self:createElements()
         self.enabled = true
         clientBusy      = self.enabled
@@ -104,7 +95,6 @@ function cCorporationManagementGUI:toggleRankButtons()
             if(index == 6) then
                 buttonsEnabled[5] = true
             end
-            buttonsEnabled[6] = true
         end
     end
     for i = 1, 6, 1 do
@@ -149,9 +139,9 @@ end
 function cCorporationManagementGUI:createElements()
     if not(self.guiEle["window"]) then
 
-        self.guiEle["window"] 	= new(CDxWindow, getLocalizationString("GUI_corporation_management_window_title"), 450, 450, true, true, "Center|Middle", 0, 0, {tocolor(125, 125, 255, 255), false, getLocalizationString("GUI_corporation_management_window_headertext")}, getLocalizationString("GUI_corporation_management_window_infotext"))
+        self.guiEle["window"] 	= new(CDxWindow, "Corporationsmanagement", 450, 450, true, true, "Center|Middle", 0, 0, {tocolor(125, 125, 255, 255), false, "Corporationsmanagement"}, "Hier kannst du deine Corporation betrachten und Verwalten.")
         self.guiEle["window"].xtraHide = function(...) self:hide(...) end
-
+    
 
         self.guiEle["label1"]   = new(CDxLabel, "Corporation: "..self.m_sCorporationName, 5, 10, 320, 20, tocolor(255, 255, 255, 255), 1, "default-bold", "left", "top", self.guiEle["window"])
 
@@ -159,14 +149,14 @@ function cCorporationManagementGUI:createElements()
         self.guiEle["list1"]:addColumn("Spielername")
         self.guiEle["list1"]:addColumn("Rolle", true)
 
-        self.guiEle["button1"]  = new(CDxButton, getLocalizationString("GUI_corporation_management_button_hrmanagement"), 230, 40, 200, 40, tocolor(255, 255, 255, 255), self.guiEle["window"])
-        self.guiEle["button2"]  = new(CDxButton, getLocalizationString("GUI_corporation_management_button_prmanagement"), 230, 90, 200, 40, tocolor(255, 255, 255, 255), self.guiEle["window"])
-        self.guiEle["button3"]  = new(CDxButton, getLocalizationString("GUI_corporation_management_button_financemanagement"), 230, 140, 200, 40, tocolor(255, 255, 255, 255), self.guiEle["window"])
-        self.guiEle["button4"]  = new(CDxButton, getLocalizationString("GUI_corporation_management_button_storagemanagement"), 230, 190, 200, 40, tocolor(255, 255, 255, 255), self.guiEle["window"])
-        self.guiEle["button5"]  = new(CDxButton, getLocalizationString("GUI_corporation_management_button_productionmanagement"), 230, 240, 200, 40, tocolor(255, 255, 255, 255), self.guiEle["window"])
-        self.guiEle["button6"]  = new(CDxButton, getLocalizationString("GUI_corporation_management_button_leavecorp"), 230, 290, 200, 20, tocolor(255, 255, 255, 255), self.guiEle["window"])
-        self.guiEle["button7"]  = new(CDxButton, getLocalizationString("GUI_corporation_management_button_corporfile"), 230, 360, 200, 40, tocolor(255, 255, 255, 255), self.guiEle["window"])
-        self.guiEle["button8"]  = new(CDxButton, getLocalizationString("GUI_corporation_management_button_setskin"), 230, 315, 200, 40, tocolor(255, 255, 255, 255), self.guiEle["window"])
+        self.guiEle["button1"]  = new(CDxButton, "HR Management", 230, 40, 200, 40, tocolor(255, 255, 255, 255), self.guiEle["window"])
+        self.guiEle["button2"]  = new(CDxButton, "PR Management", 230, 90, 200, 40, tocolor(255, 255, 255, 255), self.guiEle["window"])
+        self.guiEle["button3"]  = new(CDxButton, "Finanzmanagement", 230, 140, 200, 40, tocolor(255, 255, 255, 255), self.guiEle["window"])
+        self.guiEle["button4"]  = new(CDxButton, "Storage Management", 230, 190, 200, 40, tocolor(255, 255, 255, 255), self.guiEle["window"])
+        self.guiEle["button5"]  = new(CDxButton, "Production Management", 230, 240, 200, 40, tocolor(255, 255, 255, 255), self.guiEle["window"])
+        self.guiEle["button6"]  = new(CDxButton, "Corporation Verlassen", 230, 290, 200, 20, tocolor(255, 255, 255, 255), self.guiEle["window"])
+        self.guiEle["button7"]  = new(CDxButton, "Corporationsprofil", 230, 360, 200, 40, tocolor(255, 255, 255, 255), self.guiEle["window"])
+        self.guiEle["button8"]  = new(CDxButton, "Skin setzen", 230, 315, 200, 40, tocolor(255, 255, 255, 255), self.guiEle["window"])
 
 
         local startY    = 305;
@@ -213,7 +203,7 @@ function cCorporationManagementGUI:createElements()
 
             end
 
-            confirmDialog:showConfirmDialog(getLocalizationString("GUI_corporation_management_confirm_leave_corp_text"), ja, nein, false, false, true);
+            confirmDialog:showConfirmDialog("Bist du dir sicher, dass du deine Corporation verlassen moechtest?", ja, nein, false, false, true);
         end)
 
 

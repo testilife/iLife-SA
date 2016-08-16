@@ -1,13 +1,4 @@
-﻿--[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
-Players = {}
+﻿Players = {}
 
 PlayerNames = {}
 PlayerIDS	= {}
@@ -19,15 +10,15 @@ local randNMR           = math.random(1, 10000);	-- Best Key Security 2015
 local tblLoginSounds    =
 {
 	teaEncode("http://rewrite.ga/iLife/login.mp3", randNMR),								                -- Default
-	teaEncode("http://noneat.me/sound/hero.mp3", randNMR),						                        -- Hero
+	teaEncode("http://noneatme.de/sound/hero.mp3", randNMR),						                        -- Hero
 	--teaEncode("http://rewrite.ga/iLife/intro.mp3", randNMR),					                            -- Epic von Johnny
 	--teaEncode("http://www.vio-race.de/servermusic/mapmusic/realsteel-ft-banana_dark-time.mp3", randNMR),  -- Register Music
-	teaEncode("http://noneat.me/sound/safehouse_part2.mp3", randNMR),										-- Safehouse, Copyright EA Games
-	teaEncode("http://noneat.me/sound/pr0nGroove.mp3", randNMR),											-- Soundcloud, "pr0n Groove", Copyleft
+	teaEncode("http://noneatme.de/sound/safehouse_part2.mp3", randNMR),										-- Safehouse, Copyright EA Games
+	teaEncode("http://noneatme.de/sound/pr0nGroove.mp3", randNMR),											-- Soundcloud, "pr0n Groove", Copyleft
 	--teaEncode("http://noneatme.de/sound/mus_amasian1.mp3", randNMR),										-- Amnasian, Copyright Rockstar Games
-	teaEncode("http://noneat.me/sound/tsfw.ogg", randNMR),												-- Sound von Samy, eventuell Copyright
-	teaEncode("http://noneat.me/sound/iLife/3d_ambience_loginscreen.ogg", randNMR),						-- Perpeetum, Hammer	(Copyright)
-	teaEncode("http://noneat.me/sound/JUNLAJUBALAM%20-%20Adobe%20CS5activator.ogg", randNMR),				-- Adobe CS5 Activator Keygen (Copyleft!)
+	teaEncode("http://noneatme.de/sound/tsfw.ogg", randNMR),												-- Sound von Samy, eventuell Copyright
+	teaEncode("http://noneatme.de/sound/iLife/3d_ambience_loginscreen.ogg", randNMR),						-- Perpeetum, Hammer	(Copyright)
+	teaEncode("http://noneatme.de/sound/JUNLAJUBALAM%20-%20Adobe%20CS5activator.ogg", randNMR),				-- Adobe CS5 Activator Keygen (Copyleft!)
 
 }
 
@@ -309,8 +300,6 @@ function CPlayer:loadData()
 			self.Achievements 				= fromJSON(row["Achievements"])
 			self.Statistics 				= fromJSON(row["Statistics"])
 			self.PrivateKey 				= row["PrivateKey"]
-			self.m_iNextReward			= row["NextReward"];
-			self.m_iRewardLevel			= row['RewardLevel'];
 
 			self:setData("ID", self.ID);
 			self:setData("Playtime", row["Played_Time"])
@@ -320,7 +309,6 @@ function CPlayer:loadData()
 			self:setData("Adminlevel", self.AdminLevel)
 			self:setData("Serial", self.Serial);
 			self:setData("Bonuspoints", self.Bonuspoints)
-
 
 			if (self.AdminLevel > 0) then
 				sendReportsToAdmins()
@@ -342,7 +330,7 @@ function CPlayer:loadData()
 			self.Inventory = Inventories[row2["Inventory"]]
 			triggerClientEvent(self, "onClientInventoryRecieve", self ,toJSON(self.Inventory))
 
-			self.Phonenumber = tostring(row2["Phonenumber"])
+			self.Phonenumber = row2["Phonenumber"]
 			self:setData("Phonenumber", self.Phonenumber)
 			self.InTelephoneCall = false
 			self.TelephoneCallName = false
@@ -464,76 +452,15 @@ function CPlayer:loadData()
 			self:setHunger(row2["Hunger"])
 			self.iHealth = row2["Health"]
 			self:setDuty(false)
-			self:setData("loggedIn", true)
+
 			--SupportTickets
 			self:refreshTickets()
 			self:RefreshDatas()
-
-			self:checkForLoginRewards();
-
 
 			CDatabase:getInstance():query("UPDATE User SET Last_Login=? WHERE ID= ?", getRealTime()["timestamp"], self.ID)
 		end
 	else
 		kickPlayer(self, "Bitte erneut einloggen")
-	end
-end
-
-function CPlayer:checkForLoginRewards()
-
-	local function giveReward(iLevel)
-		-- Reward Generieren
-		local reward = cPlayer_RewardGenerator:getInstance():generateReward(iLevel);
-
-		if(reward[1] == "geld") then
-			self:addMoney(reward[2]);
-		elseif(reward[1] == "item") then
-			self:getInventory():addItem(CItemManager:getInstance():getItemFromID(reward[2]), reward[3]);
-		end
-
-		logger:OutputPlayerLog(self, "Erhielt Loginreward", reward[1], reward[2], reward[3]);
-		triggerClientEvent(self, "onLoginRewardGet", self, reward);
-	end
-
-	if not(self.m_bLoginRewardGot) then
-		self.m_bLoginRewardGot = true;
-
-
-		local iLevel		= self.m_iRewardLevel;				-- Der Zurzeitige Login loginTag
-		local iCurTime		= getRealTime().timestamp;			-- Zurzeitige Timestamp
-
-		local iNextTime	= self.m_iNextReward;				-- Wann der naechste Tag kommt
-
-		local dayLenght 	= 86400;									-- Zeit in Sekunden (Fur den Timestamp)
-
-		-- Kein Level Definiert?
-		if not(iLevel) or (iLevel < 1) then
-			iLevel = 0;	-- 1. Level
-		end
-
-		if not(iNextTime) or (iNextTime < 100000) then		--- Keine Zeit?
-			iNextTime = iCurTime-1500;	-- Jetzt
-		end
-
-		if(iCurTime >= iNextTime) then	-- Zeit > NaechesteRewardZeit?
-			-- Leve Incrementieren
-			if(iCurTime <= iNextTime+(dayLenght*1.5)) then	-- Innerhalb von 1,5 Tagen?
-				iLevel = iLevel+1;
-				giveReward(iLevel);
-			else						-- Wieder bei 1 Anfangen
-				iNextTime = iCurTime+dayLenght;
-				iLevel = 1;
-				giveReward(iLevel);
-			end
-		end
-
-		-- Counter erhoehen
-		iNextTime = iNextTime+dayLenght;
-
-		-- Aktualisieren
-		CDatabase:getInstance():query("UPDATE User SET NextReward = ?, RewardLevel = ? WHERE ID = ?", iNextTime, iLevel, self.ID)
-
-
 	end
 end
 
@@ -548,7 +475,7 @@ end
 
 function CPlayer:spawn()
 	--self:loadData()
-	triggerClientEvent(self, "hideLoginWindow", self)
+	triggerClientEvent ( self, "hideLoginWindow", self )
 	self:setLoading(false);
 	self.Crack			= false;
 	self.CrackCounter 	= 0;
@@ -650,9 +577,8 @@ function CPlayer:spawn()
 		setTimer(function() Achievements[2]:playerAchieved(self) end, 5000,1)
 	end
 
-	triggerClientEvent(self, "onClientItemsReceive", self, toJSON(CItemManager:getInstance():getItems()))
-	triggerEvent("onInformationWindowRequestItems", self, self)
 
+	triggerEvent("onInformationWindowRequestItems", self, self)
     self:refreshInventory()
 	self:GiveFactionWeapons();
 
@@ -1153,7 +1079,7 @@ function CPlayer:onChangeName(sNick)
 		PlayerNames[self.ID] = self.Name
 		PlayerIDS[self.Name] = self.ID
 
-		kickPlayer(self, self, "Du hast deinen Namen erfolgreich geaendert!")
+		kickPlayer(self, self, "Du hast deinen Namen erfolgreich geändert!")
 	else
 		self:showInfoBox("error", "Bei der Verarbeitung ist ein Fehler aufgetreten!")
 		self:getInventory():addItem(Items[263], 1)
@@ -1633,7 +1559,7 @@ function CPlayer:OnVehicleBuy(VID)
 		local int = gettok(SpawnKoords, 1, "|")
 		local dim = gettok(SpawnKoords, 2, "|")
 		local koords = gettok(SpawnKoords, 3, "|").."|"..gettok(SpawnKoords, 4, "|").."|"..gettok(SpawnKoords, 5, "|").."|"..gettok(SpawnKoords, 6, "|").."|"..gettok(SpawnKoords, 7, "|").."|"..gettok(SpawnKoords, 8, "|")
-		local insert = CDatabase:getInstance():query("INSERT INTO `vehicles` (`ID`, `VID`, `OwnerID`, `Int`, `Dim`, `Koords`, `Color`, `Tuning`, `Plate`, `Fuel`, `KM`, `Health`, `KaufDatum`) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, '?', '0', '1000', NOW());", theVehicle:getElementModel(), self.ID, int, dim, koords, theVehicle:getColorString(), theVehicle:getTuning(), self.Name, vehicleCategoryManager:getCategoryTankSize(vehicleCategoryManager:getVehicleCategory(theVehicle)))
+		local insert = CDatabase:getInstance():query("INSERT INTO `vehicles` (`ID`, `VID`, `OwnerID`, `Int`, `Dim`, `Koords`, `Color`, `Tuning`, `Plate`, `Fuel`, `KM`, `Health`, `KaufDatum`) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, '100', '0', '1000', NOW());", theVehicle:getElementModel(), self.ID, int, dim, koords, theVehicle:getColorString(), theVehicle:getTuning(), self.Name)
 		if (insert) then
 			local ID = CDatabase:getInstance():query("SELECT LAST_INSERT_ID() AS ID FROM vehicles;")
 			local result = CDatabase:getInstance():query("SELECT * FROM vehicles WHERE ID=?", ID[1]["ID"])
@@ -2519,7 +2445,7 @@ function CPlayer:minuteTimer(bPayday)
 			local trigtab = {}
 
 			local HouseCost 	= -100
-			--local CarCost 		= -50
+			local CarCost 		= -50
 
 			local BasicIncome 	= math.random(450, 550);
 
@@ -2529,61 +2455,48 @@ function CPlayer:minuteTimer(bPayday)
 			if(self:getFaction():getID() == 0) then
 				FactionIncome = 0;	-- Businesseinkommen
 			end
-			trigtab["FactionIncome"] = FactionIncome > 0 and FactionIncome or nil
+			trigtab["FactionIncome"] = FactionIncome
 
 			local Interest = self.Bankgeld/100
 			if (Interest >= 1000) then
 				Interest = 1000
 			end
-			trigtab["Interest"] = Interest > 0 and Interest or nil
-			--[[
+			trigtab["Interest"] = Interest
+
 			result = CDatabase:getInstance():query("SELECT count(*) FROM houses WHERE Owner=?", self.ID)
 			local HousTaxes = result[1]["count(*)"]*HouseCost
-			trigtab["HouseTaxes"] = HousTaxes]]
+			trigtab["HouseTaxes"] = HousTaxes
+			result = CDatabase:getInstance():query("SELECT count(*) FROM vehicles WHERE OwnerID=?", self.ID)
+			local CarTaxes = result[1]["count(*)"]*CarCost
+			trigtab["VehicleTaxes"] = CarTaxes
 
-			--result = CDatabase:getInstance():query("SELECT count(*) FROM vehicles WHERE OwnerID=?", self.ID)
-			local CarTaxes = {["total"] = 0}
-			-- car taxes
-			for i,veh in pairs(UserVehiclesByPlayer[self:getID()]) do
-				CarTaxes["total"] = CarTaxes["total"]-vehicleCategoryManager:getCategoryTax(veh["Vehicle"])
-				CarTaxes[getVehicleName(veh["Vehicle"])] = vehicleCategoryManager:getCategoryTax(veh["Vehicle"]) > 0 and -vehicleCategoryManager:getCategoryTax(veh["Vehicle"]) or nil
-			end
-			trigtab["VehicleTaxes"] = CarTaxes["total"] < 0 and CarTaxes or nil
 
-			-- house taxes
-			local HouseTaxes = {["total"] = 0}
-			for houseid,price in pairs(CHouseManager:getInstance():getHousesByOwnerID(self:getID())) do
-				HouseTaxes["total"] = HouseTaxes["total"]-math.floor(price/1000)
-				HouseTaxes[tostring(houseid)] = -math.floor(price/1000)
-			end
-			trigtab["HouseTaxes"] = HouseTaxes["total"] < 0 and HouseTaxes or nil
 
 			local PayDay = 0
 
 			if (getEventMultiplicator() > 1) then
-				PayDay= math.round( (BasicIncome+FactionIncome+Interest+HouseTaxes["total"]+CarTaxes["total"])*(getEventMultiplicator()*2) )
+				PayDay= math.round( (BasicIncome+FactionIncome+Interest+HousTaxes+CarTaxes)*(getEventMultiplicator()*2) )
 			else
-				PayDay= math.round( (BasicIncome+FactionIncome+Interest+HouseTaxes["total"]+CarTaxes["total"]))
+				PayDay= math.round( (BasicIncome+FactionIncome+Interest+HousTaxes+CarTaxes))
 			end
 
 			local CorpTaxes		= 0;
 
-			local corporationIncome = 0;
+			trigtab["CorporationIncome"] = 0;
 			if(self:getCorporation() ~= 0) then
 				local corporationTaxRate	= self:getCorporation():getRaxRate()
 				local lohn					= math.floor(tonumber(self:getCorporation():getLohn()))
 
 				if(lohn) and (lohn >= 0) then
-					corporationIncome = lohn;
+					trigtab["CorporationIncome"] = lohn;
 
 					if(self:getCorporation():getSaldo() >= lohn) then
-						PayDay = PayDay+corporationIncome;
+						PayDay = PayDay+trigtab["CorporationIncome"];
 						self:getCorporation():addSaldo(-lohn)
 					else
-						corporationIncome = 0;
+						trigtab["CorporationIncome"] = 0;
 					end
 				end
-				trigtab["CorporationIncome"] = corporationIncome > 0 and corporationIncome or nil
 
 				-- BIZ INCOME --
 				--[[
@@ -2758,22 +2671,18 @@ end
 
 
 function CPlayer:register(name, email, password, geburtsdatum, geschlecht)
-	thePlayer = self;
+	thePlayer = getPlayerFromName(name)
 	local result = CDatabase:getInstance():query("SELECT * FROM user WHERE Name=?",name)
 	self:setLoading(false);
 
-	if(#result  >= 1 ) then
-		self:showInfoBox("error", "Dieser Account existiert bereits!")
-		triggerClientEvent(self, "onClientRegisterWindowGUIOpenAgain", self);
+	if (  #result  >= 1 ) then
+		source:showInfoBox("error", "Dieser Account existiert bereits!")
 		return
 	else
 		local salt		= self:generateSalt(password);
 		local insert1 = "INSERT INTO user (`id`, `Name`, `E-Mail`, `Password`, `Salt`, `Serial`, `Played_Time`, `Last_IP`, `Last_Logout`, `Last_Login`, `Register_Date`, `Geburtsdatum`, `Verifikation`, `Adminlevel`, `Status`, `Available_Status`, `Bonuspoints`, `Achievements`, `Statistics`) VALUES (NULL, ?, ?, ?, ?, ?, '0', ?, '0', '0', CURDATE(), ?, '0', '0', 'Obdachloser', '[ { \"Obdachloser\": true } ]', '0', '[ [ ] ]', '[ [ ] ]');"
 		local insert2 = "INSERT INTO userdata (`Name`, `Inventory`, `Phonenumber`, `Geld`, `Bankgeld`, `Fraktion`, `Rank`, `Spawnkoords`, `Skin`, `Geschlecht`, `Jailtime`, `Wanteds`, `ActiveQuests`, `FinishedQuests`) VALUES (?,  (SELECT MAX(ID) FROM `Inventory`), ?, '100', '250', '0', '0', '0|0|1338.2893066406|-1773.7534179688|13.552166938782|0', '137', ?, '0', '0', '"..toJSON({}).."', '"..toJSON({}).."');"
 
-		local phoneNumber = math.random(1, 299).."-"..math.random(1, 99).."-"..math.random(1, 1299)
-
-		--[[
 		local phoneNumber = false
 		while not phoneNumber do
 			local tel = math.random(100000, 99999999)
@@ -2782,22 +2691,19 @@ function CPlayer:register(name, email, password, geburtsdatum, geschlecht)
 				phoneNumber = tel
 			end
 		end
-		]]
 
 		CDatabase:getInstance():query("INSERT INTO `Inventory` (`ID` ,`Type` ,`Categories` ,`Items` ,`Slots`)VALUES (NULL ,  '1',  ' [ { \"7\": true, \"1\": true, \"2\": true, \"4\": true, \"8\": true, \"9\":  true, \"5\": true, \"3\": true, \"6\": true } ]',  '[ {\"17\": 2 } ]',  '250');")
 
 		--Inserten (Join?)
-		CDatabase:getInstance():query(insert1, name, email, hash("sha512", password..salt), salt, getPlayerSerial(self),getPlayerIP(self),geburtsdatum)
-		CDatabase:getInstance():query(insert2, name, phoneNumber, geschlecht)
+		CDatabase:getInstance():query(insert1, name, email, hash("sha512", password..salt), salt, getPlayerSerial(getPlayerFromName(name)),getPlayerIP(getPlayerFromName(name)),geburtsdatum)
+		CDatabase:getInstance():query(insert2, name, phoneNumber,geschlecht)
 
 		local val = CDatabase:getInstance():query("SELECT * FROM `inventory` WHERE ID=(SELECT MAX(ID) FROM `Inventory`)")
 		local value=val[1]
 		new (CInventory, value["ID"], value["Type"], value["Categories"], value["Items"], value["Slots"])
 
 		-- Provisorisch - Nach Eingabe in das Interface
-		triggerClientEvent (self, "hideLoginWindow", self, true )
-
-		self:setName(name);
+		triggerClientEvent ( self, "hideLoginWindow", self, true )
 		self:login(password)
 
 		logger:OutputPlayerLog(self, "Registrierte sich", getPlayerIP(self), getPlayerSerial(self))
@@ -3046,8 +2952,6 @@ function CPlayer:onAdminBanPlayer(tPlayer, Reason, Length, LengthString)
 end
 
 function CPlayer:onAdminShutdown()
-
-	--[[
 	if not(clientcheck(self, client)) then return end
 	local neededAdminLevel = 1
 	if (self:getAdminLevel() >= neededAdminLevel) then
@@ -3055,22 +2959,10 @@ function CPlayer:onAdminShutdown()
 	else
 		self:showInfoBox("error", "Dazu fehlt dir die Berechtigung!")
 	end
-	]]
-end
-
-function CPlayer:getLocalization()
-	if(self:getData("cg:loc")) then
-		return self:getData("cg:loc");
-	else
-		return "en_US";
-	end
-end
-
-function CPlayer:getLocalizationString(...)
-	return getLocalizationString(self:getLocalization(), ...);
 end
 
 function CPlayer:onAdminGMX(iTime)
+	if not(clientcheck(self, client)) then return end
 	local neededAdminLevel = 3
 	if (self:getAdminLevel() >= neededAdminLevel) then
 		if (iTime > 0.05) then
@@ -3201,7 +3093,7 @@ end
 
 addCommandHandler("stvo",
 	function(thePlayer, cmd, sName, sReason)
-		if (isPedInVehicle(thePlayer) and thePlayer:getFaction():getType() == 1) then
+		if (isPedInVehicle(thePlayer) and getElementData(getPedOccupiedVehicle(thePlayer), "Fraktion") == 1) then
 			thePlayer:OnCopGiveSTVO(sName, sReason)
 		end
 	end
@@ -3235,7 +3127,7 @@ function CPlayer:OnCopTakeIllegalThings(tPlayer)
 		if (tPlayer.Handsup or tPlayer.Crack) then
 			if (getDistanceBetweenElements3D(self,tPlayer) < 3) then
 				if (table.size(tPlayer:getInventory():getIllegalItems()) >= 1) then
-					tPlayer:getInventory():removeIllegalItems(true)
+					tPlayer:getInventory():removeIllegalItems()
 					self:showInfoBox("info", "Du hast dem Spieler alle illegale Gegenstände abgenommen!")
 					tPlayer:showInfoBox("info", "Dir wurden alle illegale Gegenstände abgenommen!")
 					tPlayer:refreshInventory()
@@ -3547,7 +3439,7 @@ function CPlayer:callNumber(Number)
 		triggerClientEvent(self, "onServerPlaySavedSound", self, "/res/sounds/handy/keinanschluss.mp3", "KeinAnschluss", false)
 	end
 end
-addCommandHandler("call", function(thePlayer, cmd, Number) if(getElementData(thePlayer, "online")) then thePlayer:callNumber(tostring(Number)) end end)
+addCommandHandler("call", function(thePlayer, cmd, Number) if(getElementData(thePlayer, "online")) then thePlayer:callNumber(tonumber(Number)) end end)
 
 function CPlayer:callAccept()
 	if (self.TelephoneCallName) and (getPlayerFromName(self.TelephoneCallName)) then
@@ -3617,7 +3509,7 @@ function CPlayer:sendSMS(Number, ...)
 		triggerClientEvent(self, "onServerPlaySavedSound", getRootElement(), "/res/sounds/handy/keinanschluss.mp3", "KeinAnschluss", false)
 	end
 end
-addCommandHandler("sms", function(thePlayer, cmd, Number, ...) if(getElementData(thePlayer, "online")) then thePlayer:sendSMS(Number, ...) end end)
+addCommandHandler("sms", function(thePlayer, cmd, Number, ...) if(getElementData(thePlayer, "online")) then thePlayer:sendSMS(tonumber(Number), ...) end end)
 
 addCommandHandler("number",
 	function(thePlayer, cmd, Name)
@@ -3657,10 +3549,10 @@ function onClientJoin()
 		if(DEFINE_DEBUG) then
 			source:login()
 		else
-			triggerClientEvent(source, "onClientPlayerJoinBack", source, 1, 1, tblLoginSounds, randNMR)
+			triggerClientEvent(source, "playerJoin", source, 1, 1, tblLoginSounds, randNMR)
 		end
 	else
-		triggerClientEvent(source, "onClientPlayerJoinBack", source, 0, 0, tblLoginSounds, randNMR)
+		triggerClientEvent(source, "playerJoin", source, 0, 0, tblLoginSounds, randNMR)
 	end
 
 end
@@ -3671,7 +3563,7 @@ addEventHandler("onPlayerConnect", getRootElement(), function(username, IP, play
 	local rtime = getRealTime()
 	local result =CDatabase:getInstance():query("SELECT * FROM bans WHERE (Name=? OR Serial=? OR IP=?) AND expire_timestamp > ?", username, Serial, IP, rtime["timestamp"])
 	if ((result and #result>0)) then
-		local btime = getRealTime(result[1]["expire_timestamp"]) or 9999999999999999999
+		local btime = getRealTime(result[1]["expire_timestamp"])
 
 		if(tonumber(result[1]["Permanent"]) == 1) then
 			cancelEvent( true, "Du wurdest von "..result[1]["banned_by"].." Permanent vom Spielen ausgeschlossen. Grund: "..result[1]["Grund"])

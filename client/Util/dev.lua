@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 function attachElementsInCorrectWay ( element1, element2 )
 	local x1, y1, z1 = getElementPosition ( element1 )
 	local x2, y2, z2 = getElementPosition ( element2 )

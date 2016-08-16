@@ -1,13 +1,4 @@
-﻿--[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
--- Player
+﻿-- Player
 
 addCommandHandler("admins",
 function(player)
@@ -395,12 +386,13 @@ addCommandHandler("honor", function(thePlayer, cmd, name)
 end
 )
 
-addCommandHandler("randweather", function(thePlayer, cmd, sCategory)
+addCommandHandler("randweather", function(thePlayer, cmd, i)
 	if(thePlayer.LoggedIn) then
 		if (thePlayer:getAdminLevel() >= 2) then
-		local weather = sCategory and WeatherIDs:New():GetRandomWeatherIDFromCategory(sCategory) or WeatherIDs:New():GetRandomWeatherIDFromCategory("sunny") -- sonnig
-			if(weather) then
-				setWeather(weather);
+			if(tonumber(i)) then
+				setWeather(tonumber(i));
+			else
+				setWeather(math.random(0, 49))
 			end
 		end
 	end
@@ -506,9 +498,9 @@ addCommandHandler("restartilife", function(thePlayer, cmd, iTime, ...)
 					if(curTime == 60) then
 						outputTime("[!!] Gamemode wird in 1 Stunde neu gestartet!");
 					elseif(curTime == 120) then
-						outputTime("[!!] Gamemode wird in 2 Stunden neu gestartet!");
+						outputTime("[!!] Gamemode wird in 2 Stunde neu gestartet!");
 					elseif(curTime == 300) then
-						outputTime("[!!] Gamemode wird in 5 Stunden neu gestartet!");
+						outputTime("[!!] Gamemode wird in 5 Stunde neu gestartet!");
 					end
 				end
 				if(curTime == 1) then
@@ -742,7 +734,7 @@ addCommandHandler("adminbefehle", function(uPlayer, cmd)
 			"/changehouseinterior <ID> <IntID>",
 			"/eventmodus <(No Highping Kick und sowas)>",
 			"/setfaction <iFaction> <uPlayer>",
-			"/randweather <clear|sunny|cloudy|rainyfoggy|>",
+			"/randweather <ID>",
 			"/gi2m <Item> <Anzahl> <Spieler>",
 			"/o <Text>, /i <Text>",
 			"/restartilife <SAVE_RESTART_ILIFE_GAMEMODE>",
@@ -759,7 +751,7 @@ addCommandHandler("adminbefehle", function(uPlayer, cmd)
 			"/setrank <Rank> <Spielername>",
 			"/respawnfactionvehicles <iFaction>",
 			"/restartilife <Minuten> <Grund>",
-      "/togglehouselock <iHouse>",
+            "/togglehouselock <iHouse>",
 			"/clearchat",
 			"/lockbiz <ID>",
 			"/setbizowner <ID> <iCorp>",

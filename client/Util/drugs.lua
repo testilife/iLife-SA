@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 -- Muss bei Zeiten neu geschrieben werden, in eine Managerklasse integrieren und ein Screensource fuer jeden Shader benutzen
 
 local drugShader, drugTec
@@ -122,17 +113,16 @@ local blurEnabled = true -- Bild verschwommen
 local maxBlurStrength = 0.2 -- wie stark soll Bild verschwommen sein (0 - ?)
 -- --]]
 
-local count =
-{
-	[9]=0,
-	[10]=0,
-	[11]=0,
-	[12]=0,
-	[14]=0
+local count = {
+[9]=0,
+[10]=0,
+[11]=0,
+[12]=0,
+[14]=0
 }
 
-local Enton = {}
-local EntonSounds = {}
+Enton = {}
+EntonSounds = {}
 
 local constructors ={
 [11] = function()
@@ -179,7 +169,7 @@ local constructors ={
 	end
 }
 
-local destructors ={
+destructors ={
 [11] = function(bool)
 	for k,v in ipairs(Enton) do
 		if (isElement(v)) then

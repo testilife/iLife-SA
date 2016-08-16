@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 -- #######################################
 -- ## Project: 	HUD iLife				##
 -- ## For MTA: San Andreas				##
@@ -130,11 +121,10 @@ function HudComponent_Weapons:Render()
 	
 
 	local vorhanden = max/(tonumber(getWeaponProperty(getWeaponNameFromID(weapon), "pro", "maximum_clip_ammo")) or 0)*ammo
-	if not (vorhanden) then vorhanden = 0 end
 
-	if(vorhanden > 0) then
-		dxDrawRectangle(x+addx, y+h-32*hud.components[component_name].zoom, 40*hud.components[component_name].zoom, -vorhanden*hud.components[component_name].zoom, tocolor(74, 255, 101, alpha/3))
-	end
+
+	dxDrawRectangle(x+addx, y+h-32*hud.components[component_name].zoom, 40*hud.components[component_name].zoom, -vorhanden*hud.components[component_name].zoom, tocolor(74, 255, 101, alpha/3))
+
 	local prozent = math.round(100/(tonumber(getWeaponProperty(getWeaponNameFromID(weapon), "pro", "maximum_clip_ammo")) or 0)*ammo)
 	if(prozent < 0) then
 		prozent = 0
@@ -237,14 +227,14 @@ function HudComponent_Weapons:ShowComponent(bBool, prevSlot, newSlot)
 
 			local image		= dxConvertPixels(pixels, "png");
 
-			local date		= _Gsettings.serverName.."-"..self:GetTime();
+			local date		= "ilife-"..self:GetTime();
 			local file		= fileCreate("screenshots/"..date..".png");
 
 			fileWrite(file, image);
 			fileFlush(file);
 			fileClose(file);
 		else
-			showInfoBox("error", "Da du deinen Screenshot Upload deaktiviert hast, wird keine Screenshot in deinem ".._Gsettings.serverName.." ordner gespeichert!")
+			showInfoBox("error", "Da du deinen Screenshot Upload deaktiviert hast, wird keine Screenshot in deinem iLife ordner gespeichert!")
 		end
 
 		destroyElement(tex);

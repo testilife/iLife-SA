@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 --
 -- Created by IntelliJ IDEA.
 -- User: Noneatme
@@ -65,24 +56,24 @@ function cCorporationFinanzManagementGUI:createElements(uCorp)
     end
     if not(self.guiEle["window"]) then
 
-        self.guiEle["window"] 	= new(CDxWindow, getLocalizationString("GUI_corporation_financemanagement_window_title"), 500, 350, true, true, "Center|Middle", 0, 0, {tocolor(125, 125, 255, 255), false, "Finanzmanagement"}, "Hier kannst du die Finanzen deiner Corporation verwalten.")
+        self.guiEle["window"] 	= new(CDxWindow, "Finanzmanagement", 500, 350, true, true, "Center|Middle", 0, 0, {tocolor(125, 125, 255, 255), false, "Finanzmanagement"}, "Hier kannst du die Finanzen deiner Corporation verwalten.")
         self.guiEle["window"].xtraHide = function(...) self:hide(...) end
         self.guiEle["window"]:setCloseClass(cCorporationManagementGUI)
 
         self.guiEle["list1"]   = new(CDxList, 3, 5, 200, 320, tocolor(255, 255, 255, 255), self.guiEle["window"])
 
-        self.guiEle["list1"]:addColumn(getLocalizationString("GUI_corporation_financemanagement_list1_name"))
-        self.guiEle["list1"]:addColumn(getLocalizationString("GUI_corporation_financemanagement_list1_state"), true)
+        self.guiEle["list1"]:addColumn("Corporation")
+        self.guiEle["list1"]:addColumn("Status", true)
 
-        self.guiEle["label1"]   = new(CDxLabel, getLocalizationString("GUI_corporation_financemanagement_label1_saldo").." $"..uCorp.m_iSaldo, 200, 10, 300, 20, tocolor(255, 255, 255, 255), 1.25, "default-bold", "center", "top", self.guiEle["window"])
+        self.guiEle["label1"]   = new(CDxLabel, "Saldo: $"..uCorp.m_iSaldo, 200, 10, 300, 20, tocolor(255, 255, 255, 255), 1.25, "default-bold", "center", "top", self.guiEle["window"])
 
-        self.guiEle["button1"]  = new(CDxButton, getLocalizationString("GUI_corporation_financemanagement_button_deposit"), 210, 50, 135, 30, tocolor(255, 255, 255, 255), self.guiEle["window"])
-        self.guiEle["button2"]  = new(CDxButton, getLocalizationString("GUI_corporation_financemanagement_button_withdraw"), 350, 50, 135, 30, tocolor(255, 255, 255, 255), self.guiEle["window"])
+        self.guiEle["button1"]  = new(CDxButton, "Geld Einzahlen", 210, 50, 135, 30, tocolor(255, 255, 255, 255), self.guiEle["window"])
+        self.guiEle["button2"]  = new(CDxButton, "Geld Auszahlen", 350, 50, 135, 30, tocolor(255, 255, 255, 255), self.guiEle["window"])
 
-        self.guiEle["button3"]  = new(CDxButton, getLocalizationString("GUI_corporation_financemanagement_button_sendmoney"), 210, 90, 135, 30, tocolor(255, 255, 255, 255), self.guiEle["window"])
+        self.guiEle["button3"]  = new(CDxButton, "Geld senden", 210, 90, 135, 30, tocolor(255, 255, 255, 255), self.guiEle["window"])
 
-        self.guiEle["button4"]  = new(CDxButton, getLocalizationString("GUI_corporation_financemanagement_button_change_interest"), 210, 170, 135, 30, tocolor(255, 255, 255, 255), self.guiEle["window"])
-        self.guiEle["button5"]  = new(CDxButton, getLocalizationString("GUI_corporation_financemanagement_button_change_payout"), 350, 170, 135, 30, tocolor(255, 255, 255, 255), self.guiEle["window"])
+        self.guiEle["button4"]  = new(CDxButton, "Zinssatz aendern", 210, 170, 135, 30, tocolor(255, 255, 255, 255), self.guiEle["window"])
+        self.guiEle["button5"]  = new(CDxButton, "Lohn aendern", 350, 170, 135, 30, tocolor(255, 255, 255, 255), self.guiEle["window"])
 
         self.guiEle["button1"]:addClickFunction(function()
             local function ja()
@@ -90,7 +81,7 @@ function cCorporationFinanzManagementGUI:createElements(uCorp)
                 if(value) and (value > 0) then
                     triggerServerEvent("onClientCorporationFinanzManagerGeldEinzahlen", localPlayer, value)
                 else
-                    showInfoBox("error", getLocalizationString("GUI_corporation_financemanagement_confirm_text_bad_input"))
+                    showInfoBox("error", "Ungueltige Eingabe!")
                 end
             end
 
@@ -98,7 +89,7 @@ function cCorporationFinanzManagementGUI:createElements(uCorp)
 
             end
 
-            confirmDialog:showConfirmDialog(getLocalizationString("GUI_corporation_financemanagement_confirm_text_howmuchmoney_deposit"), ja, nein, true, true, false)
+            confirmDialog:showConfirmDialog("Wieviel Geld (in $) moechtest du einzahlen?", ja, nein, true, true, false)
         end)
 
         self.guiEle["button2"]:addClickFunction(function()
@@ -107,7 +98,7 @@ function cCorporationFinanzManagementGUI:createElements(uCorp)
                 if(value) and (value > 0) then
                     triggerServerEvent("onClientCorporationFinanzManagerGeldAuszahlen", localPlayer, value)
                 else
-                    showInfoBox("error", getLocalizationString("GUI_corporation_financemanagement_confirm_text_bad_input"))
+                    showInfoBox("error", "Ungueltige Eingabe!")
                 end
             end
 
@@ -115,7 +106,7 @@ function cCorporationFinanzManagementGUI:createElements(uCorp)
 
             end
 
-            confirmDialog:showConfirmDialog(getLocalizationString("GUI_corporation_financemanagement_confirm_text_howmuchmoney_withdraw"), ja, nein, true, true, false)
+            confirmDialog:showConfirmDialog("Wieviel Geld (in $) moechtest du auszahlen?", ja, nein, true, true, false)
         end)
 
         self.guiEle["button3"]:addClickFunction(function()
@@ -126,7 +117,7 @@ function cCorporationFinanzManagementGUI:createElements(uCorp)
                     if(value) and (value > 0) then
                         triggerServerEvent("onClientCorporationFinanzManagerGeldSende", localPlayer, corp, value)
                     else
-                        showInfoBox("error", getLocalizationString("GUI_corporation_financemanagement_confirm_text_bad_input"))
+                        showInfoBox("error", "Ungueltige Eingabe!")
                     end
                 end
 
@@ -134,9 +125,9 @@ function cCorporationFinanzManagementGUI:createElements(uCorp)
 
                 end
 
-                confirmDialog:showConfirmDialog(getLocalizationString("GUI_corporation_financemanagement_confirm_text_howmuchmoney_send"), ja, nein, true, true, false)
+                confirmDialog:showConfirmDialog("Wieviel Geld moechtest du an diese Corporation senden?", ja, nein, true, true, false)
             else
-                showInfoBox("error", getLocalizationString("GUI_corporation_financemanagement_confirm_text_bad_corporation"))
+                showInfoBox("error", "Du musst eine Corporation auswaehlen!")
             end
         end)
 
@@ -146,7 +137,7 @@ function cCorporationFinanzManagementGUI:createElements(uCorp)
                 if(value) and (value >= 0) and (value <= 100) then
                     triggerServerEvent("onClientCorporationFinanzManagerZinssatzAendere", localPlayer, value)
                 else
-                    showInfoBox("error", getLocalizationString("GUI_corporation_financemanagement_confirm_text_bad_input"))
+                    showInfoBox("error", "Ungueltige Eingabe!")
                 end
             end
 
@@ -154,7 +145,7 @@ function cCorporationFinanzManagementGUI:createElements(uCorp)
 
             end
 
-            confirmDialog:showConfirmDialog(getLocalizationString("GUI_corporation_financemanagement_confirm_text_select_interest"), ja, nein, true, true, false)
+            confirmDialog:showConfirmDialog("Bitte gebe einen Zinssatz (0-100%) in Prozent an.", ja, nein, true, true, false)
         end)
 
         self.guiEle["button5"]:addClickFunction(function()
@@ -163,7 +154,7 @@ function cCorporationFinanzManagementGUI:createElements(uCorp)
                 if(value) and (value >= 0) and (value <= 5000) then
                     triggerServerEvent("onClientCorporationFinanzManagerLohnAendere", localPlayer, value)
                 else
-                    showInfoBox("error", getLocalizationString("GUI_corporation_financemanagement_confirm_text_bad_input"))
+                    showInfoBox("error", "Ungueltige Eingabe!")
                 end
             end
 
@@ -193,7 +184,7 @@ end
 function cCorporationFinanzManagementGUI:onGuiRefresh(connections, iSaldo)
     if(self.enabled) then
         self.guiEle["list1"]:clearRows()
-        self.guiEle["label1"]:setText(getLocalizationString("GUI_corporation_financemanagement_label1_saldo").." $"..iSaldo)
+        self.guiEle["label1"]:setText("Saldo: $"..iSaldo)
         for i = 1, #connections, 1 do
             if(connections[i]) and (connections[i][1]) and (connections[i][2]) then
                 local corp1         = connections[i][1].m_sFullName

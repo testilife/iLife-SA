@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 -- #######################################
 -- ## Project: MTA iLife				##
 -- ## Name: GateLoader.lua			##
@@ -63,7 +54,7 @@ function GateLoader:LoadGates()
 			end
 			
 			count = count+1;
-			self.gates[count] = Gate:New(rowData["GateID"], rowData["Name"], rowData["Modell"], rowData["MoveTime"], fromJSON(rowData["Position"]), fromJSON(rowData["ZielPosition"]), fromJSON(rowData["Misc"]), rowData["Permission"], rowData["Permissions"], rowData["OpenType"], rowData["Type"], rowData["InFunction"], rowData["OutFunction"])
+			self.gates[count] = Gate:New(rowData["GateID"], rowData["Name"], rowData["Modell"], rowData["MoveTime"], fromJSON(rowData["Position"]), fromJSON(rowData["ZielPosition"]), rowData["Misc"], rowData["Permission"], rowData["Permissions"], rowData["OpenType"], rowData["Type"], rowData["InFunction"], rowData["OutFunction"])
 			
 		end
 	end

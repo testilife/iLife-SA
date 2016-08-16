@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 -- #######################################
 -- ## Project: 	HUD iLife				##
 -- ## For MTA: San Andreas				##
@@ -242,15 +233,10 @@ function RadialMenu:Toggle(key, state)
 
 		self.cursorStartX, self.cursorStartY = getCursorPosition();
 		self:Open()
-
-
-		addEventHandler("onClientRender", getRootElement(), self.renderFunc);
 	else
 		self:Close()
 		showCursor(false, false);
 		setCursorAlpha(255);
-
-		removeEventHandler("onClientRender", getRootElement(), self.renderFunc);
 	end
 
 end
@@ -389,6 +375,8 @@ function RadialMenu:Constructor(bBuildIn, tblOptions)
 		toggleControl(self.control, false)
 		bindKey(self.key, "both", self.toggleFunc)
 	end
+
+	addEventHandler("onClientRender", getRootElement(), self.renderFunc);
 
 	--outputDebugString("[CALLING] RadialMenu: Constructor");
 end

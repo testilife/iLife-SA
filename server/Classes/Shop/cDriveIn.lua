@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 DriveIns = {}
 CDriveIn = {}
 
@@ -67,13 +58,7 @@ function CDriveIn:onHit(vehicle, matching)
 					return true
 				end
 				if (self.Type == 5) then
-          local cat = vehicleCategoryManager:getVehicleCategory(vehicle)
-        	if vehicle:getFuel() > (vehicleCategoryManager:getCategoryTankSize(cat) or 100) then
-            vehicle:setFuel(vehicleCategoryManager:getCategoryTankSize(cat))
-        	end
-          if not vehicleCategoryManager:isNoFuelVehicleCategory(cat) then
-					     triggerClientEvent(driver, "PetrolstationGuiOpen", driver)
-          end
+					triggerClientEvent(driver, "PetrolstationGuiOpen", driver)
 					return true
 				end
 			end
@@ -85,60 +70,47 @@ end
 addEvent("onClientFillVehicle", true)
 addEventHandler("onClientFillVehicle", getRootElement(),
 	function(amount)
-  local uVeh = getPedOccupiedVehicle(client)
-		if (uVeh) then
-      if not amount or amount < 1 then return false end
+		if (isPedInVehicle(client)) then
 
-		local canBuy            = true;
-		local bizPurchase       = false;
-		local biz;
-		local einheitenCost     = 0;
+            local canBuy            = true;
+            local bizPurchase       = false;
+            local biz;
+            local einheitenCost     = 0;
 
-		local fil               = client.TankstellenID
+            local fil               = client.TankstellenID
 
-		if(fil) and (fil ~= 0) then
-			if(cBusinessManager:getInstance().m_uBusiness[fil]) then
-			biz = cBusinessManager:getInstance().m_uBusiness[fil];
+            if(fil) and (fil ~= 0) then
+                if(cBusinessManager:getInstance().m_uBusiness[fil]) then
+                    biz = cBusinessManager:getInstance().m_uBusiness[fil];
 
-			einheitenCost	= math.floor((amount*biz:getLagereinheitenMultiplikator()))
+                    einheitenCost	= math.floor((amount*biz:getLagereinheitenMultiplikator()))
 
-				if(biz:getLagereinheiten() >= einheitenCost) then
-						canBuy 			= true;
-						bizPurchase 	= true;
-				else
-					canBuy = false;
-					client:showInfoBox("error", "Diese Tankstelle ist leer! Sie muss erst wieder aufgefuellt werden.")
-				end
-			end
-		end
-
-    local iVehCat 			= vehicleCategoryManager:getVehicleCategory(uVeh)
-		local sVehFuelType  = vehicleCategoryManager:getCategoryFuelType(iVehCat)
-		local Petrol_Costs  = {
-			["petrol"] 			  = 3,
-			["diesel"] 			  = 2,
-			["super-petrol"] 	= 4,
-			["jet_fuel"] 		  = 6,
-		}
-
-		if(canBuy) then
-			local money = amount*(Petrol_Costs[sVehFuelType] or 0)
-
-			if (getElementData(getPedOccupiedVehicle(client), "Fraktion") or client:payMoney(money)) then
-        uVeh:setFuel(uVeh:getFuel()+amount)
-				client:showInfoBox("info", "Du hast ein Fahrzeug betankt (-"..money.."$)!")
+            		if(biz:getLagereinheiten() >= einheitenCost) then
+            			canBuy 			= true;
+            			bizPurchase 	= true;
+            		else
+            			canBuy = false;
+            			client:showInfoBox("error", "Diese Tankstelle ist leer! Sie muss erst wieder aufgefuellt werden.")
+            		end
+                end
+            end
+            if(canBuy) then
+                local money = amount*3
+    			if (getElementData(getPedOccupiedVehicle(client), "Fraktion") or client:payMoney(money)) then
+    				local veh = getPedOccupiedVehicle(client)
+    				veh:setFuel(veh:getFuel()+amount)
+    				client:showInfoBox("info", "Du hast ein Fahrzeug betankt!")
 
 
-				if(bizPurchase) and not(getElementData(uVeh, "Fraktion")) then
-					local businessGeld = money
-					biz:addLagereinheiten(-einheitenCost)
-
-					if(biz:getCorporation() ~= 0) then
-						biz:getCorporation():addSaldo(businessGeld);
-					end
-				end
-			end
-		end
+                    if(bizPurchase) and not(getElementData(getPedOccupiedVehicle(client), "Fraktion")) then
+                        local businessGeld = money
+                        biz:addLagereinheiten(-einheitenCost)
+        				if(biz:getCorporation() ~= 0) then
+        					biz:getCorporation():addSaldo(businessGeld);
+        				end
+                    end
+    			end
+            end
 		else
 			client:showInfoBox("error", "Welches Fahrzeug willst du betanken?")
 		end

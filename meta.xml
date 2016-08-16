@@ -2,7 +2,7 @@
 	<!-- START OF META.XML -->
 
 	<!-- INFO AND SETTINGS -->
-		<info author="ReWrite, Noneatme, Gunvarrel, Audifire, Reazon, Fachpersonal (Samy), MasterM" type="gamemode" version="2.5.0" name="iLife" description="Reallife Gamemode" />
+		<info author="ReWrite, Noneatme, Gunvarrel, Audifire, Reazon, Fachpersonal (Samy)" type="gamemode" version="2.5.0" name="iLife" description="Reallife Gamemode" />
 		<min_mta_version server="1.4.0" client="1.4.1"></min_mta_version>
 		<oop>true</oop>
 
@@ -63,9 +63,6 @@
 
 		<!-- SERVER cLASSES -->
 			<!-- ELEMENT -->
-				<!-- PLAYER -->
-					<script src="server/Classes/Element/Player/cRewardGenerator.lua" type="server" />
-
 				<script src="server/Classes/Element/cPlayer.lua" type="server" />
 				<script src="server/Classes/Element/cVehicle.lua" type="server" />
 				<script src="server/Classes/Element/cMarker.lua" type="server" />
@@ -102,7 +99,6 @@
 					<script src="server/Classes/Faction/BadFactions/cShopRob.lua" type="server" />
 					<script src="server/Classes/Faction/BadFactions/cFactionPed.lua" type="server" />
 				<!-- GOODFAcTIONS -->
-					<script src="server/Classes/Faction/GoodFactions/cAsservatenkammer.lua" type="server" />
     				<script src="server/Classes/Faction/GoodFactions/cLSPD.lua" type="server" />
 					<script src="server/Classes/Faction/GoodFactions/cSpecialForce.lua" type="server" />
 
@@ -131,6 +127,7 @@
 				<script src="server/Classes/Gamemode/Maps/Derby/cGamemodeMap_Derby3.lua" type="server" />
 
 			<!-- FAHRScHULE -->
+				<script src="server/Classes/Fahrschule/c_Fahrschule.s.lua" type="server" />
 
 			<!-- HUNGERGAMES -->
 		    	<script src="server/Classes/HungerGames/cChest.lua" type="server" />
@@ -226,8 +223,6 @@
 				<script src="server/Classes/Util/cPrivateKeyGenerator.lua" type="server" />
 				<script src="server/Classes/Util/cRandomUtils.lua" type="server" />
 				<script src="server/Classes/Util/cOOCChat.lua" type="server" />
-				<script src="server/Classes/Util/cLocalization.lua" type="server" />
-
 				<script src="server/Classes/Util/cObjectCreator.lua" type="server" />
 
 			    <script src="server/Classes/System/cBasicFunctions.lua" type="server" />
@@ -256,7 +251,6 @@
 				<script src="server/Classes/World/cNoDMZone.lua" type="server" />
 				<script src="server/Classes/World/cPrestige.lua" type="server" />
 				<script src="server/Classes/World/cMapRemovals.lua" type="server" />
-				<script src="server/Classes/World/cServerInfoRenderer.lua" type="server" />
 
 
 		<!-- SERVER MANAGER -->
@@ -334,7 +328,6 @@
 				<script src="server/Manager/Vehicle/cNoobcarsManager.lua" type="server" />
     			<script src="server/Manager/Vehicle/cTuningGarageManager.lua" type="server" />
 				<script src="server/Manager/Vehicle/cUserVehicleManager.lua" type="server" />
-				<script src="server/Manager/Vehicle/cVehicleCategoryManager.lua" type="server" />
 
 			<!-- WORLD -->
 			 	<script src="server/Manager/World/cAdManager.lua" type="server" />
@@ -372,6 +365,10 @@
                         <script src="client/Classes/Element/dxGui/cDxLine2D.lua" type="client" cache="false" />
 						<script src="client/Classes/Element/dxGui/cDxMemo.lua" type="client" cache="false" />
 
+				<!-- DYNAMIcMENU -->
+			    	<script src="client/Classes/Element/DynamicMenu/c_MenuPanel.c.lua" type="client" cache="false" />
+   					<script src="client/Classes/Element/DynamicMenu/c_MenuButton.c.lua" type="client" cache="false" />
+
    			<script src="client/Classes/Element/cExplosion.lua" type="client" cache="false" />
 			<script src="client/Classes/Element/cPed.lua" type="client" cache="false" />
 			<script src="client/Classes/Element/cMarker.lua" type="client" cache="false" />
@@ -391,6 +388,7 @@
     				<script src="client/Classes/Faction/News/cNewsZeitungsGUI.lua" type="client" cache="false" />
 
 			<!-- FAHRScHULE -->
+				<script src="client/Classes/Fahrschule/c_Fahrschule.c.lua" type="client" cache="false" />
 
 			<!-- Firework -->
 
@@ -513,7 +511,6 @@ w
 			<!-- SHADER-->
 				<script src="client/Classes/Shader/cScrollImageShader.lua" type="client" cache="false" />
 				<script src="client/Classes/Shader/cShaderInsanity.lua" type="client" cache="false" />
-				<script src="client/Classes/Shader/cServerInfoRenderer.lua" type="client" cache="false" />
 
 		<!-- TEXTURE -->
 				<script src="client/Classes/Texture/cCustomWorldTextures.lua" type="client" cache="false" />
@@ -533,7 +530,6 @@ w
 				<script src="client/Classes/Util/cAirBreak.lua" type="client" cache="false" />
 				<script src="client/Classes/Util/cObjectCreator.lua" type="client" cache="false" />
 				<script src="client/Classes/Util/cColorPicker.lua" type="client" cache="false" />
-				<script src="client/Classes/Util/cLocalization.lua" type="client" cache="false" />
 
 				<!-- CONFIGS -->
 					<script src="client/Classes/Util/Configs/cConfig_ModlistConfig.lua" type="client" cache="false" />
@@ -588,7 +584,6 @@ w
 				<script src="client/Guis/Faction/cWaffentruck.lua" type="client" cache="false" />
 				<script src="client/Guis/Faction/cWaffentruckStatus.lua" type="client" cache="false" />
 				<script src="client/Guis/Faction/cFactionInventoryGui.lua" type="client" cache="false" />
-				<script src="client/Guis/Faction/cAsservatenkammerGUI.lua" type="client" cache="false" />
 
 			<!-- Gamemode -->
 				<script src="client/Guis/Gamemode/cGamemodeGUI.lua" type="client" cache="false" />
@@ -655,7 +650,6 @@ w
 				<script src="client/Guis/Util/privateKeyGui.lua" type="client" cache="false" />
 				<script src="client/Guis/Util/cWerbeSystemGUI.lua" type="client" cache="false" />
 				<script src="client/Guis/Util/cInventoryGUI.lua" type="client" cache="false" />
-				<script src="client/Guis/Util/cRegisterGUI.lua" type="client" cache="false" />
 
 			<!-- VEHIcLE -->
 				<script src="client/Guis/Vehicle/carbuygui.lua" type="client" cache="false" />
@@ -683,9 +677,6 @@ w
 
 			<!-- Gamemode -->
 				<script src="client/Manager/Gamemode/cGamemodeManager.lua" type="client" cache="false"/>
-
-			<!-- Item -->
-				<script src="client/Manager/Item/cItemManager.lua" type="client" cache="false"/>
 
 			<!-- OBJEcT -->
 				<script src="client/Manager/Object/cMoveableObjectExtraManager.lua" type="client" cache="false" />
@@ -716,12 +707,10 @@ w
 				<script src="client/Manager/Vehicle/cTempomatManager.lua" type="client" cache="false" />
 				<script src="client/Manager/Vehicle/c3DRadioManager.lua" type="client" cache="false" />
 				<script src="client/Manager/Vehicle/cRadioManager.lua" type="client" cache="false" />
-				<script src="client/Manager/Vehicle/cVehicleCategoryManager.lua" type="client" cache="false" />
 
 			<!-- WORLD -->
 				<script src="client/Manager/World/cNoDMZonenManager.lua" type="client" cache="false" />
 				<script src="client/Manager/World/cMapManager.lua" type="client" cache="false" />
-				<script src="client/Manager/World/cAdManager.lua" type="client" cache="false" />
 
 		<!-- cLIENT QUESTS -->
 			<script src="client/Quests/Quests.lua" type="client" cache="false" />
@@ -736,6 +725,7 @@ w
 			<script src="client/Vehicle/start_c.lua" type="client" cache="false" />
 
 		<!-- cLIENT WORLD -->
+			<script src="client/World/advertising.lua" type="client" cache="false" />
 			<script src="client/World/blips.lua" type="client" cache="false" />
     		<script src="client/World/doneasty.lua" type="client" cache="false" />
 			<script src="client/World/shishabar.lua" type="client" cache="false" />
@@ -744,14 +734,7 @@ w
 			<!-- QUEST -->
 			<script src="client/Manager/Quest/cQuestManager.lua" type="client" cache="false" />
 
-	<!-- DOWNLOADABLE cONTENT -->
-		<file src="CONFIG.XML_README.txt" />
-
-		<!-- DIESER ORDNER WAR MIT DER EINZIGE ORDNER, DEN IcH SO GELASSEN HABE, WEIL ES SONST EINFAcH ZU VIEL ARBEIT GEWESEN WAERE. -->
-
-		<file src="res/txt/lizenzen.txt" />
-		<file src="res/txt/badWords.txt" />
-		<file src="res/txt/changelog.txt" />
+			<file src="res/txt/badWords.txt" />
 
 		<!-- FONTS -->
 			<customfile src="res/fonts/anthracite.ttf" />
@@ -1163,7 +1146,6 @@ w
 				<customfile src="res/images/render/loading/1.png" />
 				<customfile src="res/images/render/loading/2.png" />
 				<customfile src="res/images/render/loading/3.png" />
-				<customfile src="res/images/render/serverinfos.jpg" />
 
 			<!-- MAINMENU -->
 				<file src="res/images/mainmenu/logo.png" />
@@ -1268,7 +1250,7 @@ w
 
 		<!-- MAPS -->
 			<!-- DECORATION -->
-				<!--<custommap src="res/maps/decoration/cartmen.map" dimension="0" />-->
+				<custommap src="res/maps/decoration/cartmen.map" dimension="0" />
 				<custommap src="res/maps/decoration/kolumbus.map" />
 
 			<!-- FACTION -->
@@ -1278,7 +1260,7 @@ w
 				<custommap src="res/maps/faction/Mechanic.map" />
 				<custommap src="res/maps/faction/lspd-dm.map" dimension="1337" />
 				<custommap src="res/maps/faction/specialforce.map" serverload="true" />
-				<custommap src="res/maps/faction/pd_interior.map" dimension="20141" interior="10" serverload="true" />
+				<custommap src="res/maps/faction/PDDach.map" dimension="0" />
 				<custommap src="res/maps/faction/prison.map" dimension="0" serverload="true"/>
 
 			<!-- GAMEMODES -->
@@ -1303,12 +1285,11 @@ w
 				<map src="/res/maps/HungerGames/[HG]Plasma v1 - Lost in Desert/map.map" dimension="10000" serverload="true"/>
 
 			<!-- JOBS -->
-				<custommap src="res/maps/jobs/busjob/busdepot.map" dimension="0" />
-				<!--<custommap src="res/maps/jobs/busjob/station.map" dimension="0" />-->
+				<custommap src="res/maps/jobs/busjob/Busjob.map" dimension="0" />
+				<custommap src="res/maps/jobs/busjob/station.map" dimension="0" />
 				<custommap src="res/maps/jobs/helijob.map" dimension="0" />
 				<custommap src="res/maps/jobs/druglabor.map" dimension="0" serverload="true" />
-				<custommap src="res/maps/jobs/containerjob-bahnhof.map" />
-				<custommap src="res/maps/jobs/containerjob-hafen.map" />
+				<custommap src="res/maps/jobs/containerjob.map" />
 				<custommap src="res/maps/jobs/containerjob-krankenhaus.map" />
 				<custommap src="res/maps/jobs/minejobparking.map" />
 				<custommap src="res/maps/jobs/truckerjob.map" />
@@ -1319,8 +1300,6 @@ w
 				<custommap src="res/maps/locations/shishabar.map" dimension="0" />
 				<custommap src="res/maps/locations/kirchels.map" dimension="0" ghost="false" dontloadmap="true" />
 				<custommap src="res/maps/locations/inselmap.map" dimension="0" ghost="false" />
-				<custommap src="res/maps/locations/bahnhof.map" dimension="0" ghost="false" />
-				<custommap src="res/maps/locations/stadthalle.map" dimension="0" ghost="false" />
 
 				<!-- Hall of Games -->
 					<custommap src="res/maps/locations/aussichtspunkt.map" dontloadmap="true" dimension="2"/>
@@ -1330,8 +1309,8 @@ w
 
 				<custommap src="res/maps/locations/beach.map" />
 				<custommap src="res/maps/locations/corporationmarket.map" />
-				<!--<custommap src="res/maps/locations/flugzeugtraeger.map" />-->
-				<!--<custommap src="res/maps/locations/lsparkplatz.map" ghost="true" /> WEHE DAS WIRD AKTIVIERT, GROESSTER ROTZ IN SF-->
+				<custommap src="res/maps/locations/flugzeugtraeger.map" />
+				<custommap src="res/maps/locations/lsparkplatz.map" ghost="true" />
 
 			<!-- MISC -->
 				<custommap src="res/maps/misc/doneasty.map" dimension="0" serverload="true" />
@@ -1512,6 +1491,9 @@ w
 				<customfile src="res/sounds/church/bell.mp3" />
 				<customfile src="res/sounds/church/bell_half.mp3" />
 
+			<!-- DYNAMIcMENU -->
+				<file src="res/sounds/DynamicMenu/mouseEnter.mp3" />
+				<file src="res/sounds/DynamicMenu/mouseClick.mp3" />
 			<!-- GAMEMODE -->
 				<customfile src="res/sounds/gamemode/countdown.ogg" />
 				<customfile src="res/sounds/gamemode/lobby_finish.ogg" />
@@ -1796,7 +1778,7 @@ w
 				<customfile src="res/textures/objects/sw_fleishberg01.jpg" />
 				<customfile src="res/textures/objects/hotknifebody128b.jpg" />
 				<customfile src="res/textures/objects/hotknifebody128a.jpg" />
-				<customfile src="res/textures/objects/mural06_la.jpg" />
+
 				<!-- HALL OF GAMES -->
 				<customfile src="res/textures/objects/glass_office5.jpg" />
 				<customfile src="res/textures/objects/glass_office8.jpg" />
@@ -1860,6 +1842,7 @@ w
 				<file src="res/textures/slotmachine/slot5_ind_3.jpg" />
 
 		<customfile src="res/textures/ea_qr.jpg" />
+		<file src="res/login/i_see_fire.mp3" />
 
 
 	<!-- END OF META.XML  -->

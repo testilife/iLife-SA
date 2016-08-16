@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 -- #######################################
 -- ## Project: 		 iLife				##
 -- ## For MTA: San Andreas				##
@@ -111,46 +102,33 @@ function cTruckerJob:generateMarker()
         addEventHandler("onMarkerHit", self.m_tblMarker[index], function(uElement)
             if(uElement) and (getElementType(uElement) == "player") then
                 if(uElement.m_bTruckerjob) and not(uElement.m_bTruckerjobAblade) then
-                    if (uElement:getOccupiedVehicle():getTowedByVehicle() == self.m_uPlayerTrailers[uElement]) then
-                        uElement.m_bTruckerjobAblade        = true;
-                        uElement.m_tblTruckerjobMarker      = pos;
-                        uElement:showInfoBox("info", "Begebe dich nun zum Abladepunkt! (Blauer Marker beim Truckerjob)");
-                        setElementVisibleTo(self.m_uAbladeMarker, uElement, true) -- OOP-Methode funktioniert nicht
+                    uElement.m_bTruckerjobAblade        = true;
+                    uElement.m_tblTruckerjobMarker      = pos;
+                    uElement:showInfoBox("info", "Begebe dich nun zum Abladepunkt! (Blauer Marker beim Truckerjob)");
 
-                        triggerClientEvent(uElement, "onClientPlayerTruckerjobStop", uElement)
-                    else
-                        uElement:showInfoBox("error", "Du hast deinen Anhänger nicht dabei!");
-                    end
+                    triggerClientEvent(uElement, "onClientPlayerTruckerjobStop", uElement)
                 end
             end
         end)
     end
 
     self.m_uAbladeMarker        = Marker(self.m_tblPosAblade[1], self.m_tblPosAblade[2], self.m_tblPosAblade[3], "checkpoint", 5.0, 0, 255, 255);
-    setElementVisibleTo(self.m_uAbladeMarker, getRootElement(), false) -- OOP-Methode funktioniert nicht
+
     addEventHandler("onMarkerHit", self.m_uAbladeMarker, function(uElement)
         if(uElement) and (getElementType(uElement) == "player") then
             if(uElement.m_bTruckerjob) and (uElement.m_bTruckerjobAblade) then
-                if (uElement:getOccupiedVehicle():getTowedByVehicle() == self.m_uPlayerTrailers[uElement]) then
-                    uElement.m_bTruckerjobAblade        = false;
+                uElement.m_bTruckerjobAblade        = false;
 
-                    local x, y, z       = self.m_uAbladeMarker:getPosition().x, self.m_uAbladeMarker:getPosition().y, self.m_uAbladeMarker:getPosition().z
-                    local x2, y2, z2    = uElement.m_tblTruckerjobMarker[1], uElement.m_tblTruckerjobMarker[2], uElement.m_tblTruckerjobMarker[3];
+                local x, y, z       = self.m_uAbladeMarker:getPosition().x, self.m_uAbladeMarker:getPosition().y, self.m_uAbladeMarker:getPosition().z
+                local x2, y2, z2    = uElement.m_tblTruckerjobMarker[1], uElement.m_tblTruckerjobMarker[2], uElement.m_tblTruckerjobMarker[3];
 
-                    local dist          = math.floor((getDistanceBetweenPoints3D(x, y, z, x2, y2, z2)/100));
-                    local lohn          = math.floor(getDistanceBetweenPoints3D(x, y, z, x2, y2, z2)/2)*getEventMultiplicator()
+                local dist          = math.floor((getDistanceBetweenPoints3D(x, y, z, x2, y2, z2)/100));
+                local lohn          = math.floor(getDistanceBetweenPoints3D(x, y, z, x2, y2, z2)/2)*getEventMultiplicator()
 
-                    uElement:showInfoBox("sucess", "Du hast die Ware abgeliefiert und erhaelst $"..lohn.."!");
-                    triggerClientEvent(uElement, "onClientPlayerTruckerjobStart", uElement, self.m_tblPos, self.m_tblMarker)
-                    uElement:addMoney(lohn)
-                    uElement:incrementStatistics("Job", "Geld_erarbeitet", lohn)
-                    uElement:incrementStatistics("Job", "Ware_abgeliefert", 1)
-                    uElement:checkJobAchievements()
-                    uElement.m_tblTruckerjobMarker = false;
-                    setElementVisibleTo(self.m_uAbladeMarker, uElement, false) -- OOP-Methode funktioniert nicht
-                else
-                    uElement:showInfoBox("error", "Du hast deinen Anhänger nicht dabei!");
-                end
+                uElement:showInfoBox("sucess", "Du hast die Ware abgeliefiert und erhaelst $"..lohn.."!");
+                triggerClientEvent(uElement, "onClientPlayerTruckerjobStart", uElement, self.m_tblPos, self.m_tblMarker)
+                uElement:addMoney(lohn)
+                uElement.m_tblTruckerjobMarker = false;
             end
         end
     end)
@@ -166,7 +144,6 @@ function cTruckerJob:startPlayerJob(uPlayer)
     self:clearPlayerElement(uPlayer)
 
     if not(uPlayer:getOccupiedVehicle()) then
-        Achievements[5]:playerAchieved(uPlayer)
 
         local models    =
         {
@@ -296,8 +273,6 @@ function cTruckerJob:constructor(...)
     -- Funktionen --
     self.m_funcPickupHit        = function(...) self:onPickupHit(...) end
     self.m_funcOnPlayerStart    = function(...) self:startPlayerJob(client, ...) end
-
-    self.truckjobStadthalleRow			= new(CJob, 10, "Trucker", "-77.178802490234|-1135.9713134766|1.078125")
 
     -- Events --
 

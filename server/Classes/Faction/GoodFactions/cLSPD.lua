@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 CLSPD = {}
 
 
@@ -91,8 +82,8 @@ function CLSPD:constructor()
 	self.GaragenMarkerIn = createMarker(1552.1259765625, -2954.587890625, 219.09289550781, "corona", 1, 255, 255, 255, 255, getRootElement())
 	setElementInterior(self.GaragenMarkerIn, 10, 1552.1259765625, -2954.587890625, 219.09289550781)
 	setElementDimension(self.GaragenMarkerIn, 20141)
-
-	addEventHandler("onMarkerHit", self.GaragenMarkerIn,
+	
+	addEventHandler("onMarkerHit", self.GaragenMarkerIn, 
 		function(hitElement, matching)
 			if (matching) then
 				if (getElementType(hitElement) == "player") then
@@ -108,9 +99,9 @@ function CLSPD:constructor()
 			end
 		end
 	)
-
+	
 	self.GaragenMarkerOut = createMarker(1568.630859375,-1689.9716796875,6.21875, "corona", 1, 255, 255, 255, 255,getRootElement())
-	addEventHandler("onMarkerHit", self.GaragenMarkerOut,
+	addEventHandler("onMarkerHit", self.GaragenMarkerOut, 
 		function(hitElement, matching)
 			if (matching) then
 				if (getElementType(hitElement) == "player") then
@@ -122,12 +113,12 @@ function CLSPD:constructor()
 			end
 		end
 	)
-
+	
 	self.PrisonMarkerIn = createMarker(3776.0673828125, -1599.67578125, 120.96875, "corona", 1, 255, 255, 255, 255,getRootElement())
 	setElementInterior(self.PrisonMarkerIn, 1, 3776.0673828125, -1599.67578125, 120.96875)
 	setElementDimension(self.PrisonMarkerIn, 0)
-
-	addEventHandler("onMarkerHit", self.PrisonMarkerIn,
+	
+	addEventHandler("onMarkerHit", self.PrisonMarkerIn, 
 		function(hitElement, matching)
 			if (matching) then
 				if (getElementType(hitElement) == "player") then
@@ -143,12 +134,12 @@ function CLSPD:constructor()
 			end
 		end
 	)
-
+	
 	self.PrisonMarkerOut = createMarker(1559.966796875, -2934.1015625, 218.40992736816, "corona", 1, 255, 255, 255, 255, getRootElement())
 	setElementInterior(self.PrisonMarkerOut, 10, 1559.966796875, -2934.1015625, 218.40992736816)
 	setElementDimension(self.PrisonMarkerOut, 20141)
-
-	addEventHandler("onMarkerHit", self.PrisonMarkerOut,
+	
+	addEventHandler("onMarkerHit", self.PrisonMarkerOut, 
 		function(hitElement, matching)
 			if (matching) then
 				if (getElementType(hitElement) == "player") then
@@ -184,12 +175,12 @@ function CLSPD:constructor()
 			uElement:fadeInPosition(1526.3999023438, -1677.8438720703, 5.890625, 0, 0);
 		end
 	end)
-
+	
 	self.DutyPickup = createPickup(1564.1484375, -2941.783203125, 219.09289550781, 3, 1275, 100)
 	setElementInterior(self.DutyPickup, 10)
 	setElementDimension(self.DutyPickup, 20141)
-
-	addEventHandler("onPickupHit", self.DutyPickup,
+	
+	addEventHandler("onPickupHit", self.DutyPickup, 
 		function(thePlayer)
 			if (thePlayer:getFaction():getID() == 1) then
 				if (thePlayer:isDuty()) then
@@ -209,31 +200,12 @@ function CLSPD:constructor()
 		end
 	)
 
-	self.m_uAsservatenPickup	= createMarker(1528.4302978516, -2950.0439453125, 220.49133300781, "corona", 1.0, 0, 255, 0, 200);
-	self.m_uAsservatenPickup:setInterior(10)
-	self.m_uAsservatenPickup:setDimension(20141);
-
-	addEventHandler("onMarkerHit", self.m_uAsservatenPickup, function(hitElement, dim)
-		if(dim) and(hitElement) and (getElementType(hitElement) == "player") then
-			if(hitElement:getFaction():getType() == 1) then	-- Gute Fraktion
-				cAsservatenkammer:getInstance():sendPlayerInfo(hitElement)
-			end
-		end
-	end)
-
-	addEventHandler("onMarkerLeave", self.m_uAsservatenPickup, function(hitElement, dim)
-		if(dim) and(hitElement) and (getElementType(hitElement) == "player") then
-			if(hitElement:getFaction():getType() == 1) then	-- Gute Fraktion
-				cAsservatenkammer:getInstance():unsendPlayerInfo(hitElement)
-			end
-		end
-	end)
 
 	self.WeaponPickup = createPickup(1542.3359375, -2950.251953125, 220.49133300781, 3, 1242, 100)
 	setElementInterior(self.WeaponPickup, 10)
 	setElementDimension(self.WeaponPickup, 20141)
-
-	addEventHandler("onPickupHit", self.WeaponPickup,
+	
+	addEventHandler("onPickupHit", self.WeaponPickup, 
 		function(thePlayer)
 			if (thePlayer:getFaction():getID() == 1) then
 				if (thePlayer:isDuty()) then
@@ -271,7 +243,7 @@ function CLSPD:constructor()
 						thePlayer:addWeapon(34, 10, false) -- Sniper
 						thePlayer:addWeapon(29, 540, false) -- MP5
 					end
-
+					
 					thePlayer:addWeapon(3, 1, false)
 					thePlayer:showInfoBox("info", "Du bist nun ausgerüstet!")
 					setPedArmor(thePlayer, 100)
@@ -283,7 +255,7 @@ function CLSPD:constructor()
 			end
 		end
 	)
-
+	
 	self.Jailmarker1 = createColSphere(1568.7600097656, -1694.1672363281, 5.890625, 5)
 	self.Jailmarker2 = createColSphere(1564.474609375, -1694.451171875, 4.890625, 5)
 
@@ -298,9 +270,9 @@ function CLSPD:constructor()
 	self.GarageGate1 = createObject(988, 1589.69995, -1637.76001, 13.1, 0, 0, 181.5)
 	self.GarageGate2 = createObject(988, 1584.19995, -1637.81006, 13.1, 0, 0, 179.747)
 	self.GarageShapeSphere = createColSphere(1589.19995, -1637.81006, 13.1, 10)
-
-	addEventHandler("onColShapeHit", self.GarageShapeSphere,
-		function(hitElement, matching)
+	
+	addEventHandler("onColShapeHit", self.GarageShapeSphere, 
+		function(hitElement, matching) 
 			if ((getElementType(hitElement) == "player") and (matching)) then
 				if (hitElement:getFaction():getType() == 1) then
 					local x,y,z = getElementPosition(self.GarageGate1)
@@ -313,8 +285,8 @@ function CLSPD:constructor()
 			end
 		end
 	)
-
-	addEventHandler("onColShapeLeave", self.GarageShapeSphere,
+	
+	addEventHandler("onColShapeLeave", self.GarageShapeSphere, 
 		function(hitElement, matching)
 			if ((getElementType(hitElement) == "player") and (matching)) then
 				if (hitElement:getFaction():getType() == 1) then
@@ -335,9 +307,9 @@ function CLSPD:constructor()
 			end
 		end
 	)
-
+	
 	setTimer(
-		function()
+		function() 
 			local x,y,z = getElementPosition(self.GarageGate1)
 			local x2,y2,z2 = getElementPosition(self.GarageGate2)
 			if (math.floor(z) == (13)-5) then
@@ -358,7 +330,7 @@ function CLSPD:constructor()
 	self.Jailped = createPed(281,1561.38916, -2954.85669, 219.10001, 90, false)
 	setElementInterior(self.Jailped, 10)
 	setElementDimension(self.Jailped, 20141)
-
+	
 	addEventHandler("onElementClicked", self.Jailped,
 		function(btn, state, thePlayer)
 		 if  ((btn == "left") and (state == "down")) then
@@ -392,17 +364,17 @@ function CLSPD:constructor()
 		 end
 		end
 	)
-
+	
 	setElementData(self.Jailped, "EastereggPed", true)
 	setElementFrozen(self.Jailped, true)
-
+	
 	setWeaponProperty(23, "poor", "damage", 10)
 	setWeaponProperty(23, "poor", "maximum_clip_ammo", 1)
-
+	
 	setWeaponProperty(23, "pro", "damage", 10)
 	setWeaponProperty(23, "pro", "maximum_clip_ammo", 1)
-
-	addCommandHandler("m",
+	
+	addCommandHandler("m", 
 		function(thePlayer, cmd, ...)
 			if not (getElementData(thePlayer, "online")) then return false end
 			if (thePlayer:getFaction():getType() == 1) then
@@ -412,7 +384,7 @@ function CLSPD:constructor()
 
 					local parametersTable = {...}
 					local stringWithAllParameters = table.concat( parametersTable, " " )
-
+					
 					for k,v in ipairs(getElementsWithinColShape(sphere, "player")) do
 						if ((getElementDimension(v) == getElementDimension(thePlayer)) and (getElementInterior(v) == getElementInterior(thePlayer))) then
 							outputChatBox("[Officer]"..getPlayerName(thePlayer)..": "..stringWithAllParameters, v, 255, 255, 20)
@@ -423,12 +395,10 @@ function CLSPD:constructor()
 			end
 		end
 	)
-
+	
 	setModelHandling(596, "maxVelocity", getOriginalHandling(596)["maxVelocity"]*1.15)
 	setModelHandling(599, "maxVelocity", getOriginalHandling(599)["maxVelocity"]*1.15)
 	setModelHandling(523, "maxVelocity", getOriginalHandling(523)["maxVelocity"]*1.15)
-
-
 end
 
 function CLSPD:destructor()

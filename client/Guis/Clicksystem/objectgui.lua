@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 addEventHandler("onClientClick", getRootElement(),
 	function(button, state, absoluteX, absoluteY, worldX, worldY, worldZ, clickedWorld)
 		if (button == "right" and state == "down") then
@@ -18,7 +9,7 @@ addEventHandler("onClientClick", getRootElement(),
 					if(getDistanceBetweenPoints3D(x1, y1, z1, x2, y2, z2) < 25) then
 						showObjectClickGui(clickedWorld)
 					else
-						showInfoBox("error", getLocalizationString("GUI_clicksystem_object_tofaraway"))
+						showInfoBox("error", "Du bist zu weit entfernt!")
 					end
 				end
 			end
@@ -37,11 +28,11 @@ function showObjectClickGui(uObject)
 	if (not clientBusy) then
 		hideObjectClickGui()
 
-		ObjectClick["Window"] = new(CDxWindow, getLocalizationString("GUI_clicksystem_object_window_title"), 400, 320, true, true, "Center|Middle")
+		ObjectClick["Window"] = new(CDxWindow, "Objekt", 400, 320, true, true, "Center|Middle")
 
 		ObjectClick["List"][1] = new(CDxList, 5, 10, 235, 280, tocolor(125,125,125,200), ObjectClick["Window"])
-		ObjectClick["List"][1]:addColumn(getLocalizationString("GUI_clicksystem_object_list1_val1"))
-		ObjectClick["List"][1]:addColumn(getLocalizationString("GUI_clicksystem_object_list1_val2"))
+		ObjectClick["List"][1]:addColumn("Attribut")
+		ObjectClick["List"][1]:addColumn("Wert")
 
 		ObjectClick["List"][1]:addRow("ID|"..getElementModel(uObject))
 
@@ -55,17 +46,17 @@ function showObjectClickGui(uObject)
 			sUrl = "-";
 		end
 
-		ObjectClick["List"][1]:addRow(getLocalizationString("GUI_clicksystem_object_list1_owner").."|"..sOwner)
-		ObjectClick["List"][1]:addRow(getLocalizationString("GUI_clicksystem_object_list1_size").."|"..getObjectScale(uObject))
-		ObjectClick["List"][1]:addRow(getLocalizationString("GUI_clicksystem_object_list1_mass").."|"..getObjectMass(uObject))
+		ObjectClick["List"][1]:addRow("Besitzer|"..sOwner)
+		ObjectClick["List"][1]:addRow("Groesse|"..getObjectScale(uObject))
+		ObjectClick["List"][1]:addRow("Masse|"..getObjectMass(uObject))
 
-		ObjectClick["List"][1]:addRow(getLocalizationString("GUI_clicksystem_object_list1_pickupable").."|Kann sein");
-		ObjectClick["List"][1]:addRow(getLocalizationString("GUI_clicksystem_object_list1_radiourl").."|"..sUrl);
+		ObjectClick["List"][1]:addRow("Aufnehmbar|Kann sein");
+		ObjectClick["List"][1]:addRow("Radio-URL|"..sUrl);
 
 
-		ObjectClick["Button"][1] = new(CDxButton, getLocalizationString("GUI_clicksystem_object_button_move"), 250, 10, 140, 35, tocolor(255,255,255,255), ObjectClick["Window"])
-		ObjectClick["Button"][2] = new(CDxButton, getLocalizationString("GUI_clicksystem_object_button_interact"), 250, 60, 140, 35, tocolor(255,255,255,255), ObjectClick["Window"])
-		ObjectClick["Button"][3] = new(CDxButton, getLocalizationString("GUI_clicksystem_object_button_pickup"), 250, 110, 140, 35, tocolor(255,255,255,255), ObjectClick["Window"])
+		ObjectClick["Button"][1] = new(CDxButton, "Bewegen", 250, 10, 140, 35, tocolor(255,255,255,255), ObjectClick["Window"])
+		ObjectClick["Button"][2] = new(CDxButton, "Interagieren", 250, 60, 140, 35, tocolor(255,255,255,255), ObjectClick["Window"])
+		ObjectClick["Button"][3] = new(CDxButton, "Aufheben", 250, 110, 140, 35, tocolor(255,255,255,255), ObjectClick["Window"])
 
 		ObjectClick["Button"][1]:addClickFunction(function()
 			hideObjectClickGui();

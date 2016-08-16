@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 CVehicle = inherit(CElement)
 registerElementClass("vehicle", CVehicle)
 
@@ -253,8 +244,8 @@ function CVehicle:switchLight()
 end
 
 function CVehicle:setEngineState(state)
-	if (state) then
-		if self.Fuel > 0 and not self.Fueltimer or not isTimer(self.Fueltimer) then
+	if (self.Fuel > 0) and (state) then
+		if not self.Fueltimer or not isTimer(self.Fueltimer) then
 			self.Fueltimer = setTimer(self.tFuelTimer, 10000, 1)
 		end
 		setElementData(self, "Engine", state)
@@ -395,8 +386,8 @@ function CVehicle:getFuel()
 end
 
 function CVehicle:setFuel(iFuel)
-	if (iFuel > vehicleCategoryManager:getCategoryTankSize(vehicleCategoryManager:getVehicleCategory(self))) then
-		iFuel = vehicleCategoryManager:getCategoryTankSize(vehicleCategoryManager:getVehicleCategory(self))
+	if (iFuel > 100) then
+		iFuel = 100
 	end
 	self.Fuel = iFuel
 	setElementData(self, "Fuel", self.Fuel)
@@ -439,10 +430,6 @@ function CVehicle:fuelTimer()
 	if (getElementData(self, "noobcar")) then
 		return false
 	end
-	local cat = vehicleCategoryManager:getVehicleCategory(self)
-	if vehicleCategoryManager:isNoFuelVehicleCategory(cat) then -- Fahrraeder oder Trailer
-		return false
-	end
 	if getVehicleEngineState ( self ) then
 		local vx, vy, vz = getElementVelocity ( self )
 
@@ -454,8 +441,7 @@ function CVehicle:fuelTimer()
 
 
 		if vehfactor then
-			local mileage = vehicleCategoryManager:getCategoryMileage(cat)
-			local speed = math.floor (math.sqrt(vx^2 + vy^2 + vz^2)*214) / vehfactor*(mileage/10) + 0.2
+			local speed = math.floor (math.sqrt(vx^2 + vy^2 + vz^2)*214) / vehfactor + 0.2
 			self:setFuel(self.Fuel - speed)
 			if self.Fueltimer and isTimer(self.Fueltimer) then
 				killTimer(self.Fueltimer)

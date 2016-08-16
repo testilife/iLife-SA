@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 -- #######################################
 -- ## Project: 							##
 -- ## Name: Script.lua					##
@@ -58,7 +49,6 @@ cFunc["create_objects"] = function()
 	trainCrossManager 			= TrainCrossManager:New();
 	aussichtsPunkt				= AussichtsPunkt:New();
 	tuningGarage 				= TuningGarage:New();
-	vehicleCategoryManager = cVehicleCategoryManager:new()
 	downloadManager 			= DownloadManager:New();
 	logger 						= Logger:New();
 	trafficLightManager 		= TrafficLightsManager:New();
@@ -76,7 +66,7 @@ cFunc["create_objects"] = function()
 	userTextures				= UserTextures:New();
 	customWorldTextures			= CustomWorldTextures:New();
 	moveableObjectExtraManager	= MoveableObjectExtraManager:New();
-	mainMenu					= MainMenu:new();
+	mainMenu					= MainMenu:New();
 	customVehicleDirtManager	= CustomVehicleDirtManager:New();
 	carWashManager				= CarWashManager:New();
 	containerJob				= ContainerJob:New();
@@ -110,7 +100,6 @@ cFunc["create_objects"] = function()
 	cCorporationStorageManagementGUI:new();
 	cCorporationProductionManagementGUI:new();
 
-	cItemManager:new();
 
 	cInventoryGUI:new();			-- Singleton
 
@@ -121,11 +110,8 @@ cFunc["create_objects"] = function()
 	cRadioManager:new();
 	cArtifactScannerGUI:new();
 	cAFKManager:new();
-	cTruckerJob:new()
-	cRegisterWindowGUI:new();
-	cAsservatenkammerGUI:new();
-	cAdManager:new();
 
+	cTruckerJob:new()
 	-- CONFIGS --
 
 	--danceGame = DanceGame:New();
@@ -169,7 +155,6 @@ addEventHandler("onClientResourceStart", getResourceRootElement(getThisResource(
 addEventHandler("onClientDownloadFinnished", localPlayer, function()
 	fireworkManager             = cFireworkManager:new()
 	highpingManager             = cHighpingManager:new();
-	cServerInfoRenderer:new();
 
 
 	outputConsole("[CORE] Loading took "..((getTickCount()-cSetting["tick"])/1000).." Seconds");

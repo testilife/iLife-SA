@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 UserVehicles = {}
 UserVehiclesByPlayer = {}
 
@@ -35,7 +26,7 @@ function CUserVehicle:constructor(iID,iOwnerID,iInt,iDim,iVID,sKoords,sColor,sTu
 	self.Locked 	= true
 	self.Engine 	= false
 	self.tuningTeilPreise = TuningTeilPreise:New();
-
+	
 	-- Methoden --
 	self:setData("Locked", self.Locked)
 	self:setData("Engine", self.Engine)
@@ -43,7 +34,7 @@ function CUserVehicle:constructor(iID,iOwnerID,iInt,iDim,iVID,sKoords,sColor,sTu
 	self:setData("OwnerName", self.OwnerName)
 	self:setData("ID", self.ID)
 	self:setData("UserVehicle", true)
-
+	
 	self:setInterior(self.Int)
 	self:setDimension(self.Dim)
 	self:setPlateText(self.Plate)
@@ -53,7 +44,7 @@ function CUserVehicle:constructor(iID,iOwnerID,iInt,iDim,iVID,sKoords,sColor,sTu
 	self:setInterior(self.Int)
 	self:setDimension(self.Dim)
 	self:setDirtLevel(iDirtLevel)
-
+	
 	UserVehicles[tonumber(self.ID)] = self
 	if (not (type(UserVehiclesByPlayer[self.OwnerID]) == "table")) then
 		UserVehiclesByPlayer[self.OwnerID] = {}
@@ -61,30 +52,30 @@ function CUserVehicle:constructor(iID,iOwnerID,iInt,iDim,iVID,sKoords,sColor,sTu
 	table.insert(UserVehiclesByPlayer[self.OwnerID] , {["ID"]=self.ID,["VID"]=self.VID,["Plate"]=self.Plate})
 
 	--Events
-
+	
 	self.eOnVehicleEnter = bind(CUserVehicle.onVehicleEnter,self)
 	addEventHandler("onVehicleEnter", self, self.eOnVehicleEnter)
-
+	
 	self.eOnVehicleExit  = bind(CUserVehicle.onVehicleExit,self)
 	addEventHandler("onVehicleStartExit", self, self.eOnVehicleExit)
 	addEventHandler("onVehicleExit", self, self.eOnVehicleExit)
-
+	
 	self.eOnVehicleExplode = bind(CUserVehicle.onVehicleExplode, self)
 	addEventHandler("onVehicleExplode", self, self.eOnVehicleExplode)
-
+	
 	self.eOnVehicleSwitchLock = bind(CUserVehicle.switchLocked, self)
 	addEventHandler("onVehicleSwitchLock", self, self.eOnVehicleSwitchLock)
-
+	
 	self.switchEngineBla = bind(function(self, player, key, state)  carStart:Toggle(player, key, state, self) end, self);
-
+	
 	--Binds
 	self.bSwitchEngine = bind(CUserVehicle.switchEngine, self)
-
+	
 	--Timer
 	self.tDestroy = bind(CElement.destroy, self)
-
+	
 	self:tune() -- Tunt das Fahrzeug
-
+	
 	--Konstruktor CVehicle
 	CVehicle.constructor(self, "User", true)
 end
@@ -97,7 +88,7 @@ function CUserVehicle:tune()
 		end
 		setVehicleColor(self, unpack(tbl));
 	end
-
+	
 	if(self.HeadLights) and (#tostring(self.HeadLights) > 1) then
 		local tbl = split(self.HeadLights, "|", -1);
 		for index, wert in pairs(tbl) do
@@ -106,14 +97,14 @@ function CUserVehicle:tune()
 		setVehicleHeadLightColor(self, unpack(tbl));
 	end
 	-- Tuning
-
+	
 	if(self.Tuning) and (#tostring(self.Tuning) > 1) then
 		local tbl = split(self.Tuning, "|", -1);
 		for index, wert in pairs(tbl) do
 			local wat = (tonumber(wert) or 0)
-
+				
 			if(wat == 1) then
-
+		
 				if(self.tuningTeilPreise.customItemSlot[index]) then
 					self:AddCustomUpgrade(self.tuningTeilPreise.customItemSlot[index]);
 				end
@@ -227,16 +218,16 @@ function CUserVehicle:park(thePlayer)
 	if (self:getOwnerID() == thePlayer:getID()) then
 		self.Int = self:getInterior()
 		self.Dim = self:getDimension()
-
+			
 		local x,y,z = self:getPosition()
 		local rx,ry,rz = self:getRotation()
-
+			
 		self.Koords = tostring(x).."|"..tostring(y).."|"..tostring(z).."|"..tostring(rx).."|"..tostring(ry).."|"..tostring(rz)
-
+		
 		setVehicleRespawnPosition(self, x, y, z, rx, ry, rz)
-
+		
 		self:save()
-
+		
 		thePlayer:showInfoBox("info","Du hast das Fahrzeug erfolgreich geparkt!")
 	else
 		thePlayer:showInfoBox("error", "Dieses Fahrzeug gehört dir nicht!")
@@ -246,7 +237,7 @@ end
 function CUserVehicle:save()
 	if (not (self.Destroyed)) then
 		self.Health=self:getHealth()
-
+		
 		CDatabase:getInstance():query("UPDATE Vehicles SET `OwnerID`=?, `Int`=?, `Dim`=?, `Koords`=?, `Color`=?, `Tuning`=?, `Plate`=?, `Fuel`=?, `KM`=?, `Health`=?, `LichtFarbe`=?, `Dirtlevel`=? WHERE `ID`=?;", tonumber(self.OwnerID), tonumber(self.Int), self.Dim, self.Koords, self.Color, self.Tuning, self.Plate, self.Fuel, self.KM, self.Health, self.HeadLights, self.DirtLevel, self.ID)
 	end
 end
@@ -273,7 +264,7 @@ function CUserVehicle:respawn(thePlayer)
 end
 
 addEvent("onPlayerUserVehicleRespawn", true)
-addEventHandler("onPlayerUserVehicleRespawn", getRootElement(),
+addEventHandler("onPlayerUserVehicleRespawn", getRootElement(), 
 	function(ID)
 		if (not(clientcheck(source, client))) then return false end
 		if (UserVehicles[ID]) then
@@ -283,7 +274,7 @@ addEventHandler("onPlayerUserVehicleRespawn", getRootElement(),
 )
 
 addEvent("onPlayerRequestUserVehicles", true)
-addEventHandler("onPlayerRequestUserVehicles", getRootElement(),
+addEventHandler("onPlayerRequestUserVehicles", getRootElement(), 
 	function()
 		if (not(clientcheck(source, client))) then return false end
 		if (not(type(UserVehiclesByPlayer[client:getID()]) == "table")) then

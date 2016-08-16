@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 CSupplierJob = {}
 
 addEvent("onSupplierJobStart", true)
@@ -29,16 +20,16 @@ function CSupplierJob:constructor()
 		[13] = "561.01171875|-1248.806640625|17.233730316162", --Grotti
 		[14] = "449.6318359375|-1479.5322265625|30.626256942749" --Clothes East
 	}
-
+	
 	--Current Playersessions
 	self.Current = {}
-
+	
 	--Vehicle Spawn
 	self.Spawn = "0|0|2205.0634765625|-2229.849609375|14.555351257324|359.53308105469|0|314.55505371094"
-
+	
 	--Job Marker
 	self.Marker = createMarker(2179.5302734375,-2255.6435546875,14.7734375, "corona", 2, 125,0,0,255, getRootElement())
-
+	
 	-- Job Marker Hit Event
 	addEventHandler("onMarkerHit", self.Marker, function(hitElement, matchingDimensions)
 		if (hitElement:getType() == "player") then
@@ -48,19 +39,19 @@ function CSupplierJob:constructor()
 		end
 	end
 	)
-
+	
 	-- Koords for CJob
 	self.Koords = "2179.5302734375|-2255.6435546875|14.7734375"
-
+	
 	-- Endposition
 	self.EndPos = "2183.5419921875|-2260.421875|13.403070449829"
-
+	
 	--Eventhandler
 	self.eOnSupplierJobStart = bind(self.onStart, self)
 	addEventHandler("onSupplierJobStart", getRootElement(), self.eOnSupplierJobStart)
-
+	
 	self.eOnSupplierJobFinish = bind(self.onFinish, self)
-
+	
 	-- Call the CJob Constructor
 	new(CJob, 1, "Zulieferer", self.Koords)
 end
@@ -71,12 +62,12 @@ end
 
 function CSupplierJob:onStart()
 	if not(clientcheck(source, client)) then return false end
-
+	
 	if (not (isElementWithinMarker(client, self.Marker))) then
 		client:showInfoBox("error", "Du bist am falschen Ort!")
 		return false
 	end
-
+	
 	local thePlayer = source
 	Achievements[5]:playerAchieved(thePlayer)
 	local theTarget = math.random(1,#self.Targets)
@@ -87,16 +78,16 @@ function CSupplierJob:onStart()
 		["Marker"] =  createMarker(gettok(self.Targets[theTarget],1,"|"), gettok(self.Targets[theTarget],2,"|"), gettok(self.Targets[theTarget],3,"|"), "corona", 3, 0,255,0,255, thePlayer),
 		["Blip"] = createBlip(gettok(self.Targets[theTarget],1,"|"), gettok(self.Targets[theTarget],2,"|"), gettok(self.Targets[theTarget],3,"|"), 41, 3, 255, 0, 0, 255, 0, 1337, thePlayer)
 	}
-
+	
 	setVehicleEngineState(self.Current[thePlayer:getName()]["Vehicle"], true)
 	setVehicleLocked(self.Current[thePlayer:getName()]["Vehicle"], true)
 	warpPedIntoVehicle(thePlayer, self.Current[thePlayer:getName()]["Vehicle"])
 	attachTrailerToVehicle(self.Current[thePlayer:getName()]["Vehicle"], self.Current[thePlayer:getName()]["Trailer"])
-
-	triggerClientEvent(getRootElement(), "ghostElement", self.Current[thePlayer:getName()]["Vehicle"])
-	triggerClientEvent(getRootElement(), "ghostElement", self.Current[thePlayer:getName()]["Trailer"])
-
-	addEventHandler("onMarkerHit", self.Current[thePlayer:getName()]["Marker"],
+	
+	triggerClientEvent(getRootElement(), "ghostElement", self.Current[thePlayer:getName()]["Vehicle"]) 
+	triggerClientEvent(getRootElement(), "ghostElement", self.Current[thePlayer:getName()]["Trailer"]) 
+	
+	addEventHandler("onMarkerHit", self.Current[thePlayer:getName()]["Marker"], 
 		function(theElement, matchingDimension)
 			if (matchingDimension) then
 				if (theElement and isElement(theElement) and getElementType(theElement) == "vehicle") then
@@ -109,23 +100,23 @@ function CSupplierJob:onStart()
 			end
 		end
 	)
-
+ 
 	setVehicleEngineState(self.Current[thePlayer:getName()]["Vehicle"], true)
-
-	addEventHandler("onTrailerDetach", self.Current[thePlayer:getName()]["Trailer"],
+ 
+	addEventHandler("onTrailerDetach", self.Current[thePlayer:getName()]["Trailer"], 
 		function()
 			self:onFinish(thePlayer, false)
 		end
 	)
-
-	addEventHandler("onVehicleStartExit", self.Current[thePlayer:getName()]["Vehicle"],
+	
+	addEventHandler("onVehicleStartExit", self.Current[thePlayer:getName()]["Vehicle"], 
 		function(theExiter, seat, jacked, door)
 			if (not jacked) then
 				self:onFinish(theExiter, false)
 			end
 		end
 	)
-
+	
 end
 
 function CSupplierJob:onFinish(thePlayer, sucess)
@@ -134,12 +125,11 @@ function CSupplierJob:onFinish(thePlayer, sucess)
 		thePlayer:showInfoBox("info", "Du hast für den Job "..tostring(money).."$ erhalten!")
 		thePlayer:setMoney(thePlayer:getMoney()+money)
 		thePlayer:incrementStatistics("Job", "Geld_erarbeitet", money)
-		thePlayer:incrementStatistics("Job", "Ware_abgeliefert", 1)
 		thePlayer:checkJobAchievements()
 	else
 		thePlayer:showInfoBox("info", "Der Job wurde abgebrochen!")
 	end
-
+	
 	removePedFromVehicle(thePlayer)
 	thePlayer:setPosition(gettok(self.EndPos, 1, "|"), gettok(self.EndPos, 2, "|"), gettok(self.EndPos, 3, "|"))
 	destroyElement(self.Current[thePlayer:getName()]["Vehicle"])

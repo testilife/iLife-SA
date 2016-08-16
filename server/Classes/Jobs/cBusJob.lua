@@ -1,16 +1,7 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
+new(CJob, 4, "Bus", "1743.0999|-1863|13.1999")
 
-new(CJob, 4, "Busfahrer", "2110.8283|-2154.702|15.269")
-
-local function createDummyBus(...)
-	local v = createVehicle(...)
+function createDummyBus(...)
+	local v = createVehicle(431, ...)
 	setVehicleDamageProof(v, true)
 	setElementFrozen(v, true)
 
@@ -19,43 +10,17 @@ local function createDummyBus(...)
 	end
 	)
 end
-createDummyBus(431, 2153.8562, -2143.7244, 13.76121, 0, 0, 45)
-createDummyBus(431, 2150.2251, -2147.3237, 13.76121, 0, 0, 45)
-createDummyBus(431, 2146.7656, -2150.7949, 13.76121, 0, 0, 45)
-createDummyBus(437, 2141.5928, -2156.6604, 13.79688, 0, 0, 45)
-createDummyBus(437, 2137.9395, -2160.2805, 13.79688, 0, 0, 45)
-createDummyBus(437, 2134.584, -2163.8225, 13.79688, 0, 0, 45)
 
---[[
-createMarker(1328.500 , -1728.7 , 12.4)
-createMarker(1360.900 , -1316.5 , 12.4)
-createMarker(1324.400 , - 921.1 , 36.1)
-createMarker(1086.600 , - 944.2 , 41.6)
-createMarker( 958.900 , -1084.2 , 23.6)
-createMarker( 913.900 , -1449.7 , 12.4)
-createMarker( 914.100 , -1754.5 , 12.4)
-createMarker(1083.000 , -1855.9 , 12.4)
-createMarker(1573.400 , -1762.3 , 12.4)
-createMarker(1533.200 , -1610.5 , 12.4)
-
-
-
-createMarker(1840.099 ,-1616.2 ,12.4)
-createMarker(1938.000 ,-1736.9 ,12.4)
-createMarker(1958.099 ,-1998.4 ,12.4)
-createMarker(1826.699 ,-2128.6 ,12.4)
-createMarker(1965.099 ,-2003.8 ,12.4)
-createMarker(2085.199 ,-1869.6 ,12.4)
-createMarker(2116.399 ,-1492.1 ,22.8)
-createMarker(1873.900 ,-1457.1 ,12.4)
-createMarker(1476.199 ,-1437.0 ,12.4)
-createMarker(1426.099 ,-1704.1 ,12.4)
-]]
-
+createDummyBus(1780, -1931.8, 13.6, 0, 0, 270)
+createDummyBus(1780, -1913.7, 13.6, 0, 0, 270)
+createDummyBus(1780, -1925.6, 13.6, 0, 0, 270)
+createDummyBus(1780, -1919.5, 13.6, 0, 0, 270)
+createDummyBus(1780, -1907.8, 13.6, 0, 0, 270)
+createDummyBus(1780, -1901.8, 13.6, 0, 0, 270)
 
 local busjobActive = true
-local busSpawnX, busSpawnY, busSpawnZ, busSpawnRotX, busSpawnRotY, busSpawnRotZ = 2112.6292, -2133.4604, 13.76121, 0, 0, 0
-local busjobPickup = createPickup(2110.8283, -2154.702, 13.269, 3, 1274, 0)
+local busSpawnX, busSpawnY, busSpawnZ, busSpawnRotX, busSpawnRotY, busSpawnRotZ = 1783.20, -1888.90, 13.6, 0, 0, 270
+local busjobPickup = createPickup(1743.0999, -1863, 13.1999, 3, 1274, 0)
 
 addEventHandler("onPickupHit", busjobPickup, function(e)
 	if (busjobActive) then
@@ -72,43 +37,123 @@ end
 
 local lines = {
 	[1] = {
-		[1] = {x = 1459.81, y = -1729.55, z = 13.48, "Commerce"},
-		[2] = {x = 1457.34, y = -1267.05, z = 13.49, "Downtown Los Santos"},
-		[3] = {x = 1299.06, y = -1278.09, z = 13.49, "Market"},
-		[4] = {x = 794.74, y = -1345.06, z = 13.48, "Market Station"},
-		[5] = {x = 626.99, y = -1658.52, z = 15.81, "Rodeo"},
-		[6] = {x = 114.91, y = -1609.39, z = 10.53, "Santa Maria Beach West"},
-		[7] = {x = 409.07, y = -1775.64, z = 5.38, "Santa Maria Beach (iLife Baumarkt)"},
-		[8] = {x = 642.34, y = -1630.26, z = 15.2, "Rodeo"},
-		[9] = {x = 819.46, y = -1330.15, z = 13.44, "Market Station"},
-		[10] = {x = 1308.32, y = -1283.95, z = 13.52, "Market"},
-		[11] = {x = 1451.78, y = -1277.51, z = 13.54, "Downtown Los Santos"},
-		[12] = {x = 1492.87, y = -1594.86, z = 13.56, "Pershing Square"},
+			[1] = {x = 1646.3000488281, y = -2322.1999511719, z = 12.39999961853, "Los Santos Airport"},
+			[2] = {x = 1962, y = -1749.3000488281, z = 12.39999961853, "Idlewood [Ost]"},
+			[3] = {x = 1818.5999755859, y = -1806.3000488281, z = 12.39999961853, "Idlewood [West]"},
+			[4] = {x = 1416.6999511719, y = -1869.3000488281, z = 12.39999961853, "Verdant Bluffs"},
+			[5] = {x = 1432.5, y = -1643.4000244141, z = 12.39999961853, "Commerce"},
+			[6] = {x = 1457.8000488281, y = -1335, z = 12.39999961853, "Downtown [Süd]"},
+			[7] = {x = 1374.5, y = -1138, z = 22.700000762939, "Downtown [Nord][Endstation]"},
+			[8] = {x = 1451.6999511719, y = -1350.5, z = 12.39999961853, "Downtown [Süd]"},
+			[9] = {x = 1426.3000488281, y = -1670.1999511719, z = 12.39999961853, "Commerce"},
+			[10] = {x = 1452.8000488281, y = -1875.3000488281, z = 12.39999961853, "Verdant Bluffs"},
+			[11] = {x = 1824.5999755859, y = -1770.6999511719, z = 12.39999961853, "Idlewood [West]"},
+			[12] = {x = 1983.0999755859, y = -1755.5, z = 12.39999961853, "Idlewood [Ost]"}
 	},
 	[2] = {
-		[1] = {x = 1491.5, y = -1729.49, z = 13.47, "Commerce"},
-		[2] = {x = 1330.1, y = -1729.35, z = 13.47, "Commerce"},
-		[3] = {x = 1361.04, y = -1316.79, z = 13.47, "Ammu Nation Market"},
-		[4] = {x = 1324.74, y = -921.4, z = 37.19, "LS Planning Center"},
-		[5] = {x = 1087.35, y = -945.32, z = 42.7, "Temple Einkaufszentrum"},
-		[6] = {x = 959.98, y = -1082.04, z = 24.88, "Friedhof"},
-		[7] = {x = 914.69, y = -1448.24, z = 13.39, "Marina"},
-		[8] = {x = 915.06, y = -1753.38, z = 13.39, "Verona Beach"},
-		[9] = {x = 1081.34, y = -1855.24, z = 13.39, "Konferenzzentrum"},
-		[10] = {x = 1572.48, y = -1763.38, z = 13.39, "Commerce"},
+			[1] = {x = 1669.3000488281, y = -2322.1999511719, z = 12.39999961853, "Los Santos Airport"},
+			[2] = {x = 2234.6000976563, y = -2197, z = 12.30, "Ocean Docks"},
+			[3] = {x = 2417.1000976563, y = -1951.5, z = 12.39, "Willowfield"},
+			[4] = {x = 2461, y = -1735.4, z = 12.5, "Ganton"},
+			[5] = {x = 2646, y = -1698.5, z = 9.6999998092651, "East Beach [West]"},
+			[6] = {x = 2827.10, y = -1632.599, z = 9.8, "East Beach [Ost]"},
+			[7] = {x = 2484.8999, y = 45.2999, z = 25.2999, "Palomino Creek [Ost]"},
+			[8] = {x = 2256.60, y = 45, z = 25.2999, "Palomino Creek [West]"},
+			[9] = {x = 1318.30, y = 239.6999, z = 18.3999, "Montgomery"},
+			[10] = {x = 722.400, y = 323, z = 18.8999, "Hampton Barns"},
+			[11] = {x = 229.5, y = -178.300, z = 0.3999, "Blueberry"},
+			[12] = {x = 627.70, y = -533.5999, z = 15.200, "Dillimore [Endstation]"},
+			[13] = {x = 236.30, y = -151.600, z = 0.3999, "Blueberry"},
+			[14] = {x = 761, y = 320.2999, z = 18.8999, "Hampton Barns"},
+			[15] = {x = 1353.3, y = 217.1999, z = 18.3999, "Montgomery"},
+			[16] = {x = 2256.6999, y = 38.2999, z = 25.2999, "Palomino Creek [West]"},
+			[17] = {x = 2489.3, y = 38.5999, z = 25.2999, "Palomino Creek [Ost]"},
+			[18] = {x = 2820.6999, y = -1632.1999, z = 9.8, "East Beach [Ost]"},
+			[19] = {x = 2639.6999511719, y = -1708.6999511719, z = 9.6999998092651, "East Beach [West]"},
+			[20] = {x = 2453, y = -1728.9000, z = 12.5, "Ganton"},
+			[21] = {x = 2410.30, y = -1953, z = 12.3999, "Willowfield"},
+			[22] = {x = 2225.1999, y = -2196.8999, z = 12.3, "Ocean Docks"}
 	},
 	[3] = {
-		[1] = {x = 1449.04, y = -1735.14, z = 13.13, "Commerce"},
-		[2] = {x = 1835.09, y = -1615.6, z = 13.47, "Idlewood West"},
-		[3] = {x = 1938.65, y = -1733.95, z = 13.48, "Idlewood Sued"},
-		[4] = {x = 1958.61, y = -1997.52, z = 13.48, "El Corona Nord"},
-		[5] = {x = 1826.14, y = -2127.87, z = 13.48, "El Corona Sued"},
-		[6] = {x = 1964.8, y = -2004.19, z = 13.48, "El Corona Nord"},
-		[7] = {x = 2084.2, y = -1869.35, z = 13.41, "Willowfield"},
-		[8] = {x = 2115.97, y = -1492.49, z = 23.9, "Idlewood Ost"},
-		[9] = {x = 1874.47, y = -1458.16, z = 13.48, "Idlewood Nord"},
-		[10] = {x = 1476.93, y = -1437.98, z = 13.52, "Commerce"},
-		},
+			[1] = {x = 1695, y = -2322.1999511719, z = 12.39999961853, "Los Santos Airport"},
+			[2] = {x = 1065.199, y = -1886.0000, z = 12.1999, "Verona Beach [Ost]"},
+			[3] = {x = 921.0999, y = -1712.0999, z = 12.3999, "Verona Beach [Nord]"},
+			[4] = {x = 836.7999, y = -1392.0999, z = 12.3999, "Market Station"},
+			[5] = {x = 438.7999, y = -1447.5999, z = 28.3999, "Rodeo [Nord]"},
+			[6] = {x = 505.7999, y = -1668.4000, z = 18.1000, "Rodeo [Ost]"},
+			[7] = {x = 370.5000, y = -1698.4000, z = 6.0999, "Santa Maria Beach [Nord]"},
+			[8] = {x = 126.4000, y = -1585.0999, z = 9.5000, "Rodeo [West][Endstation]"},
+			[9] = {x = 415.6000, y = -1775.9000, z = 4.3000, "Santa Maria Beach [Süd]"},
+			[10] = {x = 468.5000, y = -1654.3000, z = 23.7000, "Rodeo [Ost]"},
+			[11] = {x = 495.7999, y = -1435.4000, z = 15.000, "Rodeo [Nord]"},
+			[12] = {x = 834.2999, y = -1409.5000, z = 12.1999, "Market Station"},
+			[13] = {x = 914.0000, y = -1728.4000, z = 12.3999, "Verona Beach [Nord]"},
+			[14] = {x = 1042.900, y = -1877.5000, z = 12.1999, "Verona Beach [Ost]"}
+	},
+	[4] = {
+			[1] = {x = 1717.9000244141, y = -2322.3000488281, z = 12.39999961853, "Los Santos Airport"},
+			[2] = {x = 1401.6999, y = -935.29998, z = 34.0000, "Downtown"},
+			[3] = {x = 916.00000, y = -968.09999, z = 37.0999, "Vinewood [Ost]"},
+			[4] = {x = 651.79998, y = -1187.5000, z = 16.6000, "Vinewood [West]"},
+			[5] = {x = 132.10000, y = -1541.0999, z = 7.69999, "Rodeo [West]"},
+			[6] = {x = -122.4000, y = -1197.9000, z = 1.70000, "Flint County"},
+			[7] = {x = 236.30000, y = -151.60000, z = 0.39990, "Blueberry"},
+			[8] = {x = 761.00000, y = 320.299900, z = 18.8999, "Hampton Barns"},
+			[9] = {x = 1353.3000, y = 217.199900, z = 18.3999, "Montgomery"},
+			[10] = {x = 788.09997, y = -561.00000, z = 15.2000, "Dillimore [Endstation]"},
+			[11] = {x = 1318.3000, y = 239.699900, z = 18.3999, "Montgomery"},
+			[12] = {x = 722.40000, y = 323.000000, z = 18.8999, "Hampton Barns"},
+			[13] = {x = 229.50000, y = -178.30000, z = 0.39990, "Blueberry"},
+			[14] = {x = -117.0999, y = -1162.9000, z = 1.40000, "Flint County"},
+			[15] = {x = 171.30000, y = -1546.6999, z = 11.1000, "Rodeo [West]"},
+			[16] = {x = 694.00000, y = -1163.0000, z = 14.3000, "Vinewood [West]"},
+			[17] = {x = 926.50000, y = -982.40000, z = 37.2000, "Vinewood [Ost]"},
+			[18] = {x = 1404.4000, y = -952.79998, z = 34.0999, "Downtown"}
+	},
+	[5] = {
+		{x =   409.600, y =  -1776.0, z =   4.3, "Unknown"},
+		{x =   642.900, y =  -1638.0, z =  14.0, "Unknown"},
+		{x =   832.500, y =  -1330.0, z =  12.4, "Unknown"},
+		{x =  1312.599, y =  -1283.8, z =  12.4, "Unknown"},
+		{x =  1451.199, y =  -1266.9, z =  12.4, "Unknown"},
+		{x =  1425.599, y =  -1704.4, z =  12.4, "Unknown"},
+		{x =  1533.000, y =  -1610.3, z =  12.4, "Unknown"},
+		{x =  1458.300, y =  -1272.4, z =  12.4, "Unknown"},
+		{x =  1284.699, y =  -1277.4, z =  12.3, "Unknown"},
+		{x =   794.000, y =  -1353.0, z =  12.4, "Unknown"},
+		{x =   625.700, y =  -1656.4, z =  14.8, "Unknown"},
+		{x =   386.500, y =  -1698.5, z =   6.9, "Unknown"},
+		{x =   117.000, y =  -1601.5, z =   9.5, "Unknown"},
+		{x =   409.600, y =  -1776.0, z =   4.3, "Unknown"},
+	},
+	[6] = {
+		{x =  1425.599, y =  -1704.4, z =  12.4, "Unknown"},
+		{x =  1328.500, y =  -1728.7, z =  12.4, "Unknown"},
+		{x =  1360.900, y =  -1316.5, z =  12.4, "Unknown"},
+		{x =  1324.400, y =  - 921.1, z =  36.1, "Unknown"},
+		{x =  1086.600, y =  - 944.2, z =  41.6, "Unknown"},
+		{x =   958.900, y =  -1084.2, z =  23.6, "Unknown"},
+		{x =   913.900, y =  -1449.7, z =  12.4, "Unknown"},
+		{x =   914.100, y =  -1754.5, z =  12.4, "Unknown"},
+		{x =   1083.000, y =  -1855.9, z =  12.4, "Unknown"},
+		{x =  1573.400, y =  -1762.3, z =  12.4, "Unknown"},
+		{x =  1533.200, y =  -1610.5, z =  12.4, "Unknown"},
+		{x =  1425.599, y =  -1704.4, z =  12.4, "Unknown"},
+	},
+	[7] = {
+		{x =  1533.000, y =  -1610.3, z =  12.4, "Unknown"},
+		{x =  1840.099, y =  -1616.2, z =  12.4, "Unknown"},
+		{x =  1938.000, y =  -1736.9, z =  12.4, "Unknown"},
+		{x =  1958.099, y =  -1998.4, z =  12.4, "Unknown"},
+		{x =  1826.699, y =  -2128.6, z =  12.4, "Unknown"},
+		{x =  1965.099, y =  -2003.8, z =  12.4, "Unknown"},
+		{x =  2085.199, y =  -1869.6, z =  12.4, "Unknown"},
+		{x =  2116.399, y =  -1492.1, z =  22.8, "Unknown"},
+		{x =  1873.900, y =  -1457.1, z =  12.4, "Unknown"},
+		{x =  1476.199, y =  -1437.0, z =  12.4, "Unknown"},
+		{x =  1426.099, y =  -1704.1, z =  12.4, "Unknown"},
+		{x =  1533.000, y =  -1610.3, z =  12.4, "Unknown"},
+	}
 }
 
 
@@ -136,7 +181,7 @@ addEventHandler("onClientBJStartPressed", getRootElement(), function()
 	data[source].line = line
 	data[source].point = 1
 	data[source].v = createVehicle(431, busSpawnX, busSpawnY, busSpawnZ, busSpawnRotX, busSpawnRotY, busSpawnRotZ)
-	data[source].m = createMarker(lines[line][data[source].point].x, lines[line][data[source].point].y, lines[line][data[source].point].z, "checkpoint", 2, 0, 0, 255, 255, source)
+	data[source].m = createMarker(lines[line][data[source].point].x, lines[line][data[source].point].y, lines[line][data[source].point].z, "cylinder", 2, 0, 0, 255, 255, source)
 	data[source].b = createBlipAttachedTo(data[source].m, 41, 2, 0, 0, 255, 255, 0, 1337, source)
 	data[source].x = busSpawnX -- used for range calculation
 	data[source].y = busSpawnY -- used for range calculation
@@ -160,7 +205,7 @@ addEventHandler("onClientBJStartPressed", getRootElement(), function()
 	)
 
 	--When the source is deleted, event wont be triggered
-	addEventHandler("onVehicleStartExit", data[source].v, function(p, seat)
+	addEventHandler("onVehicleExit", data[source].v, function(p, seat)
 		if (seat == 0) then
 			--kill Timer if exists
 			if (isTimer(data[source].timer)) then killTimer(data[source].timer) end
@@ -215,7 +260,7 @@ addEventHandler("onClientBJStartPressed", getRootElement(), function()
 	end
 	)
 
-	source:showInfoBox("info", "Fahre zur Stadthalle und lasse dir eine Linie zuweisen!")
+	source:showInfoBox("info", "Fahre zum Airport und lasse dir eine Linie zuweisen!")
 
 end
 )
@@ -258,9 +303,6 @@ addEventHandler("onMarkerHit", getRootElement(), function(e)
 					for k,v in pairs(getVehicleOccupants(e)) do
 						triggerClientEvent(v, "onServerPlaySavedSound", getRootElement(), "http://translate.google.com/translate_tts?tl=de&q=Naechste%20Station:%20"..station, "Busansage", false)
 					end
-					if #getVehicleOccupants(e) > 0 then
-						data[e].p:incrementStatistics("Job", "Spieler_befoerdert", #getVehicleOccupants(e))
-					end
 				end
 
 				createMessageSphere(x, y, z, 10, journal)
@@ -283,7 +325,6 @@ addEventHandler("onMarkerHit", getRootElement(), function(e)
 				end
 
 				setElementPosition(source, lines[data[data[e].p].line][data[data[e].p].point].x, lines[data[data[e].p].line][data[data[e].p].point].y, lines[data[data[e].p].line][data[data[e].p].point].z)
-				triggerClientEvent(data[e].p, "onHudBlipRefresh", data[e].p)
 			end
 		end
 	end

@@ -52,12 +52,8 @@ function CarStart:Toggle(player, key, state)
 				if(math.random(0, 20) == 1) then
 					ammount = math.random(1500, 4000);
 				end
-				if vehicleCategoryManager:isNoFuelVehicleCategory(vehicle) then
-					self.startVehicle(player, vehicle)
-				else
-					self.vehicleStartTimer[vehicle] = setTimer(self.startVehicle, ammount, 1, player, vehicle)
-					triggerClientEvent(getRootElement(), "onVehicleStartSound", getRootElement(), vehicle, "engine_start");
-				end
+				self.vehicleStartTimer[vehicle] = setTimer(self.startVehicle, ammount, 1, player, vehicle, class)
+				triggerClientEvent(getRootElement(), "onVehicleStartSound", getRootElement(), vehicle, "engine_start");
 			else
 
 				vehicle:switchEngine(player)
@@ -82,20 +78,13 @@ end
 -- ///////////////////////////////
 
 function CarStart:StartVehicle(player, vehicle)
-
-	local bForceStart = false
-
-	if (vehicle:getFuel() <= 0) and not vehicleCategoryManager:isNoFuelVehicleCategory(vehicle) then
-			triggerClientEvent(getRootElement(), "onVehicleStartSound", getRootElement(), vehicle, "engine_absauf");
-			self.vehicleStarting[vehicle] = false;
-			self.vehicleEngine[vehicle] = false;
-			return false
+	if (vehicle:getFuel() <= 0) then
+		triggerClientEvent(getRootElement(), "onVehicleStartSound", getRootElement(), vehicle, "engine_absauf");
+		self.vehicleStarting[vehicle] = false;
+		self.vehicleEngine[vehicle] = false;
+		return false
 	end
-	if vehicleCategoryManager:isNoFuelVehicleCategory(vehicle) then
-		bForceStart = true
-		outputChatBox("nofuel")
-	end
-	if( bForceStart or math.random(0, 10) ~= 1) then
+	if(math.random(0, 10) ~= 1) then
 		local sucess = vehicle:switchEngine(player)
 		if(sucess ~= "nope") then
 			triggerClientEvent(getRootElement(), "onVehicleStartSound", getRootElement(), vehicle, "engine_start_go");

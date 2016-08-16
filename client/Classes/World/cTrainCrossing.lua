@@ -1,16 +1,7 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 -- #######################################
 -- ## Project: MTA iLife				##
 -- ## Name: TrainCrossing.lua					##
--- ## Author: Noneatme	(edit by MasterM)				##
+-- ## Author: Noneatme					##
 -- ## Version: 1.0						##
 -- ## License: See top Folder			##
 -- #######################################
@@ -41,11 +32,11 @@ function TrainCrossing:New(...)
 end
 
 -- ///////////////////////////////
--- ///// Close		 		//////
+-- ///// MoveUp		 		//////
 -- ///// Returns: void		//////
 -- ///////////////////////////////
 
-function TrainCrossing:Close()
+function TrainCrossing:MoveUp()
 	if(self.state == false) then
 		if(self.moving) then
 			killTimer(self.movingTimer)
@@ -53,22 +44,18 @@ function TrainCrossing:Close()
 		for i = 1, self.maxSchranken, 1 do
 			if(self.moving) then
 				stopObject(self.schranke[i])
-				setElementPosition(self.schranke[i], self.standardPos[i][1], self.standardPos[i][2], self.standardPos[i][3])
-				setElementRotation(self.schranke[i], 0, 90, self.standardPos[i][6])
+				setElementPosition(self.schranke[i], self.standartPos[i][2], self.standartPos[i][3], self.standartPos[i][4]-1.5)
 			end
 			local x, y, z = getElementPosition(self.schranke[i])
-			local rx, ry, rz = getElementRotation(self.schranke[i])
-			local iAimRotY = 90-ry
-			local iAimRotZ = 0--self.standardPos[i][6]-rz
-			moveObject(self.schranke[i], self.moveTime, x, y, z, 0, iAimRotY, iAimRotZ);
-
-
+			moveObject(self.schranke[i], self.moveTime, x, y, z+1.5, 0, 0, 0);
+			
+				
 			if(isElement(self.crossSound[i])) then
 				destroyElement(self.crossSound[i])
 			end
-
-			self.crossSound[i] = playSound3D("res/sounds/train/railroad.mp3", self.standardPos[i][1], self.standardPos[i][2], self.standardPos[i][3], true);
-			setSoundMaxDistance(self.crossSound[i], 100)
+			
+			self.crossSound[i] = playSound3D("res/sounds/train/railroad.mp3", self.standartPos[i][2], self.standartPos[i][3], self.standartPos[i][4], true);
+			setSoundMaxDistance(self.crossSound[i], 50)
 		end
 		self.moving = true;
 		self.movingTimer = setTimer(function() self.moving = false end, self.moveTime, 1);
@@ -78,11 +65,11 @@ function TrainCrossing:Close()
 end
 
 -- ///////////////////////////////
--- ///// Open	 			//////
+-- ///// MoveDown	 		//////
 -- ///// Returns: void		//////
 -- ///////////////////////////////
 
-function TrainCrossing:Open()
+function TrainCrossing:MoveDown()
 	if(self.state == true) then
 		if(self.moving) then
 			killTimer(self.movingTimer)
@@ -90,15 +77,11 @@ function TrainCrossing:Open()
 		for i = 1, self.maxSchranken, 1 do
 			if(self.moving) then
 				stopObject(self.schranke[i])
-				setElementPosition(self.schranke[i], self.standardPos[i][1], self.standardPos[i][2], self.standardPos[i][3])
-				setElementRotation(self.schranke[i], 0, 10, self.standardPos[i][6])
+				setElementPosition(self.schranke[i], self.standartPos[i][2], self.standartPos[i][3], self.standartPos[i][4])
 			end
 			local x, y, z = getElementPosition(self.schranke[i])
-			local rx, ry, rz = getElementRotation(self.schranke[i])
-			local iAimRotY = 10-ry
-			local iAimRotZ = 0--self.standardPos[i][6]-rz
-			moveObject(self.schranke[i], self.moveTime, x, y, z, 0, iAimRotY, iAimRotZ);
-
+			moveObject(self.schranke[i], self.moveTime, x, y, z-1.5, 0, 0, 0);
+			
 			if(isElement(self.crossSound[i])) then
 				destroyElement(self.crossSound[i])
 			end
@@ -107,8 +90,8 @@ function TrainCrossing:Open()
 		self.movingTimer = setTimer(function() self.moving = false end, self.moveTime, 1);
 
 		self.state = not (self.state);
-
-
+		
+		
 	end
 end
 
@@ -120,8 +103,8 @@ end
 function TrainCrossing:ColShapeHit(element, dim)
 	if(dim == true) then
 		if(self.state == false) then
-			if(isElement(element)) and (getElementType(element) == "vehicle") and (self.trainHelper:IsTrain(getElementModel(element))) or getElementData(element, "IsServerTrain") then -- getElementData für das Sync-Fahrzeug
-				self:Close();
+			if(isElement(element)) and (getElementType(element) == "vehicle") and (self.trainHelper:IsTrain(getElementModel(element))) then
+				self:MoveUp();
 			end
 		end
 	end
@@ -134,20 +117,17 @@ end
 function TrainCrossing:ColShapeLeave(element, dim)
 	if(dim == true) then
 		if(self.state == true) then
-			local Open = true;
-			local counter = 0
+			local runterDamit = true;
+
 			for index, vehicle in pairs(getElementsWithinColShape(self.colShape, "vehicle")) do
-				if(self.trainHelper:IsTrain(getElementModel(vehicle))) or getElementData(vehicle,"IsServerTrain") then
-					counter = counter+1
-					if counter > 1 then
-						Open = false;
-						break;
-					end
+				if(self.trainHelper:IsTrain(getElementModel(vehicle))) then
+					runterDamit = false;
+					break;
 				end
 			end
 
-			if(Open) then
-				self:Open();
+			if(runterDamit) then
+				self:MoveDown();
 			end
 		end
 	end
@@ -158,18 +138,17 @@ end
 -- ///// Returns: void		//////
 -- ///////////////////////////////
 
-function TrainCrossing:Constructor(iObjectID, tblSchranke, iRadius)
+function TrainCrossing:Constructor(tblSchranke1, tblSchranke2, iRadius)
 	-- Klassenvariablen --
 
 	self.schranke = {}
-	self.schranke[1] 			= createObject(iObjectID, tblSchranke[1], tblSchranke[2], tblSchranke[3], 0, 90, tblSchranke[4]);
-	self.schranke[2] 			= createObject(iObjectID, tblSchranke[5], tblSchranke[6], tblSchranke[7], 0, 90, tblSchranke[8]);
+	self.schranke[1] 			= createObject(unpack(tblSchranke1));
+	self.schranke[2] 			= createObject(unpack(tblSchranke2));
 
-
-	self.standardPos = {}
-	self.standardPos[1]			= {tblSchranke[1], tblSchranke[2], tblSchranke[3], 0, 90, tblSchranke[4]};
-	self.standardPos[2]			= {tblSchranke[5], tblSchranke[6], tblSchranke[7], 0, 90, tblSchranke[8]};
-
+	self.standartPos = {}
+	self.standartPos[1]			= tblSchranke1;
+	self.standartPos[2]			= tblSchranke2;
+	
 	self.crossSound 			= {}
 
 	self.moving 				= false;
@@ -182,12 +161,12 @@ function TrainCrossing:Constructor(iObjectID, tblSchranke, iRadius)
 	self.state 					= true;	-- Ist Oben
 	self.moveTime 				= 3000;
 
-	self.colShape 				= createColSphere(tblSchranke[1], tblSchranke[2], tblSchranke[3], self.radius)
+	self.colShape 				= createColSphere(tblSchranke1[2], tblSchranke1[3], tblSchranke1[4], self.radius)
 	self.trainHelper			= TrainHelper:New();
 
 	-- Methoden --
-	--self.moveUpFunc 			= function() self:Close() end;
-	--self.moveDownFunc 			= function() self:Open() end;
+	self.moveUpFunc 			= function() self:MoveUp() end;
+	self.moveDownFunc 			= function() self:MoveDown() end;
 	self.resetMoveStateFunc 	= function() self:ResetMoveState() end;
 
 
@@ -199,7 +178,7 @@ function TrainCrossing:Constructor(iObjectID, tblSchranke, iRadius)
 	addEventHandler("onClientColShapeHit", self.colShape, self.ColShapeHitFunc)
 	addEventHandler("onClientColShapeLeave", self.colShape, self.ColShapeLeaveFunc)
 
-	self:Open();
+	self:MoveDown();
 --logger:OutputInfo("[CALLING] TrainCrossing: Constructor");
 end
 

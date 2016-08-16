@@ -1,18 +1,9 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 --
 -- Created by IntelliJ IDEA.
 -- User: Noneatme
 -- Date: 21.02.2015
 -- Time: 17:35
--- Purpose: MTA iLife SA
+-- To change this template use File | Settings | File Templates.
 --
 
 cCorporation = {};
@@ -69,6 +60,7 @@ function cCorporation:updateSaveValues()
         ["MaxHouses"]       = self.m_iMaxHouses,
         ["MaxBizes"]        = self.m_iMaxBizes,
         ["Skins"]           = toJSON(self.m_tblSkins),
+        ["RankNames"]       = toJSON(self.m_tblRankNames),
         ["MiscSettings"]    = toJSON(self.m_tblMiscSettings),
     }
 end

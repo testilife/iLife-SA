@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 -- #######################################
 -- ## Project: MTA iLife				##
 -- ## Name: MainMenu.lua			##
@@ -20,13 +11,25 @@
 local cFunc = {};		-- Local Functions
 local cSetting = {};	-- Local Settings
 
-MainMenu = inherit(cSingleton);
+MainMenu = {};
+MainMenu.__index = MainMenu;
 
 --[[
 
 ]]
 
+-- ///////////////////////////////
+-- ///// New 				//////
+-- ///// Returns: Object	//////
+-- ///////////////////////////////
 
+function MainMenu:New(...)
+	local obj = setmetatable({}, {__index = self});
+	if obj.Constructor then
+		obj:Constructor(...);
+	end
+	return obj;
+end
 
 -- ///////////////////////////////
 -- ///// RenderShader 		//////
@@ -144,10 +147,10 @@ function MainMenu:RenderMainMenu()
 				dxDrawImage(image_interpolate[i][1], image_interpolate[i][2], 100/self.aesx*self.sx, 100/self.aesy*self.sy, self.pfade.images..images[i]..".png");
 			end
 
-			dxDrawText(getLocalizationString("GUI_mainmenu_button_login"), 127/self.aesx*self.sx, 267/self.aesy*self.sy, 446/self.aesx*self.sx, 356/self.aesy*self.sy, tocolor(255, 255, 255, self.alpha), 1/(self.aesx+self.aesy)*(self.sx+self.sy), "pricedown", "center", "center", false, false, true, false, false)
-			dxDrawText(getLocalizationString("GUI_mainmenu_button_impressum"), 121/self.aesx*self.sx, 519/self.aesy*self.sy, 440/self.aesx*self.sx, 608/self.aesy*self.sy, tocolor(255, 255, 255, self.alpha), 1/(self.aesx+self.aesy)*(self.sx+self.sy), "pricedown", "center", "center", false, false, true, false, false)
-			dxDrawText(getLocalizationString("GUI_mainmenu_button_intro"), 992/self.aesx*self.sx, 265/self.aesy*self.sy, 1311/self.aesx*self.sx, 354/self.aesy*self.sy, tocolor(255, 255, 255, self.alpha), 1/(self.aesx+self.aesy)*(self.sx+self.sy), "pricedown", "center", "center", false, false, true, false, false)
-			dxDrawText(getLocalizationString("GUI_mainmenu_button_gotoirace"), 992/self.aesx*self.sx, 517/self.aesy*self.sy, 1311/self.aesx*self.sx, 606/self.aesy*self.sy, tocolor(255, 255, 255, self.alpha), 1/(self.aesx+self.aesy)*(self.sx+self.sy), "pricedown", "center", "center", false, false, true, false, false)
+			dxDrawText("Einloggen", 127/self.aesx*self.sx, 267/self.aesy*self.sy, 446/self.aesx*self.sx, 356/self.aesy*self.sy, tocolor(255, 255, 255, self.alpha), 1/(self.aesx+self.aesy)*(self.sx+self.sy), "pricedown", "center", "center", false, false, true, false, false)
+			dxDrawText("Impressum / Lizenzen", 121/self.aesx*self.sx, 519/self.aesy*self.sy, 440/self.aesx*self.sx, 608/self.aesy*self.sy, tocolor(255, 255, 255, self.alpha), 1/(self.aesx+self.aesy)*(self.sx+self.sy), "pricedown", "center", "center", false, false, true, false, false)
+			dxDrawText("Intro", 992/self.aesx*self.sx, 265/self.aesy*self.sy, 1311/self.aesx*self.sx, 354/self.aesy*self.sy, tocolor(255, 255, 255, self.alpha), 1/(self.aesx+self.aesy)*(self.sx+self.sy), "pricedown", "center", "center", false, false, true, false, false)
+			dxDrawText("Zu iRace!", 992/self.aesx*self.sx, 517/self.aesy*self.sy, 1311/self.aesx*self.sx, 606/self.aesy*self.sy, tocolor(255, 255, 255, self.alpha), 1/(self.aesx+self.aesy)*(self.sx+self.sy), "pricedown", "center", "center", false, false, true, false, false)
 
 
 			local tick = (getTickCount()-self.menuTick);
@@ -319,12 +322,12 @@ function MainMenu:showNewsPage()
 		local text	= fileRead(file, fileGetSize(file))
 		fileClose(file);
 
-		self.infoGuiEle.window[1] = guiCreateWindow(524, 300, 562, 335, getLocalizationString("GUI_mainmenu_impressum_news_title"), false)
+		self.infoGuiEle.window[1] = guiCreateWindow(524, 300, 562, 335, "Impressum, Datenschutzerklaerung und Sonstiges", false)
 		guiWindowSetSizable(self.infoGuiEle.window[1], false)
 
 		self.infoGuiEle.memo[1] = guiCreateMemo(9, 22, 543, 278, text, false, self.infoGuiEle.window[1])
 		guiMemoSetReadOnly(self.infoGuiEle.memo[1], true)
-		self.infoGuiEle.button[1] = guiCreateButton(11, 305, 159, 20, getLocalizationString("GUI_mainmenu_button_impressum_OK"), false, self.infoGuiEle.window[1])
+		self.infoGuiEle.button[1] = guiCreateButton(11, 305, 159, 20, "OK", false, self.infoGuiEle.window[1])
 		guiSetProperty(self.infoGuiEle.button[1], "NormalTextColour", "FFAAAAAA")
 
 		local saved		= isCursorShowing();
@@ -354,9 +357,9 @@ function MainMenu:PerformAction(iInt)
         end
 
 		if(self.menusOpened[iInt] == true) then
-			self:hideLoginpanel()
+			Login["Window"]:hide()
 		else
-			self:showLoginpanel()
+			Login["Window"]:show()
 		end
 
 	elseif(iInt == 2) then	-- Intro
@@ -388,135 +391,15 @@ end
 -- ///////////////////////////////
 
 function MainMenu:Stop()
-	if(toboolean(config:getConfig("save_password"))) then
-        if(_Gsettings.currentPasswordNew) then
-            config:setConfig("saved_password", _Gsettings.currentPasswordNew)
-        end
-    end
-	cRegisterWindowGUI:getInstance():hide();
-
-	hud:Toggle(true);
-	self:destructor();
-
+	self:Destructor();
 end
--- ///////////////////////////////
--- ///// hideLoginpanel		//////
--- ///// Returns: void		//////
--- ///////////////////////////////
-
-function MainMenu:hideLoginpanel()
-	if(self.guiEleLogin["Window"]) then
-		self.guiEleLogin["Window"]:hide()
-		delete(self.guiEleLogin["Window"])
-		self.guiEleLogin["Window"] = nil
-	end
-end
-
--- ///////////////////////////////
--- ///// showLoginpanel		//////
--- ///// Returns: void		//////
--- ///////////////////////////////
-
-function MainMenu:showLoginpanel()
-	if not(self.guiEleLogin["Window"]) then
-		self.guiEleLogin["Window"] 		= new(CDxWindow, getLocalizationString("GUI_loginpanel_window_title"), 370, 270, true, false, "Center|Middle", 0, 0, {tocolor(100, 255, 100, 200), false, getLocalizationString("GUI_loginpanel_window_header")}, getLocalizationString("GUI_loginpanel_window_helptext"))
-		self.guiEleLogin["Image"][1] 		= new(CDxImage, 0, 0, 368, 270-29, "/res/images/bg.png",tocolor(255,255,255,255), self.guiEleLogin["Window"])
-		self.guiEleLogin["Label"][1] 		= new(CDxLabel, getLocalizationString("GUI_loginpanel_label_password"), 222, 103, 136, 30, tocolor(255,255,255,255), 2, "default", "left", "center", self.guiEleLogin["Window"])
-		self.guiEleLogin["Edit"][1] 		= new(CDxEdit, "Text", 220, 139, 139, 38, "Masked", tocolor(0,0,0,255), self.guiEleLogin["Window"])
-		self.guiEleLogin["Button"][1] 		= new(CDxButton, getLocalizationString("GUI_loginpanel_button_login"), 220, 186, 139, 38, tocolor(255,255,255,255), self.guiEleLogin["Window"])
-		self.guiEleLogin["Button"][2] 		= new(CDxButton, getLocalizationString("GUI_loginpanel_button_password_lost"), 10, 190, 170, 30, tocolor(255,255,255,255), self.guiEleLogin["Window"])
-
-
-		local LoginAttempt = false
-
-		self.guiEleLogin["Edit"][1]:addClickFunction( function ( button, state )
-			if (self.guiEleLogin["Edit"][1]:getText() == "Text") then
-				self.guiEleLogin["Edit"][1]:setText("")
-			end
-		end
-		)
-
-		self.guiEleLogin["Button"][1]:addClickFunction(function ( button, state )
-			if not(LoginAttempt) then
-				LoginAttempt = true
-		        local pw = teaDecode(_Gsettings.currentPassword, tostring(config:getConfig("password_key")))
-		        local sha = true;
-
-		        if not(pw) or (self.guiEleLogin["Edit"][1]:getText() ~= "Text") then
-		            pw = self.guiEleLogin["Edit"][1]:getText()
-		            sha = false;
-		            config:setConfig("password_key", generateSalt(pw))
-		            _Gsettings.currentPasswordNew = teaEncode(pw, config:getConfig("password_key"))
-		        end
-
-				triggerServerEvent ( "onPlayerLoginS", getLocalPlayer(), pw)
-				loadingSprite:setEnabled(true);
-				LoggedIn = true -- Vorsichtsmaßname (da keine Client-GUIs)
-			end
-		end
-		)
-		self.guiEleLogin["Button"][2]:addClickFunction( function ( button, state )
-			self.guiEleLogin["Window"]:hide()
-			confirmDialog:hideConfirmDialog()
-
-			local function yes()
-				triggerServerEvent("onPlayerPasswortVergessen", localPlayer, confirmDialog.guiEle["edit"]:getText())
-			end
-
-			local function no()
-				self.guiEleLogin["Window"]:hide();
-				self.guiEleLogin["Window"]:show();
-			end
-
-			confirmDialog:showConfirmDialog(getLocalizationString("GUI_loginpanel_confirm_forget_password_text"), yes, no, true, true)
-		end)
-		addEvent("enableLoginAgain", true)
-		addEventHandler("enableLoginAgain", getRootElement(),function()
-			LoginAttempt = false
-			LoggedIn = false -- Loginstatus rückgängig machen (dummes Event-System lässt es nicht anders zu)
-			loadingSprite:setEnabled(false);
-		end)
-
-		self.guiEleLogin["Window"]:add(self.guiEleLogin["Image"][1])
-		self.guiEleLogin["Window"]:add(self.guiEleLogin["Label"][1])
-		self.guiEleLogin["Window"]:add(self.guiEleLogin["Edit"][1])
-		self.guiEleLogin["Window"]:add(self.guiEleLogin["Button"][1])
-		self.guiEleLogin["Window"]:add(self.guiEleLogin["Button"][2])
-
-
-		self.guiEleLogin["Window"]:show()
-	end
-end
-
--- ///////////////////////////////
--- ///// onJoin				//////
--- ///// Returns: void		//////
--- ///////////////////////////////
-
-function MainMenu:onJoin(status, n_, tblSounds, sKey)
-	loadingSprite:setEnabled(false);
-	hud:Toggle(false);
-
-	if(status == 0) then	-- Unregistriert
-		setCameraMatrix(unpack(self.m_registerCamPos));
-		cRegisterWindowGUI:getInstance():showRegister();
-
-		self:BuildShaders()
-	else
-		mainMenu:Start(tblSounds, sKey);
-	end
-end
-
 
 -- ///////////////////////////////
 -- ///// Constructor 		//////
 -- ///// Returns: void		//////
 -- ///////////////////////////////
 
-function MainMenu:constructor(...)
-
-	addEvent("onClientPlayerJoinBack", true)
-	addEvent("hideLoginWindow", true)
+function MainMenu:Constructor(...)
 	-- Klassenvariablen --
 
 	self.randomCamPos		=
@@ -530,9 +413,6 @@ function MainMenu:constructor(...)
 		{1068.7115478516, -1039.2719726563, 33.080997467041, 968.72735595703, -1039.7657470703, 34.788494110107},
 		{1123.1721191406, -1348.8687744141, 50.625965118408, 1125.6633300781, -1446.2270507813, 27.928588867188},
 	};
-
-	self.m_registerCamPos	= {166.15821838379, -1877.9868164063, 68.480010986328, 233.47451782227, -1804.7602539063, 58.165466308594};
-
 
 	self.pfade				= {};
 	self.pfade.shaders		= "res/shader/"
@@ -589,14 +469,7 @@ function MainMenu:constructor(...)
 		self:RenderMainMenu();
 	end
 
-	self.guiEleLogin =
-	{
-		["Window"] 	= false,
-		["Label"] 	= {},
-		["Image"] 	= {},
-		["Button"] 	= {},
-		["Edit"] 	= {},
-	}
+
 
 	self.buttonLoginClickFunc	= function(...) self:PerformAction(1) end;
 	self.buttonOptionClickFunc	= function(...) self:PerformAction(2) end;
@@ -604,8 +477,7 @@ function MainMenu:constructor(...)
 	self.buttonLeaveClickFunc	= function(...) self:PerformAction(4) end;
 
 	self.toggleMusicFunc		= function(...) self.music = not (self.music) end;
-	self.m_funcOnJoin			= function(...) self:onJoin(...) end
-	self.m_funcOnLoginHide		= function(...) self:Stop(...) end
+
 	-- Methoden --
 
 
@@ -615,9 +487,6 @@ function MainMenu:constructor(...)
 
 	addCommandHandler("impressum", function() self:showNewsPage() end);
 	--logger:OutputInfo("[CALLING] MainMenu: Constructor");
-
-	addEventHandler("onClientPlayerJoinBack", getLocalPlayer(), self.m_funcOnJoin)
-	addEventHandler("hideLoginWindow", getLocalPlayer(), self.m_funcOnLoginHide)
 end
 
 -- ///////////////////////////////
@@ -625,7 +494,7 @@ end
 -- ///// Returns: void		//////
 -- ///////////////////////////////
 
-function MainMenu:destructor()
+function MainMenu:Destructor()
 	fadeCamera(false);
 
 	self.fadeIn		= true;
@@ -645,12 +514,6 @@ function MainMenu:destructor()
 		setCameraTarget(localPlayer)
 	end, 1000, 1)
 	unbindKey("m", "down", self.toggleMusicFunc)
-
-	self:hideLoginpanel()
 end
 
 -- EVENT HANDLER --
-
-addEventHandler("onClientResourceStart", getResourceRootElement(getThisResource()), function()
-	triggerServerEvent("onClientJoin", getLocalPlayer())
-end)

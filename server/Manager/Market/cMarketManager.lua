@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 --
 -- Created by IntelliJ IDEA.
 -- User: Noneatme
@@ -28,7 +19,7 @@ cMarketManager = inherit(cSingleton);
 -- ///////////////////////////////
 
 function cMarketManager:updateItems()
-    self.m_tblItems             = fromJSON(toJSON(CDatabase:getInstance():query("SELECT * FROM item;"), false), "\\", ""); -- Frag mich nicht
+    self.m_tblItems             = fromJSON(toJSON(CDatabase:getInstance():query("SELECT * FROM item;")), "\\", ""); -- Frag mich nicht
     self.m_tblCategories        = CDatabase:getInstance():query("SELECT * FROM item_category;");
     -- SELECT u.Name as Name, ma.* FROM market_angebote ma JOIN user u on ma.PlayerID = u.ID WHERE ma.ItemID = ?;
     self.m_tblLastAngebote      = CDatabase:getInstance():query("SELECT u.Name as Name, ma.* FROM market_angebote ma JOIN user u on PlayerID = u.ID WHERE ma.AngebotType = 1 ORDER BY StartTimestamp DESC LIMIT 25;")

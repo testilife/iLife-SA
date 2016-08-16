@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 -- #######################################
 -- ## Project: 	HUD iLife				##
 -- ## For MTA: San Andreas				##
@@ -18,10 +9,11 @@
 
 -- FUNCTIONS / METHODS --
 
-local cFunc = {};		-- Local Functions
+local cFunc = {};		-- Local Functions 
 local cSetting = {};	-- Local Settings
 
 DxEvents = {};
+DxEvents.__index = DxEvents;
 
 --[[
 
@@ -48,7 +40,7 @@ end
 
 function DxEvents:Constructor(...)
 	self.elements = {}
-
+	
 	--outputDebugString("[CALLING] DxEvents: Constructor");
 end
 

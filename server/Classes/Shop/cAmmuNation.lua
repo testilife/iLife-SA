@@ -1,13 +1,4 @@
-﻿--[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
-CAmmuNation = inherit(CShop)
+﻿CAmmuNation = inherit(CShop)
 
 function CAmmuNation:constructor(aType, dim, iFilliale, iChain)
 	self.Dim = dim

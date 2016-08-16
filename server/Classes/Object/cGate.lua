@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 -- #######################################
 -- ## Project: MTA iLife				##
 -- ## Name: Gate.lua			##
@@ -137,7 +128,7 @@ function Gate:CreateAuthElements()
 				if(getElementType(uElement) == "player") then
 					if(self:HasUserPermission(uElement)) then
 						self:RefreshUsersInCol();
-						
+
 						if(self.iUsersInCol > 0) then
 							if(self.gateState ~= "down") then
 								self:MoveDown();
@@ -161,63 +152,11 @@ function Gate:CreateAuthElements()
 				end
 			end
 
-			self.colShape	= createColSphere(self.tblPos[1], self.tblPos[2], self.tblPos[3], 15);
-
-
-			addEventHandler("onColShapeHit", self.colShape, self.enterColFunc)
-			addEventHandler("onColShapeLeave", self.colShape, self.leaveColFunc)
-			
-		elseif(self.sOpenType == "automatic-vehicle") then
-
-			self.iVehiclesInCol	= 0;
-
-			function Gate:RefreshVehiclesInCol()
-				self.iVehiclesInCol = 0;
-				local elements = getElementsWithinColShape(self.colShape, "vehicle");
-				for index, ele in pairs(elements) do
-					ele = getVehicleController(ele)
-					if ele and (ele.LoggedIn) and (self:HasUserPermission(ele)) then
-						self.iVehiclesInCol = self.iVehiclesInCol+1;
-					end
-				end
-
-			end
-
-			self.enterColFunc	= function(uElement)
-				if(getElementType(uElement) == "vehicle") then
-				uElement = getVehicleController(uElement)
-					if(uElement and self:HasUserPermission(uElement)) then
-						self:RefreshVehiclesInCol();
-
-						if(self.iVehiclesInCol > 0) then
-							if(self.gateState ~= "down") then
-								self:MoveDown();
-							end
-						end
-					end
-				end
-			end
-
-			self.leaveColFunc	= function(uElement)
-				if(getElementType(uElement) == "vehicle") then
-				uElement = getVehicleController(uElement)
-					if(uElement and self:HasUserPermission(uElement)) then
-						self:RefreshVehiclesInCol();
-
-						if(self.iVehiclesInCol < 1) then
-							if(self.gateState ~= "up") then
-								self:MoveUp();
-							end
-						end
-					end
-				end
-			end
-
 			self.colShape	= createColSphere(self.tblPos[1], self.tblPos[2], self.tblPos[3], 25);
-			
+
+
 			addEventHandler("onColShapeHit", self.colShape, self.enterColFunc)
 			addEventHandler("onColShapeLeave", self.colShape, self.leaveColFunc)
-			
 		elseif(self.sOpenType == "click") then
 			addEventHandler("onElementClicked", self.uGate, function(btn, state, uPlayer)
 				if(btn == "left") and (state == "down") then
@@ -368,7 +307,6 @@ function Gate:Constructor(iID, sName, sModell, iMoveTime, tblPos, tblPosTo, tblM
 		["click"]		= true,
 		["command"]		= true,
 		["automatic"]	= true,
-		["automatic-vehicle"]	= true,
 		["keypads"]		= true,
 	}
 

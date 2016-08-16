@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 -- #######################################
 -- ## Project: MTA iLife				##
 -- ## Name: CustomVehicleDirtManager			##
@@ -48,12 +39,12 @@ end
 
 function CustomVehicleDirtManager:UpdateDirtLevel(uVehicle, iNumber)
 	self.vehicleDirtLevel[uVehicle] = iNumber;
-
+	
 	for i = 0, 3, 1 do
 		engineRemoveShaderFromWorldTexture(self.vehicleDirtShader[i], "vehiclegrunge256", uVehicle);
 	end
 	engineApplyShaderToWorldTexture(self.vehicleDirtShader[iNumber], "vehiclegrunge256", uVehicle);
-
+	
 end
 
 -- ///////////////////////////////
@@ -103,10 +94,7 @@ function CustomVehicleDirtManager:Enable()
 		dxSetShaderValue(self.vehicleDirtShader[i], "Tex", self.vehicleDirtTextures[i]);
 	end
 
-	if(cConfiguration:getInstance():getConfig("lowrammode"):toboolean() == true) then
-		self.enabled = false;
-		outputConsole("Lowrammode activated, deactivated custom vehicle dirt");
-	end
+
 end
 -- ///////////////////////////////
 -- ///// Constructor 		//////

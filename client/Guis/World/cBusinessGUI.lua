@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 -- #######################################
 -- ## Project: MTA iLife				##
 -- ## Name: BusinessGUI.lua			##
@@ -275,7 +266,6 @@ end
 -- ///////////////////////////////
 
 function BusinessGUI:Show(iID, iCost, iOwnerID, sTitle, sDescription, sEinkommen)
-if getPedOccupiedVehicle(getLocalPlayer()) then return false end
 	if not(self.guiEle["window"]) then
 
 		self.guiEle["window"] 	= new(CDxWindow, "Business", 466, 274, true, true, "Center|Middle")

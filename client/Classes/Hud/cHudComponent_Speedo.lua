@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 -- #######################################
 -- ## Project: 	HUD iLife				##
 -- ## For MTA: San Andreas				##
@@ -55,7 +46,6 @@ function HudComponent_Speedo:RenderType1()
 
 	local alpha = hud.components[name].alpha
 	local theVehicle = getPedOccupiedVehicle(getLocalPlayer())
-	local cat = vehicleCategoryManager:getVehicleCategory(theVehicle)
 
 	if(theVehicle) and (isPedInVehicle(localPlayer)) then else
 		self.forceRender = false;
@@ -93,22 +83,16 @@ function HudComponent_Speedo:RenderType1()
 
 	-- Tanknadel
 
-	if not vehicleCategoryManager:isNoFuelVehicleCategory(cat) then
-		local fuel = 100;
-		local max_fuel = vehicleCategoryManager:getCategoryTankSize(cat)
-		local empty_degree = 224
-		local full_degree = 136
-		if(theVehicle) then
-			if(getElementData(theVehicle, "Fuel")) then
-				fuel = tonumber(getElementData(theVehicle, "Fuel"));
-			end
+	local fuel = 100;
+	if(theVehicle) then
+		if(getElementData(theVehicle, "Fuel")) then
+			fuel = tonumber(getElementData(theVehicle, "Fuel"));
 		end
-		if fuel > max_fuel then fuel = max_fuel end
-
-		local fuel_degree = full_degree+(full_degree-empty_degree)*fuel/max_fuel
-
-		dxDrawImage(x+(54*hud.components[name].zoom), y+(152*hud.components[name].zoom), (388/2)*hud.components[name].zoom, (23/2)*hud.components[name].zoom, hud.pfade.images.."component_speedo/Tanknadel.png", fuel_degree, 0, 0, tocolor(255, 255, 255, alpha), false)
 	end
+
+
+	dxDrawImage(x+(54*hud.components[name].zoom), y+(152*hud.components[name].zoom), (388/2)*hud.components[name].zoom, (23/2)*hud.components[name].zoom, hud.pfade.images.."component_speedo/Tanknadel.png", 130-fuel/1.2, 0, 0, tocolor(255, 255, 255, alpha), false)
+
 	-- Nadel & Punkt
 
 	local npos = 0

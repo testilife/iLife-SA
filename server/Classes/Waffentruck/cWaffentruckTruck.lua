@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 --
 -- Created by IntelliJ IDEA.
 -- User: Noneatme
@@ -426,3 +417,9 @@ function cWaffentruckTruck:constructor(iFactionID, iX, iY, iZ, iRX, iRY, iRZ, iK
 end
 
 -- EVENT HANDLER --
+
+
+addCommandHandler("waft", function(tp, cmd, i)
+    local pos = tp:getPosition();
+    cWaffentruckTruck:new(nil, pos:getX()+4, pos:getY(), pos:getZ(), 0, 0, 0, tonumber(i));
+end)

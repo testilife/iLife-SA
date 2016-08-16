@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 -- #######################################
 -- ## Project: 	HUD iLife				##
 -- ## For MTA: San Andreas				##
@@ -72,71 +63,50 @@ end
 function HudComponent_Radar:refreshBlips()
 	if(not isElement(self.blipTarget)) then return; end
 	dxSetRenderTarget(self.blipTarget, true);
-
-	if (self.globalBlips) then
+	
+	if (#self.globalBlips > 0) then
 		for _, blip in pairs(self.globalBlips) do
 			local model    = getBlipIcon(blip);
 			local r, g, b  = 255, 255, 255;
 			local x, y, _  = getElementPosition(blip);
 			local mapX     = (x/2)+1500;
 			local mapY     = 3000-((y/2)+1500);
-			local width 	= 32
 			if(model < 2) then
 				r, g, b = getBlipColor(blip);
-				width 	= 16
 			end
-
+			local width = 32
 			dxDrawImage(mapX-(width/2), mapY-(width/2), width, width, ('%sblips/%d.png'):format(self.imgPath, model), 0, 0, 0, tocolor(r, g, b, 255));
 		end
-	end
-	for _, blip in pairs(getElementsByType('blip')) do
-		if (getElementDimension(blip) == getElementDimension(localPlayer)) then
-			local model    = getBlipIcon(blip);
-			local r, g, b  = 255, 255, 255;
-			local x, y, _  = getElementPosition(blip);
-			local mapX     = (x/2)+1500;
-			local mapY     = 3000-((y/2)+1500);
-			local width 	= 32
-			if(model < 2) then
-				r, g, b = getBlipColor(blip);
-				width 	= 16
+	else
+		for _, blip in pairs(getElementsByType('blip')) do
+			if (getElementDimension(blip) == getElementDimension(localPlayer)) then
+				local model    = getBlipIcon(blip);
+				local r, g, b  = 255, 255, 255;
+				local x, y, _  = getElementPosition(blip);
+				local mapX     = (x/2)+1500;
+				local mapY     = 3000-((y/2)+1500);
+				if(model < 2) then
+					r, g, b = getBlipColor(blip);
+				end
+				local width = 32
+				dxDrawImage(mapX-(width/2), mapY-(width/2), width, width, ('%sblips/%d.png'):format(self.imgPath, model), 0, 0, 0, tocolor(r, g, b, 255));
 			end
-
-			dxDrawImage(mapX-(width/2), mapY-(width/2), width, width, ('%sblips/%d.png'):format(self.imgPath, model), 0, 0, 0, tocolor(r, g, b, 255));
 		end
 	end
-
 	dxSetTextureEdge(self.blipTarget, "clamp");
 	dxSetRenderTarget();
 end
 
 function HudComponent_Radar:refreshRadarAreas()
 	if(not isElement(self.radarTarget)) then return; end
+ 
 	dxSetRenderTarget(self.radarTarget, true);
-	dxSetBlendMode("overwrite")
 	for _, zone in pairs(getElementsByType('radararea')) do
-		if(getElementDimension(zone) == getElementDimension(localPlayer)) then
-			--[[
-			local r, g, b, a    = getRadarAreaColor(zone);
-			local sizeX, sizeY  = getRadarAreaSize(zone);
-			local x, y, _       = getElementPosition(zone);
-			dxDrawRectangle((x/2)+1500, 3000-((y/2)+1500), sizeX, sizeY, tocolor(r, g, b, a));]]
-
-			local r, g, b, a    = getRadarAreaColor(zone);
-			local sizeX, sizeY  = getRadarAreaSize(zone);
-			local x, y, _       = getElementPosition(zone);
-			local mapX    			= (x/2)+1500;
-			local mapY     			= 3000-((y/2)+1500);
-			local width, height 	= getRadarAreaSize(zone);
-			dxDrawRectangle(mapX-width/2, mapY-height/2, width, height, tocolor(r, g, b, 255));
-			--[[
-			local r, g, b, a    = getRadarAreaColor(zone);
-			local sizeX, sizeY  = getRadarAreaSize(zone);
-			local x, y, _       = getElementPosition(zone);
-			dxDrawRectangle((x/2)+1500, 3000-((y/2)+1500), sizeX, sizeY, tocolor(r, g, b, 255));]]
-		end
+		local r, g, b, a    = getRadarAreaColor(zone);
+		local sizeX, sizeY  = getRadarAreaSize(zone);
+		local x, y, _       = getElementPosition(zone);
+		dxDrawRectangle((x/2)+1500, 3000-((y/2)+1500), sizeX, sizeY, tocolor(r, g, b, a));
 	end
-	dxSetBlendMode("blend")
 	dxSetRenderTarget();
 end
 
@@ -158,7 +128,6 @@ function HudComponent_Radar:MoveIn()
 
 		-- Anti-Lag
 		self:RefreshALShape();
-		self:refreshRadarAreas()
 	end
 end
 
@@ -180,7 +149,6 @@ function HudComponent_Radar:MoveOut()
 
 		-- Anti-Lag
 		self:RefreshALShape();
-		self:refreshRadarAreas()
 	end
 end
 
@@ -263,6 +231,8 @@ function HudComponent_Radar:Render()
 	local leben_w = 174/100*getElementHealth(localPlayer)
 	dxDrawRectangle(x+2*hud.components[component_name].zoom, ((y+h)+((-30+12))*hud.components[component_name].zoom), leben_w*hud.components[component_name].zoom, (25-8)*hud.components[component_name].zoom, tocolor(20, 100, 20, alpha/1.5))
 
+	leben_w = 174/100*getPedArmor(localPlayer)
+	dxDrawRectangle(x+2*hud.components[component_name].zoom, ((y+h)+((-30+12))*hud.components[component_name].zoom), leben_w*hud.components[component_name].zoom, (25-8)*hud.components[component_name].zoom, tocolor(50, 50, 50, alpha))
 
 
 	-- Luft
@@ -273,15 +243,11 @@ function HudComponent_Radar:Render()
 	leben_w = 175/(getPedStat ( localPlayer, 225 )+1000)*getPedOxygenLevel(localPlayer)
 	dxDrawRectangle(x+(2+174)*hud.components[component_name].zoom, ((y+h)+((-30+12))*hud.components[component_name].zoom), leben_w*hud.components[component_name].zoom, (25-8)*hud.components[component_name].zoom, tocolor(0, 50, 75, alpha/1.5))
 
-	leben_w = 174/100*getPedArmor(localPlayer)
-	dxDrawRectangle(x+(2+174)*hud.components[component_name].zoom, ((y+h)+((-30+12))*hud.components[component_name].zoom), leben_w*hud.components[component_name].zoom, (25-8)*hud.components[component_name].zoom, tocolor(65, 65, 65, alpha/1.5))
-
+		
 	-- Blips
-	dxDrawImageSection(x, y, self.radarTypW*hud.components[component_name].zoom, genau_y*hud.components[component_name].zoom, nX-original_zoom_alt_x/2, nY-original_zoom_alt_y/2, original_zoom_alt_x, original_zoom_alt_y, self.radarTarget, 0, 0, 0, tocolor(255, 255, 255, alpha/3))
-	dxDrawImageSection(x, y, self.radarTypW*hud.components[component_name].zoom, genau_y*hud.components[component_name].zoom, nX-original_zoom_alt_x/2, nY-original_zoom_alt_y/2, original_zoom_alt_x, original_zoom_alt_y, self.blipTarget, 0, 0, 0, tocolor(255, 255, 255, alpha))
-
+		
 	-- Ich
-	dxDrawImage(x+(w/2)-((16/current_zoom*512)*hud.components[component_name].zoom)/2, y+(h/2)-(((16/2)/current_zoom*512+28)*hud.components[component_name].zoom)/2, (16/current_zoom*512)*hud.components[component_name].zoom, (16/current_zoom*512)*hud.components[component_name].zoom, hud.pfade.images.."component_radar/icon_me.png", (getPedRotation(localPlayer)+180)*-1, 0, 0, tocolor(255, 255, 255, alpha));
+	dxDrawImage(x+(w/2)-((16/current_zoom*512)*hud.components[component_name].zoom)/2, y+(h/2)-((16/current_zoom*512+28)*hud.components[component_name].zoom)/2, (16/current_zoom*512)*hud.components[component_name].zoom, (16/current_zoom*512)*hud.components[component_name].zoom, hud.pfade.images.."component_radar/icon_me.png", (getPedRotation(localPlayer)+180)*-1, 0, 0, tocolor(255, 255, 255, alpha));
 
 	-- Zoom Level
 	local percent = 0;
@@ -312,9 +278,9 @@ function HudComponent_Radar:Render()
 
 	dxDrawRectangle(x+2*hud.components[component_name].zoom, y, w-2*hud.components[component_name].zoom, 20*hud.components[component_name].zoom, tocolor(0, 0, 0, alpha/3))
 	dxDrawText(zoneText, x, y+2*hud.components[component_name].zoom, x+w, y+h, tocolor(200, 200, 200, alpha), 1*hud.components[component_name].zoom, "default-bold", "center", "top")
-
+	
 	--Blips & Gangareas
-
+	
 	if (#self.globalBlips > 0) then
 		gBlipSet = true
 		dxDrawImage(x, y, w, h, hud.pfade.images.."component_radar/background_alt.png", 0, 0, 0, tocolor(255, 255, 255, alpha));
@@ -326,7 +292,7 @@ function HudComponent_Radar:Render()
 					local rot = findRotation(px,py,bx,by)
 					local distance = math.sqrt( (x+(w/2)^2), (y+(h/2)^2) )
 					local xx,yy = getPointFromDistanceRotation( x+(w/2), y+(h/2), distance, 360-rot)
-
+					
 					if (xx > x+w) then
 						xx = tonumber(x+w)
 					end
@@ -349,12 +315,14 @@ function HudComponent_Radar:Render()
 			else
 				self:RefreshALShape();
 			end
-		end
+		end	
 	else
 		if (gBlipSet) then
 			self:RefreshALShape()
 			gBlipSet = false
 		end
+		dxDrawImageSection(x, y, self.radarTypW*hud.components[component_name].zoom, genau_y*hud.components[component_name].zoom, nX-original_zoom_alt_x/2, nY-original_zoom_alt_y/2, original_zoom_alt_x, original_zoom_alt_y, self.blipTarget, 0, 0, 0, tocolor(255, 255, 255, alpha))
+		dxDrawImageSection(x, y, self.radarTypW*hud.components[component_name].zoom, genau_y*hud.components[component_name].zoom, nX-original_zoom_alt_x/2, nY-original_zoom_alt_y/2, original_zoom_alt_x, original_zoom_alt_y, self.radarTarget, 0, 0, 0, tocolor(255, 255, 255, alpha))
 		dxDrawImage(x, y, w, h, hud.pfade.images.."component_radar/background_alt.png", 0, 0, 0, tocolor(255, 255, 255, alpha));
 	end
 end
@@ -439,7 +407,7 @@ function HudComponent_Radar:Constructor(zoom, sizeX, sizeY, antilag, typ, typew,
 	local name, hudklasse = debug.getlocal(3, 1)
 
 	self.imgPath = hudklasse.pfade.images.."component_radar/"
-
+	
 	if(fileExists(hudklasse.pfade.images.."component_radar/custom_radar.jpg")) then
 		self.texture 		= dxCreateTexture(hudklasse.pfade.images.."component_radar/custom_radar.jpg", "argb", true, "clamp", "2d");
 		outputConsole("Custom radar loaded, size: "..sizeX.." x "..sizeY);
@@ -450,23 +418,16 @@ function HudComponent_Radar:Constructor(zoom, sizeX, sizeY, antilag, typ, typew,
 
 
 	self.renderTarget 		= dxCreateRenderTarget (256, 256, true);
+	self.renderTargetAlt 	= dxCreateRenderTarget (typew, typeh, true);
+	self.radarRenderTarget	= dxCreateRenderTarget (self.sizeX, self.sizeY, true);
 
-	if(toboolean(config:getConfig("lowrammode"))) then
-		self.radarRenderTarget	= dxCreateRenderTarget (self.sizeX/2, self.sizeY/2, true);
-	else
-		self.radarRenderTarget	= dxCreateRenderTarget (self.sizeX, self.sizeY, true);
-    end
-
-
-	local mapWidth, mapHeight = 3000, 3000
-	if(toboolean(config:getConfig("lowrammode"))) then
-		mapWidth, mapHeight = mapWidth, mapHeight
-	end
+	
+	local mapWidth, mapHeight = 3000,3000
 	self.blipTarget   = dxCreateRenderTarget(mapWidth, mapHeight, true);
     self.radarTarget  = dxCreateRenderTarget(mapWidth, mapHeight, true);
-
+	
 	self:RefreshALShape()
-
+	
 	-- Event
 	bindKey(self.moveOutKey, "down", self.moveOutFunc)
 	bindKey(self.moveInKey, "down", self.moveInFunc)

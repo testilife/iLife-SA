@@ -1,13 +1,4 @@
-﻿--[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
-ShopRobs = {}
+﻿ShopRobs = {}
 
 PlayerShopRobs = {}
 
@@ -19,13 +10,13 @@ function CShopRob:constructor(iID, eElement)
 	self.ID = iID --Dimension of the Shop
 	self.Element = eElement
 	self.LastAttacked = 0
-
+	
 	local x,y,z = getElementPosition(self.Element)
 	local sphere = createColSphere(x,y,z, 50)
-
+	
 	self.Shop = ""
 	self.Location = ""
-
+	
 	for k,v in ipairs(getElementsWithinColShape(sphere, "marker")) do
 		if (getElementDimension(v) == self.ID) then
 			if (getElementData(v, "Type") == "PortOut") then
@@ -35,13 +26,13 @@ function CShopRob:constructor(iID, eElement)
 			end
 		end
 	end
-
+	
 	self.GangArea = false
 	if GangAreas[self.Location] then
 		self.GangArea = GangAreas[self.Location]
 	end
-
-	addEventHandler("onElementClicked", self.Element,
+	
+	addEventHandler("onElementClicked", self.Element, 
 		function(mouseButton, buttonState, thePlayer)
 			if (mouseButton == "right") and (buttonState == "down") then
 				self:start(thePlayer)
@@ -67,7 +58,6 @@ function CShopRob:start(thePlayer)
 							return false
 						end
 
-						
 						--[[
 						if (WaffentruckActive) then
 							thePlayer:showInfoBox("error", "Es findet gerade ein Waffentruck statt!")
@@ -75,13 +65,13 @@ function CShopRob:start(thePlayer)
 						end]]
 						CFaction:sendTypeMessage(1, "Ein Raubüberfall findet statt: "..self.Shop.." in "..self.Location, 180,0,0)
 					--	if (self.GangArea) then self.GangArea:getFaction():sendMessage("Ein Raubüberfall findet statt: "..self.Shop.." in "..self.Location, 180,0,0) end
-
+						
 						for k,v in ipairs(getElementsNearElement(self.Element, 30, "ped")) do
 							if (getElementDimension(v) == getElementDimension(self.Element)) then
 								setPedAnimation(v, "shop", "SHP_Rob_HandsUp", -1, true, false, false, true)
 							end
 						end
-
+						
 						ShopRobActive = ShopRobActive +1
 						--[[
 						self.Robber = thePlayer:getFaction()
@@ -100,14 +90,14 @@ function CShopRob:start(thePlayer)
 						PlayerShopRobs[getPlayerName(thePlayer)] = getTickCount()
 						self.Timer = setTimer(bind(CShopRob.TimerFunc, self), 30000, 1, thePlayer)
 						self.LastEndTimer = setTimer(bind(CShopRob.EndTimerFunc, self), 480000, 1)
-
+						
 						local faccount = 0
 						for k,v in ipairs(getElementsByType("player")) do
 							if (getElementData(v, "online") and (v.Fraktion) and v.Fraktion:getType() == 1) then
 								faccount = faccount+1
 							end
 						end
-
+						
 						if (faccount < 3 )then
 							thePlayer:setWanteds(thePlayer:getWanteds()+2)
 							thePlayer:showInfoBox("warning", "Du wurdest auf einer Überwachungskamera gesehen.")
@@ -162,23 +152,24 @@ function CShopRob:clear()
 	self.Counter = 0
 	self.Robber = false
 	self.UnderAttack = false
-
+	
 	if isTimer(self.Timer) then
 		killTimer(self.Timer)
 	end
-
+	
 	if isTimer(self.LastEndTimer) then
 		killTimer(self.LastEndTimer)
 	end
-
+	
 	if (self.Race) then
 		delete(self.Race)
 		self.Race = nil
 	end
-
+	
 	for k,v in ipairs(getElementsNearElement(self.Element, 30, "ped")) do
 		if (getElementDimension(v) == getElementDimension(self.Element)) then
 			setPedAnimation(v, "shop", "SHP_Rob_HandsUp", -1, true, false, false, true)
 		end
 	end
 end
+

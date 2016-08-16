@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 --
 -- Created by IntelliJ IDEA.
 -- User: Noneatme
@@ -27,7 +18,7 @@ cCorporationGUI = inherit(cSingleton);
 -- ///////////////////////////////
 
 function cCorporationGUI:show()
-    if not(self.enabled) and not(clientBusy) and (localPlayer:getData("loggedIn")) then
+    if not(self.enabled) and not(clientBusy) then
         self:createElements()
         self.enabled = true
         clientBusy      = self.enabled
@@ -57,16 +48,16 @@ end
 function cCorporationGUI:createElements()
     if not(self.guiEle["window"]) then
 
-        self.guiEle["window"] 	= new(CDxWindow, getLocalizationString("GUI_corporation_main_window_title"), 450, 400, true, true, "Center|Middle", 0, 0, {tocolor(225, 125, 155, 255), false, "Corporations"}, "Hier kannst du eigene Firmen und Gangs gruenden.")
+        self.guiEle["window"] 	= new(CDxWindow, "Corporationsystem", 450, 400, true, true, "Center|Middle", 0, 0, {tocolor(225, 125, 155, 255), false, "Corporations"}, "Hier kannst du eigene Firmen und Gangs gruenden.")
         self.guiEle["list1"]	= new(CDxList, 5, 5, 250, 370, tocolor(255,255,255,255), self.guiEle["window"])
 
         self.guiEle["window"].xtraHide = function() self:hide() end
-        self.guiEle["list1"]:addColumn(getLocalizationString("GUI_corporation_main_list1_id"))
-        self.guiEle["list1"]:addColumn(getLocalizationString("GUI_corporation_main_list1_name"))
-        self.guiEle["list1"]:addColumn(getLocalizationString("GUI_corporation_main_list1_members"))
+        self.guiEle["list1"]:addColumn("ID")
+        self.guiEle["list1"]:addColumn("Name")
+        self.guiEle["list1"]:addColumn("Mitglieder")
 
-        self.guiEle["button1"]	= new(CDxButton, getLocalizationString("GUI_corporation_main_button_viewcorp"), 280, 20, 139, 29, tocolor(255,255,255,255), self.guiEle["window"])
-        self.guiEle["button2"]	= new(CDxButton, getLocalizationString("GUI_corporation_main_button_createcorp"), 280, 60, 139, 29, tocolor(255,255,255,255), self.guiEle["window"])
+        self.guiEle["button1"]	= new(CDxButton, "Corp. Betrachten", 280, 20, 139, 29, tocolor(255,255,255,255), self.guiEle["window"])
+        self.guiEle["button2"]	= new(CDxButton, "Corp. Gruenden", 280, 60, 139, 29, tocolor(255,255,255,255), self.guiEle["window"])
 
         self.guiEle["button1"]:setDisabled(true)
 
@@ -186,7 +177,7 @@ function cCorporationGUI:constructor(...)
 
         end
 
-        confirmDialog:showConfirmDialog(getLocalizationString("GUI_corporation_main_confirm_invite", sName2, sName), ja, nein, false, false)
+        confirmDialog:showConfirmDialog("Du wurdest von "..sName2.." eingeladen, der Corporation: "..sName.." beizutreten. Moechtest du Beitreten?", ja, nein, false, false)
     end)
 end
 

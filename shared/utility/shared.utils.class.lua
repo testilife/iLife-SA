@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 -- Developer: sbx320
 -- License: MIT
 -- Github Repos: https://github.com/sbx320/lua_utils
@@ -83,10 +74,6 @@ function enew(element, class, ...)
 end
 
 function new(class, ...)
-	if not(type(class) == "table") then
-		traceback()
-		
-	end
 	assert(type(class) == "table", "first argument provided to new is not a table")
 
 	-- DEBUG: Validate that we are not instantiating a class with pure virtual methods

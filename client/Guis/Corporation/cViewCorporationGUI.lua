@@ -1,12 +1,3 @@
---[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
 --
 -- Created by IntelliJ IDEA.
 -- User: Noneatme
@@ -27,7 +18,7 @@ cViewCorporationGUI = inherit(cSingleton);
 -- ///////////////////////////////
 
 function cViewCorporationGUI:show()
-    if not(self.enabled) and (localPlayer:getData("loggedIn")) then
+    if not(self.enabled) then
         self:createElements()
         self.enabled = true
 
@@ -108,21 +99,21 @@ function cViewCorporationGUI:generateTabItems()
         [3] = new(CDxLabel, self.m_sCurCorpName, 5, -5, 200, 20, tocolor(255, 255, 255, 255), 1, "default-bold", "center", "top", self.guiEle["tab1"]),
         [4] = new(CDxLine2D, 205, -5, 0, 470, tocolor(255, 255, 255, 155), 1, self.guiEle["tab1"]),
         [5] = new(CDxImage, 40, 20, 128, 128, self.m_curTexture, tocolor(255, 255, 255, 255), self.guiEle["tab1"]),
-        [6] = new(CDxLabel, getLocalizationString("GUI_corporation_viewcorp_tab1_label_color"), 5, 155, 200, 50, tocolor(255, 255, 255, 255), 1, "default-bold", "center", "top", self.guiEle["tab1"]),
+        [6] = new(CDxLabel, "Farbe:", 5, 155, 200, 50, tocolor(255, 255, 255, 255), 1, "default-bold", "center", "top", self.guiEle["tab1"]),
         [7] = new(CDxLine2D, 55, 185, 100, 0, tocolor(r, g, b, a), 20, self.guiEle["tab1"]),
         [8] = new(CDxLine2D, 205, 100, 380, 0, tocolor(255, 255, 255, 155), 1, self.guiEle["tab1"]),
-        [9] = new(CDxLabel, getLocalizationString("GUI_corporation_viewcorp_tab1_label_name", self.m_sCurCorpName), 220, 0, 380, 40, tocolor(255, 255, 255, 255), 1.5, "default-bold", "left", "top", self.guiEle["tab1"]),
-        [10] = new(CDxLabel, getLocalizationString("GUI_corporation_viewcorp_tab1_label_tag", self.m_sCurCorpShortName), 220, 30, 380, 40, tocolor(255, 255, 255, 255), 1.5, "default-bold", "left", "top", self.guiEle["tab1"]),
-        [11] = new(CDxLabel, getLocalizationString("GUI_corporation_viewcorp_tab1_label_founder", self.m_sFounderName), 220, 60, 380, 40, tocolor(255, 255, 255, 255), 1.5, "default-bold", "left", "top", self.guiEle["tab1"]),
+        [9] = new(CDxLabel, "Name: "..self.m_sCurCorpName, 220, 0, 380, 40, tocolor(255, 255, 255, 255), 1.5, "default-bold", "left", "top", self.guiEle["tab1"]),
+        [10] = new(CDxLabel, "Tag: "..self.m_sCurCorpShortName, 220, 30, 380, 40, tocolor(255, 255, 255, 255), 1.5, "default-bold", "left", "top", self.guiEle["tab1"]),
+        [11] = new(CDxLabel, "Founder: "..self.m_sFounderName, 220, 60, 380, 40, tocolor(255, 255, 255, 255), 1.5, "default-bold", "left", "top", self.guiEle["tab1"]),
         [12] = new(CDxList, 215, 115, 365, 125, tocolor(255, 255, 255, 255), self.guiEle["tab1"]),
-        [13] = new(CDxLabel, getLocalizationString("GUI_corporation_viewcorp_tab1_label_bio"), 220, 250, 380, 40, tocolor(255, 255, 255, 255), 1, "default-bold", "left", "top", self.guiEle["tab1"]),
+        [13] = new(CDxLabel, "Bio: ", 220, 250, 380, 40, tocolor(255, 255, 255, 255), 1, "default-bold", "left", "top", self.guiEle["tab1"]),
         [14] = new(CDxLabel, self.m_sBio, 220, 280, 360, 180, tocolor(255, 255, 255, 255), 0.7, "default-bold", "left", "top", self.guiEle["tab1"], true),
 
     }
     self.m_tabEle["tab2"]   =
     {
         [1] = new(CDxList, 5, -10, 585, 350, tocolor(255, 255, 255, 255), self.guiEle["tab1"]),
-        [2] = new(CDxLabel, getLocalizationString("GUI_corporation_viewcorp_tab2_label_member").." "..self.m_uCurCorp.m_iMembers.." / "..self.m_uCurCorp.m_iMaxMembers, 220, 350, 200, 20, tocolor(255, 255, 255, 255), 1, "default-bold", "left", "top", self.guiEle["tab1"], true),
+        [2] = new(CDxLabel, "Aktuelle Member: "..self.m_uCurCorp.m_iMembers.." / "..self.m_uCurCorp.m_iMaxMembers, 220, 350, 200, 20, tocolor(255, 255, 255, 255), 1, "default-bold", "left", "top", self.guiEle["tab1"], true),
 
     }
     self.m_tabEle["tab3"]   =
@@ -135,26 +126,26 @@ function cViewCorporationGUI:generateTabItems()
 
     }
 
-    self.m_tabEle["tab1"][12]:addColumn(getLocalizationString("GUI_corporation_viewcorp_tab1_list_attribute"));
-    self.m_tabEle["tab1"][12]:addColumn(getLocalizationString("GUI_corporation_viewcorp_tab1_list_value"));
+    self.m_tabEle["tab1"][12]:addColumn("Attribut");
+    self.m_tabEle["tab1"][12]:addColumn("Wert");
 
-    self.m_tabEle["tab2"][1]:addColumn(getLocalizationString("GUI_corporation_viewcorp_tab2_list_playername"))
-    self.m_tabEle["tab2"][1]:addColumn(getLocalizationString("GUI_corporation_viewcorp_tab2_list_roles"), true)
+    self.m_tabEle["tab2"][1]:addColumn("Spielername")
+    self.m_tabEle["tab2"][1]:addColumn("Rollen", true)
 
-    self.m_tabEle["tab4"][1]:addColumn(getLocalizationString("GUI_corporation_viewcorp_tab3_list_corpname"))
-    self.m_tabEle["tab4"][1]:addColumn(getLocalizationString("GUI_corporation_viewcorp_tab3_list_player"))
-    self.m_tabEle["tab4"][1]:addColumn(getLocalizationString("GUI_corporation_viewcorp_tab3_list_state"), true)
+    self.m_tabEle["tab4"][1]:addColumn("Corporationname")
+    self.m_tabEle["tab4"][1]:addColumn("Spieler")
+    self.m_tabEle["tab4"][1]:addColumn("Status", true)
 
     if(self.m_uCurCorp) then
-        self.m_tabEle["tab1"][12]:addRow(getLocalizationString("GUI_corporation_viewcorp_tab1_list1_ceo").."|"..self.m_uCurCorp.m_sFounderName)
-        self.m_tabEle["tab1"][12]:addRow(getLocalizationString("GUI_corporation_viewcorp_tab1_list1_foundeddate").."|"..self.m_uCurCorp.m_sFounderDate)
-        self.m_tabEle["tab1"][12]:addRow(getLocalizationString("GUI_corporation_viewcorp_tab1_list1_interest").."|"..self.m_uCurCorp.m_iTaxRate.."%")
-        self.m_tabEle["tab1"][12]:addRow(getLocalizationString("GUI_corporation_viewcorp_tab1_list1_payage").."|$"..self.m_uCurCorp.m_iLohn)
-        self.m_tabEle["tab1"][12]:addRow(getLocalizationString("GUI_corporation_viewcorp_tab1_list1_state").."|"..self.m_uCurCorp.m_iState.."%")
-        self.m_tabEle["tab1"][12]:addRow(getLocalizationString("GUI_corporation_viewcorp_tab1_list1_members").."|"..self.m_uCurCorp.m_iMembers)
-        self.m_tabEle["tab1"][12]:addRow(getLocalizationString("GUI_corporation_viewcorp_tab1_list1_max_members").."|"..self.m_uCurCorp.m_iMaxMembers)
-        self.m_tabEle["tab1"][12]:addRow(getLocalizationString("GUI_corporation_viewcorp_tab1_list1_vehicles").."|"..self.m_uCurCorp.m_iCurCorpVehicle)
-        self.m_tabEle["tab1"][12]:addRow(getLocalizationString("GUI_corporation_viewcorp_tab1_list1_max_vehicles").."|"..self.m_uCurCorp.m_iMaxVehicles)
+        self.m_tabEle["tab1"][12]:addRow("CEO|"..self.m_uCurCorp.m_sFounderName)
+        self.m_tabEle["tab1"][12]:addRow("Gruendungsdatum|"..self.m_uCurCorp.m_sFounderDate)
+        self.m_tabEle["tab1"][12]:addRow("Zinssatz|"..self.m_uCurCorp.m_iTaxRate.."%")
+        self.m_tabEle["tab1"][12]:addRow("Lohn|$"..self.m_uCurCorp.m_iLohn)
+        self.m_tabEle["tab1"][12]:addRow("Status|"..self.m_uCurCorp.m_iState.."%")
+        self.m_tabEle["tab1"][12]:addRow("Mitglieder|"..self.m_uCurCorp.m_iMembers)
+        self.m_tabEle["tab1"][12]:addRow("Max. Member|"..self.m_uCurCorp.m_iMaxMembers)
+        self.m_tabEle["tab1"][12]:addRow("Fahrzeuge|"..self.m_uCurCorp.m_iCurCorpVehicle)
+        self.m_tabEle["tab1"][12]:addRow("Max. Fahrzeuge|"..self.m_uCurCorp.m_iMaxVehicles)
 
 
         if(self.m_tblCurConnections) then
@@ -214,15 +205,15 @@ end
 function cViewCorporationGUI:createElements()
     if not(self.guiEle["window"]) then
 
-        self.guiEle["window"] 	= new(CDxWindow, getLocalizationString("GUI_corporation_viewcorp_window_title"), 600, 530, true, true, "Center|Middle", 0, 0, {tocolor(125, 125, 155, 255), false, self.m_sCurCorpName}, "Dies ist eine Corporation. (Firma/Gang)")
+        self.guiEle["window"] 	= new(CDxWindow, "Corporation Betrachten", 600, 530, true, true, "Center|Middle", 0, 0, {tocolor(125, 125, 155, 255), false, self.m_sCurCorpName}, "Dies ist eine Corporation. (Firma/Gang)")
         self.guiEle["window"].xtraHide  = function() self:hide() end
 
         self.guiEle["tabpane"]  = new(CDxTabbedPane, 2, 2, 592, 507, tocolor(255, 255, 255, 255), self.guiEle["window"])
 
-        self.guiEle["tab1"]     = new(CDxTab, getLocalizationString("GUI_corporation_viewcorp_tabpanel_tab_profil"), self.guiEle["tabpane"])
-        self.guiEle["tab2"]     = new(CDxTab, getLocalizationString("GUI_corporation_viewcorp_tabpanel_tab_members"), self.guiEle["tabpane"])
-        self.guiEle["tab3"]     = new(CDxTab, getLocalizationString("GUI_corporation_viewcorp_tabpanel_tab_eventlogs"), self.guiEle["tabpane"])
-        self.guiEle["tab4"]     = new(CDxTab, getLocalizationString("GUI_corporation_viewcorp_tabpanel_tab_connections"), self.guiEle["tabpane"])
+        self.guiEle["tab1"]     = new(CDxTab, "Profil", self.guiEle["tabpane"])
+        self.guiEle["tab2"]     = new(CDxTab, "Mitglieder", self.guiEle["tabpane"])
+        self.guiEle["tab3"]     = new(CDxTab, "Event-Logs", self.guiEle["tabpane"])
+        self.guiEle["tab4"]     = new(CDxTab, "Beziehungen", self.guiEle["tabpane"])
 
         for index, ele in pairs(self.guiEle) do
             if(index ~= "window") then
@@ -285,7 +276,7 @@ function cViewCorporationGUI:constructor(...)
     self.guiEle         = {}
     self.enabled        = false;
 
-    self.m_sCurCorpName = "-"
+    self.m_sCurCorpName = "TheNakedArmy"
     self.m_uCurTexture  = false;
 
     self.m_tblCurIcon   =

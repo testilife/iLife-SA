@@ -1,47 +1,36 @@
-﻿--[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
-addEvent("onClientLineJobStart", true)
+﻿addEvent("onClientLineJobStart", true)
 addEvent("onClientLineJobFinish", true)
 addEvent("onClientLineJobStep", true)
 
 CLineJob = {}
 
 function CLineJob:constructor()
-	--[[
 	self.Marker = createMarker(2653.622070,-1458.5361328125, 30.5509, "corona", 2, 255, 0, 0, 255, getRootElement())
-
+	
 	addEventHandler("onMarkerHit", self.Marker,
 		function(hitElement, matching)
 			if (matching) then
 				hitElement:showInfoBox("info","Der Job ist noch nicht implementiert!")
-				-- triggerClientEvent(hitElement, "onLineJobMarkerHit", getRootElement())
+				-- triggerClientEvent(hitElement, "onLineJobMarkerHit", getRootElement())	
 			end
 		end
 	)
-
+	
 	addEventHandler("onClientLineJobStart", getRootElement(), bind(CLineJob.start, self))
 	addEventHandler("onClientLineJobFinish", getRootElement(), bind(CLineJob.finish, self))
 	addEventHandler("onClientLineJobStep", getRootElement(), bind(CLineJob.step, self))
-
+	
 	-- Player States
 	self.State = {}
-
+	
 	-- Speed Dificulty
 	self.Speeds = {5,10,20,50}
-
+	
 	-- Earnings
 	self.Earnings = {10,15,25,45}
-
+	
 	-- Calling CJob Constructor for further Handling.
 	new(CJob, 9, "Fließbandarbeiter", "2653.6220703125|-1458.5361328125|30.550909042358")
-	]]
 end
 
 function CLineJob:destructor()
@@ -64,13 +53,13 @@ function CLineJob:start()
 	if (self.State[getPlayerName(client)]) then
 		self.State[getPlayerName(client)] = {}
 	end
-
+	
 	self.State[getPlayerName(client)]["Starttick"] = getTickCount()
 	self.State[getPlayerName(client)]["Step"] = 0
 	self.State[getPlayerName(client)]["Money"] = 0
-
+	
 	--Tell the client the Speed values
-	triggerClientEvent(client, "onLineJobStart", getRootElement(), self.Speeds)
+	triggerClientEvent(client, "onLineJobStart", getRootElement(), self.Speeds)	
 end
 
 function CLineJob:finish(count)
@@ -87,7 +76,7 @@ function CLineJob:finish(count)
 		end
 		client:addMoney(self.State[getPlayerName(client)]["Money"])
 		client:showInfoBox("info", "Du hast "..formNumberToMoneyString(self.State[getPlayerName(client)]["Money"]).." erarbeitet!")
-
+		
 		client:incrementStatistics("Job", "Geld_erarbeitet", self.State[getPlayerName(client)]["Money"])
 		client:checkJobAchievements()
 	else

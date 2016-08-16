@@ -1,56 +1,47 @@
-﻿--[[
-	/////// //////////////////
-	/////// PROJECT: MTA iLife - German Fun Reallife Gamemode
-	/////// VERSION: 1.7.2 
-	/////// DEVELOPERS: See DEVELOPERS.md in the top folder
-	/////// LICENSE: See LICENSE.md in the top folder 
-	/////// /////////////////
-]]
-
-CQuestLog = {}
+﻿CQuestLog = {}
 
 function CQuestLog:constructor()
 	self.enabled = false;
-
+	
 	self.Window = new(CDxWindow, "Quest Log", 755, 600, true, true, "Center|Middle")
 	self.Window:setHideFunction(
-		function()
+		function() 
 			self.Window:hide()
 			self.enabled = false;
 		end
 	)
-
+	
 	self.dxList = new(CDxList, 10, 20, 320, 530, tocolor(125,125,125,200), self.Window, false)
-
+	
 	self.dxList:addColumn("Quest")
-
+	
 	self.dxList:addClickFunction(
 		function()
 			self:refresh()
 		end
 	)
-
+	
 	self.IDS = {}
-
+	
 	self.NameLabel = new(CDxLabel, "Name:",350, 20, 400, 25, tocolor(255,255,255,255), 1.0, "default-bold", "left", "top", self.Window)
 	self.Name = new(CDxLabel, "",350, 50, 400, 25, tocolor(255,255,255,255), 1.0, "default", "left", "top", self.Window)
-
+	
 	self.DescLabel = new(CDxLabel, "Beschreibung:",350, 90, 400, 25, tocolor(255,255,255,255), 1.0, "default-bold", "left", "top", self.Window)
 	self.Desc = new(CDxLabel, "",350, 120, 400, 150, tocolor(255,255,255,255), 1.0, "default", "left", "top", self.Window)
-
+	
 	self.TargetLabel = new(CDxLabel, "Aktuelles Ziel:",350, 290, 400, 25, tocolor(255,255,255,255), 1.0, "default-bold", "left", "top", self.Window)
 	self.Target = new(CDxLabel, "",350, 320, 400, 25, tocolor(255,255,255,255), 1.0, "default", "left", "top", self.Window)
-
+	
 	self.RewardLabel = new(CDxLabel, "Belohnung:",350, 360, 400, 25, tocolor(255,255,255,255), 1.0, "default-bold", "left", "top", self.Window)
 	self.Reward = new(CDxLabel, "",350, 390, 400, 110, tocolor(255,255,255,255), 1.0, "default", "left", "top", self.Window)
-
+	
 	self.AbortButton = new(CDxButton, "Abbrechen", 340, 500, 200, 42, tocolor(255,255,255,255), self.Window)
 	self.FollowButton = new(CDxButton, "Verfolgen", 545, 500, 200, 42, tocolor(255,255,255,255), self.Window)
-
+	
 	self.AbortButton:addClickFunction(
 		function()
-
-			confirmDialog:showConfirmDialog("Bist du sicher, dass du diese Quest abbrechen möchtest?",
+		
+			confirmDialog:showConfirmDialog("Bist du sicher, dass du diese Quest abbrechen möchtest?", 
 				function()
 					triggerServerEvent("onPlayerAbortQuest", getRootElement(), self.ID)
 					self.enabled = false;
@@ -58,12 +49,12 @@ function CQuestLog:constructor()
 				end, false, false)
 		end
 	)
-
+	
 	self.AbortButton:setVisible(false)
 	self.FollowButton:setVisible(false)
 	self.AbortButton:setDisabled(true)
 	self.FollowButton:setDisabled(true)
-
+	
 	self.Window:add(self.dxList)
 	self.Window:add(self.NameLabel)
 	self.Window:add(self.Name)
@@ -75,19 +66,19 @@ function CQuestLog:constructor()
 	self.Window:add(self.Reward)
 	self.Window:add(self.AbortButton)
 	self.Window:add(self.FollowButton)
-
-	bindKey("j", "down",
+	
+	bindKey("j", "down", 
 		function()
 			if (LoggedIn) then
 				QuestLog:toggle()
 			end
 		end
 	)
-
+	
 end
 
 function CQuestLog:destructor()
-
+	
 end
 
 function CQuestLog:toggle()
@@ -110,17 +101,15 @@ function CQuestLog:refreshQuests()
 	self.dxList:clearRows()
 	self.IDS = {}
 	for k,v in pairs(PlayerActiveQuests) do
-		if(tonumber(k)) then
-			table.insert(self.IDS, tonumber(k))
-			self.dxList:addRow(Quests[tonumber(k)].Name)
-		end
+		table.insert(self.IDS, tonumber(k))
+		self.dxList:addRow(Quests[tonumber(k)].Name)
 	end
 end
 
 function CQuestLog:refresh()
 	if (self.dxList.SelectedRow > 0) then
 		self.ID = self.IDS[self.dxList.SelectedRow]
-
+		
 		self.NameLabel:setText("Name:")
 		self.Name:setText(Quests[self.ID].Name)
 
@@ -131,9 +120,9 @@ function CQuestLog:refresh()
 		self.Target:setText(parseString(Quests[self.ID].Texts[PlayerActiveQuests[tostring(self.ID)]]))
 
 		self.RewardLabel:setText("Belohnung:")
-
+		
 		self.Reward:setText(formQuestRewardString(self.ID))
-
+	
 		self.AbortButton:setVisible(true)
 		self.FollowButton:setVisible(true)
 		self.AbortButton:setDisabled(false)
@@ -150,7 +139,7 @@ function CQuestLog:refresh()
 
 		self.RewardLabel:setText("")
 		self.Reward:setText("")
-
+	
 		self.AbortButton:setVisible(false)
 		self.FollowButton:setVisible(false)
 		self.AbortButton:setDisabled(true)
